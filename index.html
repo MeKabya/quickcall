@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Quick Call · Women Safety</title>
+  <title>Quick Call</title>
   <!-- pink icon for tab -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ec4899'%3E%3Cpath d='M20 10.999h2C22 5.869 18.127 2 12.99 2v2C17.052 4 20 6.943 20 10.999z'/%3E%3Cpath d='M13 8c2.103 0 3 .897 3 3h2c0-3.225-1.775-5-5-5v2z'/%3E%3Cpath d='M16.422 13.443c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45l-2.12 2.12c-2.244-.783-3.814-2.354-4.596-4.58l2.12-2.12c.586-.586.586-1.536 0-2.122L6.3 4.221c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45L2.5 5.865c-.657.657-.92 1.564-.756 2.421.55 2.826 2.28 5.647 4.696 8.064 2.416 2.416 5.238 4.146 8.064 4.696.857.164 1.764-.099 2.421-.756l1.644-1.644c.293-.293.45-.684.45-1.083 0-.392-.157-.783-.45-1.076l-3.069-3.069z' fill='%23ec4899'/%3E%3C/svg%3E" type="image/svg+xml">
   <!-- Baloo Da 2 + Font Awesome -->
@@ -493,8 +493,7 @@
   <div class="top-header">
     <div class="logo-area">
       <h1>QUICK CALL</h1>
-      <span class="logo-sub">For Women Safety & Emergency Support</span>
-    </div>
+            <div class="beta-badge" style="font-size: 14px; color: red; margin-top: 3px;">Under Maintenance</div>    
     <div class="theme-toggle">
       <button class="theme-btn" id="themeBtn">
         <i class="fas fa-sun"></i> <span>DAY / NIGHT</span> <i class="fas fa-moon"></i>
@@ -504,7 +503,8 @@
 
   <!-- main section with 4 cards (single column, dot icons) -->
   <div class="section" id="mainSection">
-    <h2><i class="fas fa-shield-alt"></i> Emergency Services</h2>
+<i class="fas fa-circle" style="color: #0066ff; font-size: 0.8rem;"></i>
+<h2>Emergency Services</h2>
     <div class="service-grid">
       <div class="service-card" id="cardEmergency">
         <i class="fas fa-triangle-exclamation"></i>
@@ -516,7 +516,7 @@
       </div>
       <div class="service-card" id="cardWhatsapp">
         <i class="fab fa-whatsapp"></i>
-        Share Location
+        Share Your Location
       </div>
       <div class="service-card" id="cardFake">
         <i class="fas fa-phone"></i>
@@ -537,15 +537,15 @@
 
   <!-- credit button + popup (gray/white icons) -->
   <div class="credit-wrapper">
-    <button class="credit-btn" id="creditToggle"><i class="fas fa-info-circle"></i> about / credit</button>
+    <button class="credit-btn" id="creditToggle"><i class="fas fa-info-circle"></i>CREDIT</button>
   </div>
   <div class="credit-popup" id="creditPopup">
     <ul>
-      <li><i class="fas fa-user-circle"></i> creator name : Kabya Saha</li>
-      <li><i class="fas fa-robot"></i> AI assistance : ChatGPT & DeepSeek</li>
-      <li><i class="fas fa-globe"></i> web hosting : InfinityFree</li>
-      <li><i class="fas fa-external-link-alt"></i> other website : <a href="https://mekabya.github.io/quickdial" target="_blank">Quick Dial</a> (click text)</li>
-      <li><i class="fas fa-calendar-alt"></i> date created : 03/03/2026</li>
+      <li><i class="fas fa-user-circle"></i> Creator Name : Kabya Saha</li>
+      <li><i class="fas fa-robot"></i> AI Assistance : ChatGPT · DeepSeek</li>
+      <li><i class="fas fa-globe"></i> Web Hosting : InfinityFree</li>
+      <li><i class="fas fa-external-link-alt"></i> Other Website : <a href="https://mekabya.github.io/quickdial" target="_blank">Quick Dial</a> </li>
+      <li><i class="fas fa-calendar-alt"></i> Date Created : 03/03/2026</li>
     </ul>
   </div>
 
@@ -654,14 +654,33 @@
       }
     }
 
-    function shareLocation() {
-      if (currentLat && currentLon) {
-        let msg = "I need help! My location: https://www.google.com/maps?q=" + currentLat + "," + currentLon;
-        window.open("https://wa.me/?text=" + encodeURIComponent(msg));
-      } else {
-        alert("Please get your location first (tap 'Your Location' button)");
-      }
-    }
+ function shareLocation() {
+  if (currentLat && currentLon) {
+    // Get current time
+    const now = new Date();
+    const timeString = now.toLocaleTimeString();
+    const dateString = now.toLocaleDateString();
+    
+    // Create detailed emergency message
+    let msg = 
+` ⛔ I need your help immediately! 
+
+📍 Exact Location:
+https://www.google.com/maps?q=${currentLat},${currentLon}
+
+  Coordinates: ${currentLat}, ${currentLon}
+
+  Time: ${timeString} | Date: ${dateString}
+
+  Please call 911!
+
+  This is an automated emergency message from someone in danger.`;
+
+    // Open WhatsApp with the message
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg));
+  } else {
+        alert("Please get your location first (tap 'Your Location' button)");  }
+}
 
     function openInMaps() {
       if (currentLat && currentLon) {
