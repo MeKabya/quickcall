@@ -661,19 +661,19 @@
     const dateString = now.toLocaleDateString();
     
     // Create detailed emergency message
-    let msg = 
-` ⛔ I need your help immediately! 
+ let msg = 
+`⛔ I need your help immediately!
 
 📍 Exact Location:
 https://www.google.com/maps?q=${currentLat},${currentLon}
 
-  Coordinates: ${currentLat}, ${currentLon}
+Coordinates: ${currentLat}, ${currentLon}
 
-  Time: ${timeString} | Date: ${dateString}
+Time: ${timeString} | Date: ${dateString}
 
-  Please call 911!
+Please call 911!
 
-  This is an automated emergency message from someone in danger.`;
+This is an automated emergency message from someone in danger.`;
 
     // Open WhatsApp with the message
     window.open("https://wa.me/?text=" + encodeURIComponent(msg));
