@@ -1,457 +1,774 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quick Call</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Quick Call · Women Safety</title>
+  <!-- professional red dial favicon (same as demo) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23b91c1c'%3E%3Cpath d='M20 10.999h2C22 5.869 18.127 2 12.99 2v2C17.052 4 20 6.943 20 10.999z'/%3E%3Cpath d='M13 8c2.103 0 3 .897 3 3h2c0-3.225-1.775-5-5-5v2z'/%3E%3Cpath d='M16.422 13.443c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45l-2.12 2.12c-2.244-.783-3.814-2.354-4.596-4.58l2.12-2.12c.586-.586.586-1.536 0-2.122L6.3 4.221c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45L2.5 5.865c-.657.657-.92 1.564-.756 2.421.55 2.826 2.28 5.647 4.696 8.064 2.416 2.416 5.238 4.146 8.064 4.696.857.164 1.764-.099 2.421-.756l1.644-1.644c.293-.293.45-.684.45-1.083 0-.392-.157-.783-.45-1.076l-3.069-3.069z' fill='%23b91c1c'/%3E%3C/svg%3E" type="image/svg+xml">
+  <!-- Baloo Da 2 + Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* ----- reset & base (exactly demo style) ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Baloo Da 2', cursive;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    body {
+      background: #f5f7fb;
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.2s;
+      padding: 24px 16px;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+    }
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Baloo Da 2',cursive;
-}
+    body.night-mode {
+      background: #1a2538;
+      color: #e9edf2;
+    }
 
-body{
-background:#fff0f6;
-min-height:100vh;
-padding:20px;
-color:#831843;
-display:flex;
-flex-direction:column;
-}
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1 0 auto;
+    }
 
-body.night-mode{
-background:linear-gradient(135deg,#0f172a,#1e293b);
-color:#fbcfe8;
-}
+    @media (min-width: 640px) {
+      body { display: flex; align-items: center; }
+      .container { margin: 0 auto; }
+    }
 
-.container{
-max-width:1000px;
-margin:auto;
-flex:1;
-}
+    /* ----- top header (exactly demo style) ----- */
+    .top-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+      position: relative;
+    }
 
-.logo-area{
-text-align:center;
-margin-bottom:25px;
-}
+    .theme-toggle {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+    }
 
-.logo-area h1{
-font-size:36px;
-font-weight:800;
-background:linear-gradient(145deg,#ec4899,#db2777);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
+    .theme-btn {
+      background: white;
+      border: 1px solid #dce5f0;
+      border-radius: 60px;
+      padding: 12px 32px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.02);
+      transition: all 0.2s ease;
+      letter-spacing: 0.3px;
+    }
 
-.logo-area span{
-display:block;
-font-size:14px;
-margin-top:5px;
-font-weight:600;
-color:#db2777;
-}
+    .night-mode .theme-btn {
+      background: #2b3a52;
+      border-color: #40536e;
+      color: #eef2f6;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+    }
 
-.theme-btn{
-background:#2563eb;
-color:white;
-border:none;
-padding:8px 22px;
-border-radius:30px;
-cursor:pointer;
-margin-top:12px;
-}
+    .theme-btn i {
+      font-size: 20px;
+      color: #f59e0b;
+    }
+    .night-mode .theme-btn i { color: #f59e0b; }
+    .theme-btn:hover {
+      border-color: #9aaec9;
+      transform: scale(1.02);
+      background: #fafdff;
+    }
+    .night-mode .theme-btn:hover { background: #324762; }
 
-.section{
-background:white;
-padding:25px;
-border-radius:25px;
-box-shadow:0 8px 20px rgba(0,0,0,0.08);
-margin-bottom:25px;
-}
+    .logo-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
 
-body.night-mode .section{
-background:#1e293b;
-}
+    .logo-area h1 {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(145deg, #ec4899, #db2777);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
 
-.section h2{
-margin-bottom:20px;
-font-size:22px;
-color:#db2777;
-}
+    .night-mode .logo-area h1 {
+      background: linear-gradient(145deg, #f0f4fa, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-.service-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:18px;
-}
+    .logo-sub {
+      font-size: 15px;
+      font-weight: 600;
+      color: #db2777;
+      letter-spacing: 0.3px;
+    }
 
-.service-card{
-border-radius:20px;
-padding:20px;
-text-align:center;
-cursor:pointer;
-font-weight:600;
-transition:0.2s;
-display:flex;
-flex-direction:column;
-align-items:center;
-color:white;
-}
+    .night-mode .logo-sub {
+      color: #b0c4de;
+    }
 
-.service-card i{
-font-size:38px;
-margin-bottom:10px;
-}
+    /* ----- section cards (exactly demo style) ----- */
+    .section {
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: 0 8px 26px rgba(0,0,0,0.02), 0 4px 8px rgba(0,20,40,0.02);
+      transition: all 0.25s ease;
+      border: 1px solid #e2eaf5;
+      padding: 28px 24px;
+      margin: 28px 0;
+    }
 
-.emergency{background:#dc2626;}
-.location{background:#0ea5e9;}
-.whatsapp{background:#16a34a;}
-.fake{background:#ec4899;}
+    .night-mode .section {
+      background: #202d40;
+      border-color: #31475f;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+    }
 
-.service-card:hover{
-transform:translateY(-5px);
-}
+    .section h2 {
+      margin-bottom: 24px;
+      font-size: 26px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #1e293b;
+    }
 
-/* Map */
-iframe{
-border-radius:20px;
-border:none;
-}
+    .night-mode .section h2 {
+      color: #edf2f9;
+    }
 
-/* Map Buttons */
-.map-buttons{
-margin-top:15px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
+    .section h2 i {
+      color: #b91c1c;
+    }
 
-.map-buttons button{
-flex:1;
-padding:10px;
-border:none;
-border-radius:20px;
-cursor:pointer;
-color:white;
-font-weight:600;
-}
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    @media (min-width: 420px) {
+      .service-grid { grid-template-columns: repeat(2, 1fr); }
+    }
 
-.open-btn{background:#2563eb;}
-.nav-btn{background:#16a34a;}
+    .service-card {
+      background: transparent;
+      border: 2px solid #f9c6d9;
+      border-radius: 28px;
+      padding: 24px 12px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: 700;
+      font-size: 20px;
+      color: #1e293b;
+      transition: 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+    }
 
-/* Xiaomi-style Fake Call UI (Replaced as requested) */
-.fake-call-screen{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-color:white;
-display:none;
-flex-direction:column;
-justify-content:space-between;
-padding:15px 20px 40px;
-z-index:9999;
-font-family:sans-serif;
-}
+    .night-mode .service-card {
+      border-color: #5c6f8f;
+      color: white !important;
+    }
 
-/* STATUS BAR */
-.status-bar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-font-size:13px;
-}
+    .service-card i {
+      font-size: 42px;
+      margin-bottom: 4px;
+    }
+    .service-card .fa-triangle-exclamation { color: #dc2626; }
+    .service-card .fa-location-dot { color: #0ea5e9; }
+    .service-card .fa-whatsapp { color: #16a34a; }
+    .service-card .fa-phone { color: #8b5cf6; }
 
-.status-left{
-font-weight:500;
-}
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px -10px rgba(0,60,130,0.15);
+      border-color: #f5a3c1;
+    }
+    .night-mode .service-card:hover {
+      box-shadow: 0 14px 28px -8px #070f1a;
+      border-color: #7e93b5;
+    }
 
-.status-right{
-display:flex;
-align-items:center;
-gap:6px;
-}
+    /* map section */
+    #mapSection.section { display: none; }
+    iframe {
+      width: 100%;
+      height: 260px;
+      border-radius: 24px;
+      border: 1px solid #e2eaf5;
+    }
+    .night-mode iframe { border-color: #31475f; }
 
-.status-right i{
-font-size:13px;
-}
+    .map-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .map-buttons button {
+      flex: 1;
+      padding: 14px 10px;
+      border: none;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      color: white;
+      transition: 0.2s;
+      font-family: 'Baloo Da 2', cursive;
+    }
+    .open-btn { background: #2563eb; }
+    .nav-btn { background: #16a34a; }
+    .open-btn:hover, .nav-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
-.battery{
-width:22px;
-height:10px;
-border:1.5px solid white;
-border-radius:2px;
-position:relative;
-}
+    /* credit button */
+    .credit-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 20px;
+    }
+    .credit-btn {
+      background: white;
+      border: 1px solid #e0dbf0;
+      border-radius: 60px;
+      padding: 10px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #2d3c5e;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      transition: 0.2s;
+    }
+    .night-mode .credit-btn {
+      background: #263952;
+      border-color: #405978;
+      color: #e3ecf7;
+    }
+    .credit-btn i { color: #b91c1c; }
+    .credit-popup {
+      background: white;
+      border-radius: 24px;
+      padding: 22px;
+      margin-top: 16px;
+      border: 1px solid #f1c6d9;
+      display: none;
+      animation: fadePop 0.2s ease;
+    }
+    .night-mode .credit-popup {
+      background: #1e2c41;
+      border-color: #3d5775;
+    }
+    .credit-popup.show { display: block; }
+    .credit-popup ul {
+      list-style: none;
+    }
+    .credit-popup li {
+      margin: 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 17px;
+    }
+    .credit-popup li i { color: #b91c1c; width: 24px; }
+    .credit-popup a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .night-mode .credit-popup a { color: #7aa6ff; }
 
-.battery::after{
-content:'';
-position:absolute;
-right:-4px;
-top:2px;
-width:3px;
-height:6px;
-background:white;
-border-radius:1px;
-}
+    @keyframes fadePop {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-.battery-level{
-width:69%;
-height:100%;
-background:#4ade80;
-}
+    /* QR footer */
+    .page-footer {
+      text-align: center;
+      padding: 32px 0 16px;
+      margin-top: 30px;
+      border-top: 1px solid #d2e0ee;
+      color: #627a98;
+      width: 100%;
+      flex-shrink: 0;
+    }
+    .night-mode .page-footer {
+      border-color: #2e4562;
+      color: #8aa2c0;
+    }
+    .qr-code {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .qr-code img {
+      width: 110px;
+      height: auto;
+      border-radius: 28px;
+      border: 2px solid #ffe2f0;
+      padding: 8px;
+      background: white;
+    }
+    .night-mode .qr-code img {
+      border-color: #4f698b;
+      background: #1e2f45;
+    }
 
-.battery-text{
-font-size:11px;
-margin-left:2px;
-}
+    /* Xiaomi fake call screen */
+    .fake-call-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: white;
+      display: none;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 15px 20px 40px;
+      z-index: 9999;
+      font-family: sans-serif;
+    }
 
-/* CALLER TOP AREA */
-.caller-top{
-text-align:center;
-margin-top:40px;
-}
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 30px;
+    }
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .battery {
+      width: 22px;
+      height: 10px;
+      border: 1.5px solid white;
+      border-radius: 2px;
+      position: relative;
+    }
+    .battery::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 2px;
+      width: 3px;
+      height: 6px;
+      background: white;
+      border-radius: 1px;
+    }
+    .battery-level {
+      width: 69%;
+      height: 100%;
+      background: #4ade80;
+    }
+    .battery-text {
+      font-size: 11px;
+      margin-left: 2px;
+    }
+    .caller-top {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .caller-top img {
+      width: 138px;
+      height: 138px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 4px;
+    }
+    .caller-top h2 {
+      font-size: 43px;
+      font-weight: 2000;
+      margin-bottom: 3px;
+    }
+    .caller-top p {
+      font-size: 22px;
+      opacity: 0.7;
+    }
+    .call-actions {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 40px;
+    }
+    .call-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      cursor: pointer;
+    }
+    .accept {
+      background: #22c55e;
+      animation: pulseGreen 1.6s infinite;
+    }
+    .decline {
+      background: #ef4444;
+      animation: pulseRed 1.6s infinite;
+    }
+    @keyframes pulseGreen {
+      0%{box-shadow:0 0 0 0 rgba(34,197,94,0.7);}
+      70%{box-shadow:0 0 0 25px rgba(34,197,94,0);}
+      100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}
+    }
+    @keyframes pulseRed {
+      0%{box-shadow:0 0 0 0 rgba(239,68,68,0.7);}
+      70%{box-shadow:0 0 0 25px rgba(239,68,68,0);}
+      100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}
+    }
 
-.caller-top img{
-width:138px;
-height:138px;
-border-radius:50%;
-object-fit:cover;
-margin-bottom:04px;
-}
+    .service-card {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-.caller-top h2{
-font-size:43px;
-font-weight:2000;
-margin-bottom:3px;
-}
-
-.caller-top p{
-font-size:22px;
-opacity:0.7;
-}
-
-/* CALL BUTTONS */
-.call-actions{
-display:flex;
-justify-content:space-around;
-margin-bottom:40px;
-}
-
-.call-btn{
-width:80px;
-height:80px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-cursor:pointer;
-}
-
-/* Xiaomi style soft pulse */
-.accept{
-background:#22c55e;
-animation:pulseGreen 1.6s infinite;
-}
-
-.decline{
-background:#ef4444;
-animation:pulseRed 1.6s infinite;
-}
-
-@keyframes pulseGreen{
-0%{box-shadow:0 0 0 0 rgba(34,197,94,0.7);}
-70%{box-shadow:0 0 0 25px rgba(34,197,94,0);}
-100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}
-}
-
-@keyframes pulseRed{
-0%{box-shadow:0 0 0 0 rgba(239,68,68,0.7);}
-70%{box-shadow:0 0 0 25px rgba(239,68,68,0);}
-100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}
-}
-
-/* old lock-info (no longer used but keep if any reference) */
-.lock-info{display:none;}
-
-@media(max-width:600px){
-.logo-area h1{font-size:26px;}
-.call-btn{width:70px;height:70px;font-size:26px;}
-}
-</style>
+    .hidden { display: none; }
+    .fa-chevron-right { color: #94a3b8; }
+  </style>
 </head>
 <body>
-
 <div class="container">
+  <!-- header exactly demo style + bigger title & subtitle -->
+  <div class="top-header">
+    <div class="logo-area">
+      <h1>QUICK CALL</h1>
+      <span class="logo-sub">For Women Safety & Emergency Support</span>
+    </div>
+    <div class="theme-toggle">
+      <button class="theme-btn" id="themeBtn">
+        <i class="fas fa-sun"></i> <span>DAY / NIGHT</span> <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </div>
 
-<div class="logo-area">
-<h1>QUICK CALL</h1>
-<span>For Women Safety & Emergency Support</span>
-<button class="theme-btn" onclick="toggleTheme()">DAY / NIGHT</button>
+  <!-- main section with 4 cards (thin pink border) -->
+  <div class="section" id="mainSection">
+    <h2><i class="fas fa-shield-alt"></i> Emergency Services</h2>
+    <div class="service-grid">
+      <!-- emergency call - red icon, others different colors -->
+      <div class="service-card" id="cardEmergency">
+        <i class="fas fa-triangle-exclamation"></i>
+        Emergency Call
+      </div>
+      <div class="service-card" id="cardLocation">
+        <i class="fas fa-location-dot"></i>
+        Your Location
+      </div>
+      <div class="service-card" id="cardWhatsapp">
+        <i class="fab fa-whatsapp"></i>
+        Share Location
+      </div>
+      <div class="service-card" id="cardFake">
+        <i class="fas fa-phone"></i>
+        Fake Call
+      </div>
+    </div>
+  </div>
+
+  <!-- map section (hidden initially) -->
+  <div class="section" id="mapSection">
+    <h2><i class="fas fa-map-pin"></i> Live Location</h2>
+    <iframe id="mapFrame" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <div class="map-buttons">
+      <button class="open-btn" id="openMapsBtn"><i class="fas fa-map"></i> Open Maps</button>
+      <button class="nav-btn" id="navigateBtn"><i class="fas fa-route"></i> Navigate</button>
+    </div>
+  </div>
+
+  <!-- credit button + popup (dot bullet) -->
+  <div class="credit-wrapper">
+    <button class="credit-btn" id="creditToggle"><i class="fas fa-info-circle"></i> about / credit</button>
+  </div>
+  <div class="credit-popup" id="creditPopup">
+    <ul>
+      <li><i class="fas fa-user-circle"></i> creator name : Kabya Saha</li>
+      <li><i class="fas fa-robot"></i> AI assistance : ChatGPT & DeepSeek</li>
+      <li><i class="fas fa-globe"></i> web hosting : InfinityFree</li>
+      <li><i class="fas fa-external-link-alt"></i> other website : <a href="https://mekabya.github.io/quickdial" target="_blank">Quick Dial</a> (click text)</li>
+      <li><i class="fas fa-calendar-alt"></i> date created : 03/03/2026</li>
+    </ul>
+  </div>
+
+  <!-- footer with qr code -->
+  <footer class="page-footer">
+    <div class="qr-code">
+      <img src="https://images4.imagebam.com/54/e7/73/ME1B1XIM_o.jpg" alt="QR Code">
+    </div>
+    <p>© 2026 All Rights Reserved.</p>
+  </footer>
 </div>
 
-<div class="section">
-<h2>Emergency Services</h2>
-
-<div class="service-grid">
-
-<div class="service-card emergency" onclick="quickCall('999')">
-<i class="fas fa-triangle-exclamation"></i>
-Emergency Call
-</div>
-
-<div class="service-card location" onclick="getLocation()">
-<i class="fas fa-location-dot"></i>
-Your Location
-</div>
-
-<div class="service-card whatsapp" onclick="shareLocation()">
-<i class="fab fa-whatsapp"></i>
-Share Location
-</div>
-
-<div class="service-card fake" onclick="fakeCall()">
-<i class="fas fa-phone"></i>
-Fake Call
-</div>
-
-</div>
-</div>
-
-<div class="section" id="mapSection" style="display:none;">
-<h2>Your Live Location</h2>
-<iframe id="mapFrame" width="100%" height="300"></iframe>
-
-<div class="map-buttons">
-<button class="open-btn" onclick="openInMaps()">Open in Google Maps</button>
-<button class="nav-btn" onclick="navigateNow()">Navigate</button>
-</div>
-</div>
-
-<footer style="text-align:center;margin-top:20px;">© 2026 All Rights Reserved.</footer>
-
-</div>
-
-<!-- Xiaomi Fake Call Screen (Replaced UI & uses statusTime) -->
+<!-- Xiaomi Fake Call Screen -->
 <div class="fake-call-screen" id="fakeCallScreen">
-
-<!-- Status bar with time element id="statusTime" -->
-<div class="status-bar">
-<div class="status-left"></div>
-<div class="status-right">
-<i class="fas fa-wifi"></i>
-<i class="fas fa-signal"></i>
-<div class="battery">
-<div class="battery-level"></div>
-</div>
-<span class="battery-text" id="statusTime">00:00</span>
-</div>
-</div>
-
-<div class="caller-top">
-<!-- Keep same avatar as before, but using placeholder icon as original -->
-<img src="https://images4.imagebam.com/5a/79/5d/ME1B1YG6_o.png" alt="Caller Avatar">
-<h2>Maa</h2>
-<p>Incoming Call</p>
-</div>
-
-<div class="call-actions">
-<div class="call-btn decline" onclick="closeFakeCall()">
-<i class="fas fa-phone-slash"></i>
-</div>
-<div class="call-btn accept" onclick="closeFakeCall()">
-<i class="fas fa-phone"></i>
-</div>
-</div>
-
+  <div class="status-bar">
+    <div class="status-left"></div>
+    <div class="status-right">
+      <i class="fas fa-wifi"></i>
+      <i class="fas fa-signal"></i>
+      <div class="battery">
+        <div class="battery-level"></div>
+      </div>
+      <span class="battery-text" id="statusTime">00:00</span>
+    </div>
+  </div>
+  <div class="caller-top">
+    <img src="https://images4.imagebam.com/5a/79/5d/ME1B1YG6_o.png" alt="Maa">
+    <h2>Maa</h2>
+    <p>Incoming Call</p>
+  </div>
+  <div class="call-actions">
+    <div class="call-btn decline" onclick="closeFakeCall()">
+      <i class="fas fa-phone-slash"></i>
+    </div>
+    <div class="call-btn accept" onclick="closeFakeCall()">
+      <i class="fas fa-phone"></i>
+    </div>
+  </div>
 </div>
 
 <script>
-let currentLat,currentLon;
+  (function() {
+    // ----- THEME TOGGLE (exactly demo) -----
+    const themeBtn = document.getElementById('themeBtn');
+    function toggleTheme() {
+      document.body.classList.toggle('night-mode');
+      const iconSun = document.querySelector('#themeBtn i:first-child');
+      const iconMoon = document.querySelector('#themeBtn i:last-child');
+      if (document.body.classList.contains('night-mode')) {
+        iconSun.style.color = '#f1c40f';
+        iconMoon.style.color = '#b0c4de';
+      } else {
+        iconSun.style.color = '#f59e0b';
+        iconMoon.style.color = '#5f7d9c';
+      }
+    }
+    themeBtn.addEventListener('click', toggleTheme);
 
-/* ======= Ringtone Link ======= */
-let ringtoneURL = "https://files.catbox.moe/tx8v8n.mp3";
-/* ============================= */
+    // ----- STATE -----
+    let currentLat = null, currentLon = null;
+    const mapSection = document.getElementById('mapSection');
+    const mapFrame = document.getElementById('mapFrame');
+    const openMaps = document.getElementById('openMapsBtn');
+    const navigateBtn = document.getElementById('navigateBtn');
 
-function toggleTheme(){
-document.body.classList.toggle("night-mode");
-}
+    // ringtone (catbox)
+    const ringtoneURL = "https://files.catbox.moe/tx8v8n.mp3";
+    let currentRingtone = null;
+    let fakeCallInterval = null;
 
-function quickCall(number){
-window.location.href="tel:"+number;
-}
+    // ----- helper functions -----
+    function quickCall(number) {
+      window.location.href = "tel:" + number;
+    }
 
-function getLocation(){
-if(navigator.geolocation){
-navigator.geolocation.getCurrentPosition(function(pos){
-currentLat=pos.coords.latitude;
-currentLon=pos.coords.longitude;
+    // FIXED: getLocation function - now properly shows map and buttons
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(pos) {
+            currentLat = pos.coords.latitude;
+            currentLon = pos.coords.longitude;
+            
+            // Create embed URL for iframe
+            let mapEmbed = "https://www.google.com/maps?q=" + currentLat + "," + currentLon + "&output=embed&z=17";
+            mapFrame.src = mapEmbed;
+            
+            // Show the map section
+            mapSection.style.display = "block";
+            
+            // Smooth scroll to map
+            mapSection.scrollIntoView({ behavior: "smooth" });
+            
+            console.log("Location obtained:", currentLat, currentLon); // Debug
+          },
+          function(error) {
+            let errorMessage = "Location access denied or unavailable.";
+            switch(error.code) {
+              case error.PERMISSION_DENIED:
+                errorMessage = "Please allow location access to use this feature.";
+                break;
+              case error.POSITION_UNAVAILABLE:
+                errorMessage = "Location information is unavailable.";
+                break;
+              case error.TIMEOUT:
+                errorMessage = "Location request timed out.";
+                break;
+            }
+            alert(errorMessage);
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
 
-let mapURL="https://www.google.com/maps?q="+currentLat+","+currentLon+"&output=embed&z=17";
-document.getElementById("mapFrame").src=mapURL;
-document.getElementById("mapSection").style.display="block";
-document.getElementById("mapSection").scrollIntoView({behavior:"smooth"});
-});
-}
-}
+    // Share location function
+    function shareLocation() {
+      if (currentLat && currentLon) {
+        let msg = "I need help! My location: https://www.google.com/maps?q=" + currentLat + "," + currentLon;
+        window.open("https://wa.me/?text=" + encodeURIComponent(msg));
+      } else {
+        alert("Please get your location first (tap 'Your Location' button)");
+      }
+    }
 
-function openInMaps(){
-window.open("https://www.google.com/maps?q="+currentLat+","+currentLon);
-}
+    // Open in Google Maps app/browser
+    function openInMaps() {
+      if (currentLat && currentLon) {
+        window.open("https://www.google.com/maps?q=" + currentLat + "," + currentLon);
+      } else {
+        alert("No location available yet");
+      }
+    }
 
-function navigateNow(){
-window.open("https://www.google.com/maps/dir/?api=1&destination="+currentLat+","+currentLon);
-}
+    // Navigate (directions)
+    function navigateNow() {
+      if (currentLat && currentLon) {
+        window.open("https://www.google.com/maps/dir/?api=1&destination=" + currentLat + "," + currentLon);
+      } else {
+        alert("No location available yet");
+      }
+    }
 
-function shareLocation(){
-if(currentLat && currentLon){
-let msg="I need help! My location: https://www.google.com/maps?q="+currentLat+","+currentLon;
-window.open("https://wa.me/?text="+encodeURIComponent(msg));
-}
-}
+    // Map button event listeners
+    openMaps.addEventListener('click', openInMaps);
+    navigateBtn.addEventListener('click', navigateNow);
 
-/* Fake Call */
-let fakeCallInterval;
-function fakeCall(){
-document.getElementById("fakeCallScreen").style.display="flex";
+    // ----- fake call logic (exactly as requested) -----
+    function updateTime() {
+      let now = new Date();
+      let hours = now.getHours().toString().padStart(2, '0');
+      let minutes = now.getMinutes().toString().padStart(2, '0');
+      document.getElementById("statusTime").innerText = hours + ":" + minutes;
+    }
 
-// ringtone
-const ringtone = new Audio(ringtoneURL);
-ringtone.loop = true;
-ringtone.play().catch(e=>console.log("autoplay prevented? user gesture needed"));
-window.currentRingtone = ringtone;
+    function fakeCall() {
+      document.getElementById("fakeCallScreen").style.display = "flex";
+      const ringtone = new Audio(ringtoneURL);
+      ringtone.loop = true;
+      ringtone.play().catch(e => console.log("autoplay prevented - user interaction needed"));
+      window.currentRingtone = ringtone;
 
-// Start updating the status bar time using the REPLACED function
-updateTime();
-fakeCallInterval = setInterval(updateTime,1000);
-}
+      updateTime();
+      if (fakeCallInterval) clearInterval(fakeCallInterval);
+      fakeCallInterval = setInterval(updateTime, 1000);
+    }
 
-/* REPLACED updateTime function: exactly as requested */
-function updateTime(){
-let now = new Date();
-let hours = now.getHours().toString().padStart(2,'0');
-let minutes = now.getMinutes().toString().padStart(2,'0');
-document.getElementById("statusTime").innerText = hours + ":" + minutes;
-}
+    window.closeFakeCall = function() {
+      document.getElementById("fakeCallScreen").style.display = "none";
+      if (window.currentRingtone) {
+        window.currentRingtone.pause();
+        window.currentRingtone.currentTime = 0;
+        window.currentRingtone = null;
+      }
+      clearInterval(fakeCallInterval);
+      fakeCallInterval = null;
+    };
 
-function closeFakeCall(){
-document.getElementById("fakeCallScreen").style.display="none";
-if(window.currentRingtone){
-window.currentRingtone.pause();
-window.currentRingtone.currentTime = 0;
-}
-clearInterval(fakeCallInterval);
-}
+    // ----- attach events to cards -----
+    document.getElementById('cardEmergency').addEventListener('click', function(e) {
+      e.stopPropagation();
+      quickCall('999');
+    });
+    
+    document.getElementById('cardLocation').addEventListener('click', function(e) {
+      e.stopPropagation();
+      getLocation(); // This now works properly
+    });
+    
+    document.getElementById('cardWhatsapp').addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!currentLat || !currentLon) {
+        // First get location, then share
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function(pos) {
+              currentLat = pos.coords.latitude;
+              currentLon = pos.coords.longitude;
+              
+              // Show map
+              let mapEmbed = "https://www.google.com/maps?q=" + currentLat + "," + currentLon + "&output=embed&z=17";
+              mapFrame.src = mapEmbed;
+              mapSection.style.display = "block";
+              
+              // Share after location obtained
+              setTimeout(() => {
+                let msg = "I need help! My location: https://www.google.com/maps?q=" + currentLat + "," + currentLon;
+                window.open("https://wa.me/?text=" + encodeURIComponent(msg));
+              }, 500);
+            },
+            function(error) {
+              alert("Please allow location access to share your location.");
+            }
+          );
+        } else {
+          alert("Geolocation not supported");
+        }
+      } else {
+        shareLocation();
+      }
+    });
+    
+    document.getElementById('cardFake').addEventListener('click', function(e) {
+      e.stopPropagation();
+      fakeCall();
+    });
+
+    // credit popup toggle
+    const creditBtn = document.getElementById('creditToggle');
+    const creditPopup = document.getElementById('creditPopup');
+    creditBtn.addEventListener('click', function() {
+      creditPopup.classList.toggle('show');
+    });
+
+    // close fake call with escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.getElementById('fakeCallScreen').style.display === 'flex') {
+        closeFakeCall();
+      }
+    });
+
+    // ensure map section initially hidden
+    mapSection.style.display = 'none';
+  })();
 </script>
-
 </body>
 </html>
