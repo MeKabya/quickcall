@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>Quick Call · Women Safety</title>
-  <!-- professional red dial favicon (same as demo) -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23b91c1c'%3E%3Cpath d='M20 10.999h2C22 5.869 18.127 2 12.99 2v2C17.052 4 20 6.943 20 10.999z'/%3E%3Cpath d='M13 8c2.103 0 3 .897 3 3h2c0-3.225-1.775-5-5-5v2z'/%3E%3Cpath d='M16.422 13.443c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45l-2.12 2.12c-2.244-.783-3.814-2.354-4.596-4.58l2.12-2.12c.586-.586.586-1.536 0-2.122L6.3 4.221c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45L2.5 5.865c-.657.657-.92 1.564-.756 2.421.55 2.826 2.28 5.647 4.696 8.064 2.416 2.416 5.238 4.146 8.064 4.696.857.164 1.764-.099 2.421-.756l1.644-1.644c.293-.293.45-.684.45-1.083 0-.392-.157-.783-.45-1.076l-3.069-3.069z' fill='%23b91c1c'/%3E%3C/svg%3E" type="image/svg+xml">
+  <!-- pink icon for tab -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ec4899'%3E%3Cpath d='M20 10.999h2C22 5.869 18.127 2 12.99 2v2C17.052 4 20 6.943 20 10.999z'/%3E%3Cpath d='M13 8c2.103 0 3 .897 3 3h2c0-3.225-1.775-5-5-5v2z'/%3E%3Cpath d='M16.422 13.443c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45l-2.12 2.12c-2.244-.783-3.814-2.354-4.596-4.58l2.12-2.12c.586-.586.586-1.536 0-2.122L6.3 4.221c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45L2.5 5.865c-.657.657-.92 1.564-.756 2.421.55 2.826 2.28 5.647 4.696 8.064 2.416 2.416 5.238 4.146 8.064 4.696.857.164 1.764-.099 2.421-.756l1.644-1.644c.293-.293.45-.684.45-1.083 0-.392-.157-.783-.45-1.076l-3.069-3.069z' fill='%23ec4899'/%3E%3C/svg%3E" type="image/svg+xml">
   <!-- Baloo Da 2 + Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -125,28 +125,24 @@
     .logo-sub {
       font-size: 15px;
       font-weight: 600;
-      color: #db2777;
+      color: #dc2626 !important; /* Always red */
       letter-spacing: 0.3px;
     }
 
-    .night-mode .logo-sub {
-      color: #b0c4de;
-    }
-
-    /* ----- section cards (exactly demo style) ----- */
+    /* ----- section cards with thin light blue border ----- */
     .section {
       background: #ffffff;
       border-radius: 28px;
       box-shadow: 0 8px 26px rgba(0,0,0,0.02), 0 4px 8px rgba(0,20,40,0.02);
       transition: all 0.25s ease;
-      border: 1px solid #e2eaf5;
+      border: 1px solid #bfdbfe; /* light blue */
       padding: 28px 24px;
       margin: 28px 0;
     }
 
     .night-mode .section {
       background: #202d40;
-      border-color: #31475f;
+      border-color: #3b5688; /* darker blue for night */
       box-shadow: 0 10px 28px rgba(0,0,0,0.4);
     }
 
@@ -168,55 +164,72 @@
       color: #b91c1c;
     }
 
+    /* Emergency services grid - now 1 column */
     .service-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr; /* single column */
       gap: 18px;
-    }
-    @media (min-width: 420px) {
-      .service-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     .service-card {
       background: transparent;
-      border: 2px solid #f9c6d9;
+      border: 2px solid #bfdbfe; /* light blue border */
       border-radius: 28px;
-      padding: 24px 12px;
+      padding: 20px 16px;
       cursor: pointer;
-      text-align: center;
+      text-align: left;
       font-weight: 700;
       font-size: 20px;
       color: #1e293b;
       transition: 0.2s ease;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 16px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.02);
     }
 
     .night-mode .service-card {
-      border-color: #5c6f8f;
+      border-color: #4b6fa0;
       color: white !important;
     }
 
+    /* Emergency services icon as a dot */
     .service-card i {
-      font-size: 42px;
-      margin-bottom: 4px;
+      font-size: 28px;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.03);
     }
-    .service-card .fa-triangle-exclamation { color: #dc2626; }
-    .service-card .fa-location-dot { color: #0ea5e9; }
-    .service-card .fa-whatsapp { color: #16a34a; }
-    .service-card .fa-phone { color: #8b5cf6; }
+    
+    .service-card .fa-triangle-exclamation { 
+      color: #dc2626; 
+      background: rgba(220,38,38,0.1);
+    }
+    .service-card .fa-location-dot { 
+      color: #0ea5e9;
+      background: rgba(14,165,233,0.1);
+    }
+    .service-card .fa-whatsapp { 
+      color: #16a34a;
+      background: rgba(22,163,74,0.1);
+    }
+    .service-card .fa-phone { 
+      color: #8b5cf6;
+      background: rgba(139,92,246,0.1);
+    }
 
     .service-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 14px 28px -10px rgba(0,60,130,0.15);
-      border-color: #f5a3c1;
+      border-color: #9ac8ff;
     }
     .night-mode .service-card:hover {
       box-shadow: 0 14px 28px -8px #070f1a;
-      border-color: #7e93b5;
+      border-color: #6d8fc7;
     }
 
     /* map section */
@@ -225,9 +238,9 @@
       width: 100%;
       height: 260px;
       border-radius: 24px;
-      border: 1px solid #e2eaf5;
+      border: 1px solid #bfdbfe;
     }
-    .night-mode iframe { border-color: #31475f; }
+    .night-mode iframe { border-color: #3b5688; }
 
     .map-buttons {
       display: flex;
@@ -250,7 +263,7 @@
     .nav-btn { background: #16a34a; }
     .open-btn:hover, .nav-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
-    /* credit button */
+    /* credit button - icon colors gray day / white night */
     .credit-wrapper {
       display: flex;
       justify-content: center;
@@ -258,7 +271,7 @@
     }
     .credit-btn {
       background: white;
-      border: 1px solid #e0dbf0;
+      border: 1px solid #bfdbfe;
       border-radius: 60px;
       padding: 10px 28px;
       font-size: 16px;
@@ -273,22 +286,28 @@
     }
     .night-mode .credit-btn {
       background: #263952;
-      border-color: #405978;
+      border-color: #4b6fa0;
       color: #e3ecf7;
     }
-    .credit-btn i { color: #b91c1c; }
+    .credit-btn i { 
+      color: #6b7280; /* gray in day */
+    }
+    .night-mode .credit-btn i { 
+      color: #ffffff; /* white in night */
+    }
+    
     .credit-popup {
       background: white;
       border-radius: 24px;
       padding: 22px;
       margin-top: 16px;
-      border: 1px solid #f1c6d9;
+      border: 1px solid #bfdbfe;
       display: none;
       animation: fadePop 0.2s ease;
     }
     .night-mode .credit-popup {
       background: #1e2c41;
-      border-color: #3d5775;
+      border-color: #4b6fa0;
     }
     .credit-popup.show { display: block; }
     .credit-popup ul {
@@ -301,7 +320,13 @@
       gap: 12px;
       font-size: 17px;
     }
-    .credit-popup li i { color: #b91c1c; width: 24px; }
+    .credit-popup li i { 
+      color: #6b7280; /* gray day */
+      width: 24px; 
+    }
+    .night-mode .credit-popup li i { 
+      color: #ffffff; /* white night */
+    }
     .credit-popup a {
       color: #2563eb;
       text-decoration: none;
@@ -319,13 +344,13 @@
       text-align: center;
       padding: 32px 0 16px;
       margin-top: 30px;
-      border-top: 1px solid #d2e0ee;
+      border-top: 1px solid #bfdbfe;
       color: #627a98;
       width: 100%;
       flex-shrink: 0;
     }
     .night-mode .page-footer {
-      border-color: #2e4562;
+      border-color: #3b5688;
       color: #8aa2c0;
     }
     .qr-code {
@@ -337,16 +362,16 @@
       width: 110px;
       height: auto;
       border-radius: 28px;
-      border: 2px solid #ffe2f0;
+      border: 2px solid #bfdbfe;
       padding: 8px;
       background: white;
     }
     .night-mode .qr-code img {
-      border-color: #4f698b;
+      border-color: #4b6fa0;
       background: #1e2f45;
     }
 
-    /* Xiaomi fake call screen */
+    /* Xiaomi fake call screen - buttons at bottom */
     .fake-call-screen {
       position: fixed;
       top: 0;
@@ -357,7 +382,7 @@
       color: white;
       display: none;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: space-between; /* This puts buttons at bottom */
       padding: 15px 20px 40px;
       z-index: 9999;
       font-family: sans-serif;
@@ -368,7 +393,6 @@
       justify-content: space-between;
       align-items: center;
       font-size: 13px;
-      margin-bottom: 30px;
     }
     .status-right {
       display: flex;
@@ -403,7 +427,7 @@
     }
     .caller-top {
       text-align: center;
-      margin-top: 10px;
+      margin-top: 20px;
     }
     .caller-top img {
       width: 138px;
@@ -424,7 +448,7 @@
     .call-actions {
       display: flex;
       justify-content: space-around;
-      margin-top: 40px;
+      margin-bottom: 20px; /* Space from bottom */
     }
     .call-btn {
       width: 80px;
@@ -461,12 +485,11 @@
     }
 
     .hidden { display: none; }
-    .fa-chevron-right { color: #94a3b8; }
   </style>
 </head>
 <body>
 <div class="container">
-  <!-- header exactly demo style + bigger title & subtitle -->
+  <!-- header with always red subtitle -->
   <div class="top-header">
     <div class="logo-area">
       <h1>QUICK CALL</h1>
@@ -479,11 +502,10 @@
     </div>
   </div>
 
-  <!-- main section with 4 cards (thin pink border) -->
+  <!-- main section with 4 cards (single column, dot icons) -->
   <div class="section" id="mainSection">
     <h2><i class="fas fa-shield-alt"></i> Emergency Services</h2>
     <div class="service-grid">
-      <!-- emergency call - red icon, others different colors -->
       <div class="service-card" id="cardEmergency">
         <i class="fas fa-triangle-exclamation"></i>
         Emergency Call
@@ -513,7 +535,7 @@
     </div>
   </div>
 
-  <!-- credit button + popup (dot bullet) -->
+  <!-- credit button + popup (gray/white icons) -->
   <div class="credit-wrapper">
     <button class="credit-btn" id="creditToggle"><i class="fas fa-info-circle"></i> about / credit</button>
   </div>
@@ -536,7 +558,7 @@
   </footer>
 </div>
 
-<!-- Xiaomi Fake Call Screen -->
+<!-- Xiaomi Fake Call Screen - buttons at bottom -->
 <div class="fake-call-screen" id="fakeCallScreen">
   <div class="status-bar">
     <div class="status-left"></div>
@@ -566,7 +588,7 @@
 
 <script>
   (function() {
-    // ----- THEME TOGGLE (exactly demo) -----
+    // ----- THEME TOGGLE -----
     const themeBtn = document.getElementById('themeBtn');
     function toggleTheme() {
       document.body.classList.toggle('night-mode');
@@ -589,7 +611,7 @@
     const openMaps = document.getElementById('openMapsBtn');
     const navigateBtn = document.getElementById('navigateBtn');
 
-    // ringtone (catbox)
+    // ringtone
     const ringtoneURL = "https://files.catbox.moe/tx8v8n.mp3";
     let currentRingtone = null;
     let fakeCallInterval = null;
@@ -599,7 +621,6 @@
       window.location.href = "tel:" + number;
     }
 
-    // FIXED: getLocation function - now properly shows map and buttons
     function getLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -607,17 +628,10 @@
             currentLat = pos.coords.latitude;
             currentLon = pos.coords.longitude;
             
-            // Create embed URL for iframe
             let mapEmbed = "https://www.google.com/maps?q=" + currentLat + "," + currentLon + "&output=embed&z=17";
             mapFrame.src = mapEmbed;
-            
-            // Show the map section
             mapSection.style.display = "block";
-            
-            // Smooth scroll to map
             mapSection.scrollIntoView({ behavior: "smooth" });
-            
-            console.log("Location obtained:", currentLat, currentLon); // Debug
           },
           function(error) {
             let errorMessage = "Location access denied or unavailable.";
@@ -640,7 +654,6 @@
       }
     }
 
-    // Share location function
     function shareLocation() {
       if (currentLat && currentLon) {
         let msg = "I need help! My location: https://www.google.com/maps?q=" + currentLat + "," + currentLon;
@@ -650,7 +663,6 @@
       }
     }
 
-    // Open in Google Maps app/browser
     function openInMaps() {
       if (currentLat && currentLon) {
         window.open("https://www.google.com/maps?q=" + currentLat + "," + currentLon);
@@ -659,7 +671,6 @@
       }
     }
 
-    // Navigate (directions)
     function navigateNow() {
       if (currentLat && currentLon) {
         window.open("https://www.google.com/maps/dir/?api=1&destination=" + currentLat + "," + currentLon);
@@ -668,11 +679,10 @@
       }
     }
 
-    // Map button event listeners
     openMaps.addEventListener('click', openInMaps);
     navigateBtn.addEventListener('click', navigateNow);
 
-    // ----- fake call logic (exactly as requested) -----
+    // ----- fake call logic -----
     function updateTime() {
       let now = new Date();
       let hours = now.getHours().toString().padStart(2, '0');
@@ -684,7 +694,7 @@
       document.getElementById("fakeCallScreen").style.display = "flex";
       const ringtone = new Audio(ringtoneURL);
       ringtone.loop = true;
-      ringtone.play().catch(e => console.log("autoplay prevented - user interaction needed"));
+      ringtone.play().catch(e => console.log("autoplay prevented"));
       window.currentRingtone = ringtone;
 
       updateTime();
@@ -711,25 +721,22 @@
     
     document.getElementById('cardLocation').addEventListener('click', function(e) {
       e.stopPropagation();
-      getLocation(); // This now works properly
+      getLocation();
     });
     
     document.getElementById('cardWhatsapp').addEventListener('click', function(e) {
       e.stopPropagation();
       if (!currentLat || !currentLon) {
-        // First get location, then share
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             function(pos) {
               currentLat = pos.coords.latitude;
               currentLon = pos.coords.longitude;
               
-              // Show map
               let mapEmbed = "https://www.google.com/maps?q=" + currentLat + "," + currentLon + "&output=embed&z=17";
               mapFrame.src = mapEmbed;
               mapSection.style.display = "block";
               
-              // Share after location obtained
               setTimeout(() => {
                 let msg = "I need help! My location: https://www.google.com/maps?q=" + currentLat + "," + currentLon;
                 window.open("https://wa.me/?text=" + encodeURIComponent(msg));
@@ -766,7 +773,6 @@
       }
     });
 
-    // ensure map section initially hidden
     mapSection.style.display = 'none';
   })();
 </script>
