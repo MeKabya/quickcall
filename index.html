@@ -1422,8 +1422,8 @@
     <h2><i class="fas fa-address-book"></i> Emergency Contacts</h2>
     <div class="contacts-section">
       <div class="contact-input-group">
-        <input type="text" id="contactName" placeholder="Contact">
-        <input type="tel" id="contactNumber" placeholder="Phone">
+        <input type="text" id="contactName" placeholder="Contact Name">
+        <input type="tel" id="contactNumber" placeholder="Phone No.">
         <button class="add-contact-btn" id="addContact"><i class="fas fa-plus"></i></button>
       </div>
       <div class="contacts-list" id="contactsList"></div>
@@ -1483,12 +1483,12 @@
     <h2><i class="fas fa-map-pin" style="color: #2563eb;"></i> Nearest Stations</h2>
     <div id="policeLoading" class="police-loading">
       <i class="fas fa-circle-notch"></i>
-      <p style="margin-top: 15px;">Finding nearest stations...</p>
+      <p style="margin-top: 15px;">Finding nearest stations.</p>
     </div>
     <div id="policeStationsList" style="display: none;"></div>
     <div id="policeError" style="text-align: center; padding: 30px; color: #dc2626; display: none;">
       <i class="fas fa-exclamation-triangle" style="font-size: 40px;"></i>
-      <p style="margin-top: 15px;">Could not find stations. Please try again.</p>
+      <p style="margin-top: 15px;">Could not find stations.</p>
     </div>
     <div class="map-buttons" style="margin-top: 20px;">
       <button class="open-btn" id="refreshPoliceBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
@@ -1501,19 +1501,19 @@
     <h2><i class="fas fa-id-card"></i> Your Information</h2>
     <div id="infoForm" class="info-form">
       <div class="info-field">
-        <label>Full Name</label>
+        <label>Full Name:</label>
         <input type="text" id="infoName" placeholder="Enter your full name">
       </div>
       <div class="info-field">
-        <label>Home Address</label>
+        <label>Home Address:</label>
         <input type="text" id="infoAddress" placeholder="Enter your home address">
       </div>
       <div class="info-field">
-        <label>Blood Group</label>
+        <label>Blood Group:</label>
         <input type="text" id="infoBlood" placeholder="e.g., O+">
       </div>
       <div class="info-field">
-        <label>Emergency Contact</label>
+        <label>Emergency Contact:</label>
         <input type="tel" id="infoEmergency" placeholder="Phone number">
       </div>
       <button class="save-info-btn" id="saveInfoBtn"><i class="fas fa-save"></i> Save Information</button>
@@ -1849,19 +1849,19 @@
       infoDisplay.innerHTML = `
         <div class="info-display-card">
           <div class="info-display-item">
-            <div class="info-display-label">Full Name</div>
+            <div class="info-display-label">Full Name:</div>
             <div class="info-display-value">${userInfo.name}</div>
           </div>
           <div class="info-display-item">
-            <div class="info-display-label">Home Address</div>
+            <div class="info-display-label">Home Address:</div>
             <div class="info-display-value">${userInfo.address}</div>
           </div>
           <div class="info-display-item">
-            <div class="info-display-label">Blood Group</div>
+            <div class="info-display-label">Blood Group:</div>
             <div class="info-display-value">${userInfo.blood}</div>
           </div>
           <div class="info-display-item">
-            <div class="info-display-label">Emergency Contact</div>
+            <div class="info-display-label">Emergency Contact:</div>
             <div class="info-display-value">${userInfo.emergency}</div>
           </div>
           <div class="info-timer">
@@ -1922,7 +1922,7 @@
                       <i class="fas fa-map-marked-alt"></i>
                       <p>No stations found nearby</p>
                       <button class="police-action-btn directions" onclick="document.getElementById('openPoliceMapsBtn').click()" style="margin-top: 15px; max-width: 200px; margin-left: auto; margin-right: auto;">
-                        <i class="fas fa-map"></i> Search on Maps
+                        <i class="fas fa-map"></i> 
                       </button>
                     </div>
                   `;
@@ -2009,7 +2009,7 @@
             policeStationsList.style.display = 'block';
             showToast({ 
               title: 'Location Error', 
-              message: 'Unable to get your location. Please enable GPS.', 
+              message: 'Unable to get your location.', 
               iconType: 'attention',
               duration: 5000 
             });
@@ -2174,7 +2174,7 @@
         setTimeout(() => {
           showToast({ 
             title: 'WhatsApp App', 
-            message: 'If WhatsApp did not open, tap again or install WhatsApp.', 
+            message: 'If WhatsApp did not open then tap again or install WhatsApp.', 
             iconType: 'warning',
             duration: 4000 
           });
@@ -2255,7 +2255,7 @@
           }).catch(e => {
             showToast({ 
               title: 'Siren Error!', 
-              message: 'Could not start siren. Please tap START button first.', 
+              message: 'Could not start siren.', 
               iconType: 'attention',
               duration: 3000 
             });
