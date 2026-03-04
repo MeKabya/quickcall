@@ -452,11 +452,16 @@
 
     .night-mode .contact-item {
       background: rgba(75, 111, 160, 0.2);
+      color: #e9edf2;
     }
 
     .contact-info i {
       color: #2563eb;
       flex-shrink: 0;
+    }
+
+    .night-mode .contact-info i {
+      color: #60a5fa;
     }
 
     .delete-contact {
@@ -471,6 +476,10 @@
     .delete-contact:hover {
       transform: scale(1.2) rotate(5deg);
       color: #ef4444;
+    }
+
+    .night-mode .delete-contact {
+      color: #f87171;
     }
 
     /* ===== POLICE STATION SECTION ===== */
@@ -506,11 +515,20 @@
       background: rgba(37, 99, 235, 0.1);
     }
     
+    .night-mode .police-station-card {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: #4b6fa0;
+    }
+    
     .police-station-name {
       font-size: 18px;
       font-weight: 700;
       margin-bottom: 8px;
       color: #2563eb;
+    }
+    
+    .night-mode .police-station-name {
+      color: #93c5fd;
     }
     
     .police-station-distance {
@@ -519,10 +537,18 @@
       margin-bottom: 8px;
     }
     
+    .night-mode .police-station-distance {
+      color: #cbd5e1;
+    }
+    
     .police-station-address {
       font-size: 14px;
       color: #4b5563;
       margin-bottom: 12px;
+    }
+    
+    .night-mode .police-station-address {
+      color: #e2e8f0;
     }
     
     .police-station-actions {
@@ -554,6 +580,41 @@
     .police-action-btn:hover {
       transform: translateY(-2px);
       filter: brightness(1.1);
+    }
+
+    .night-mode .police-action-btn.call {
+      background: #3b82f6;
+    }
+
+    /* Empty state for police */
+    .police-empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      background: rgba(0,0,0,0.02);
+      border-radius: 24px;
+      margin: 20px 0;
+    }
+    
+    .police-empty-state i {
+      font-size: 60px;
+      color: #94a3b8;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+    
+    .police-empty-state p {
+      font-size: 18px;
+      color: #64748b;
+      font-weight: 500;
+    }
+    
+    .night-mode .police-empty-state {
+      background: rgba(255,255,255,0.03);
+    }
+    
+    .night-mode .police-empty-state i,
+    .night-mode .police-empty-state p {
+      color: #cbd5e1;
     }
 
     /* ===== YOUR INFO SECTION ===== */
@@ -630,6 +691,10 @@
       font-size: 14px;
       color: #6b7280;
       margin-bottom: 5px;
+    }
+    
+    .night-mode .info-display-label {
+      color: #a0b3cc;
     }
     
     .info-display-value {
@@ -849,7 +914,7 @@
     
     .night-mode .empty-state i,
     .night-mode .empty-state p {
-      color: #a0b3cc;
+      color: #cbd5e1;
     }
     
     .card-footer {
@@ -1357,8 +1422,8 @@
     <h2><i class="fas fa-address-book"></i> Emergency Contacts</h2>
     <div class="contacts-section">
       <div class="contact-input-group">
-        <input type="text" id="contactName" placeholder="Contact Name">
-        <input type="tel" id="contactNumber" placeholder="Phone Number">
+        <input type="text" id="contactName" placeholder="Contact">
+        <input type="tel" id="contactNumber" placeholder="Phone">
         <button class="add-contact-btn" id="addContact"><i class="fas fa-plus"></i></button>
       </div>
       <div class="contacts-list" id="contactsList"></div>
@@ -1415,15 +1480,15 @@
     <div class="section-close" id="closePoliceBtn">
       <i class="fas fa-times"></i>
     </div>
-    <h2><i class="fas fa-map-pin" style="color: #2563eb;"></i> Nearest Police Stations</h2>
+    <h2><i class="fas fa-map-pin" style="color: #2563eb;"></i> Nearest Stations</h2>
     <div id="policeLoading" class="police-loading">
       <i class="fas fa-circle-notch"></i>
-      <p style="margin-top: 15px;">Finding nearest police stations...</p>
+      <p style="margin-top: 15px;">Finding nearest stations...</p>
     </div>
     <div id="policeStationsList" style="display: none;"></div>
     <div id="policeError" style="text-align: center; padding: 30px; color: #dc2626; display: none;">
       <i class="fas fa-exclamation-triangle" style="font-size: 40px;"></i>
-      <p style="margin-top: 15px;">Could not find police stations. Please try again.</p>
+      <p style="margin-top: 15px;">Could not find stations. Please try again.</p>
     </div>
     <div class="map-buttons" style="margin-top: 20px;">
       <button class="open-btn" id="refreshPoliceBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
@@ -1672,7 +1737,7 @@
     function displayContacts() {
       const contactsList = document.getElementById('contactsList');
       if (emergencyContacts.length === 0) {
-        contactsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No contacts added yet</div>';
+        contactsList.innerHTML = '<div class="empty-state"><i class="fas fa-address-book"></i><p>No contacts added yet</p></div>';
         return;
       }
       contactsList.innerHTML = emergencyContacts.map((contact, index) => `
@@ -1715,7 +1780,7 @@
       } else {
         showToast({ 
           title: 'Invalid Input', 
-          message: 'Please fill both name and number.', 
+          message: 'Please fill both fields.', 
           iconType: 'attention',
           duration: 3000 
         });
@@ -1828,8 +1893,8 @@
       policeSection.scrollIntoView({ behavior: 'smooth' });
       
       showToast({ 
-        title: 'Finding Police Stations', 
-        message: 'Searching for nearest police stations...', 
+        title: 'Finding Stations', 
+        message: 'Searching for nearest stations...', 
         iconType: 'success',
         duration: 3000 
       });
@@ -1852,12 +1917,20 @@
                 
                 if (stations.length === 0) {
                   policeLoading.style.display = 'none';
-                  policeStationsList.style.display = 'none';
-                  policeError.style.display = 'block';
+                  policeStationsList.innerHTML = `
+                    <div class="police-empty-state">
+                      <i class="fas fa-map-marked-alt"></i>
+                      <p>No stations found nearby</p>
+                      <button class="police-action-btn directions" onclick="document.getElementById('openPoliceMapsBtn').click()" style="margin-top: 15px; max-width: 200px; margin-left: auto; margin-right: auto;">
+                        <i class="fas fa-map"></i> Search on Maps
+                      </button>
+                    </div>
+                  `;
+                  policeStationsList.style.display = 'block';
                   return;
                 }
                 
-                // Process stations
+                // Process stations with better data extraction
                 const stationsWithDistance = stations.map(station => {
                   const stationLat = station.lat || (station.center && station.center.lat);
                   const stationLon = station.lon || (station.center && station.center.lon);
@@ -1865,32 +1938,75 @@
                   if (!stationLat || !stationLon) return null;
                   
                   const distance = calculateDistance(lat, lon, stationLat, stationLon);
+                  
+                  // Enhanced address extraction
+                  let address = 'Address not available';
+                  if (station.tags['addr:full']) address = station.tags['addr:full'];
+                  else if (station.tags.address) address = station.tags.address;
+                  else {
+                    const parts = [];
+                    if (station.tags['addr:street']) {
+                      if (station.tags['addr:housenumber']) parts.push(station.tags['addr:housenumber']);
+                      parts.push(station.tags['addr:street']);
+                      if (station.tags['addr:city']) parts.push(station.tags['addr:city']);
+                      if (parts.length > 0) address = parts.join(', ');
+                    }
+                  }
+                  
+                  // Enhanced phone extraction
+                  let phone = null;
+                  const phoneFields = ['phone', 'contact:phone', 'tel', 'contact:mobile', 'emergency:phone'];
+                  for (const field of phoneFields) {
+                    if (station.tags[field]) {
+                      const cleaned = station.tags[field].replace(/[^\d+]/g, '');
+                      if (cleaned.length >= 8) {
+                        phone = cleaned;
+                        break;
+                      }
+                    }
+                  }
+                  
                   return {
-                    name: station.tags.name,
+                    name: station.tags.name || 'Police Station',
                     lat: stationLat,
                     lon: stationLon,
                     distance: distance,
-                    phone: station.tags.phone || station.tags['contact:phone'] || 'Phone not available',
-                    address: station.tags['addr:full'] || station.tags.address || 'Address not available'
+                    phone: phone,
+                    address: address
                   };
                 }).filter(s => s !== null);
                 
                 // Sort by distance
                 stationsWithDistance.sort((a, b) => a.distance - b.distance);
                 
-                // Display top 5 stations
+                // Display top 5 stations with enhanced UI
                 displayPoliceStations(stationsWithDistance.slice(0, 5));
               })
               .catch(error => {
                 console.error('Error:', error);
                 policeLoading.style.display = 'none';
-                policeStationsList.style.display = 'none';
-                policeError.style.display = 'block';
+                policeStationsList.innerHTML = `
+                  <div class="police-empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Unable to fetch stations</p>
+                    <button class="police-action-btn directions" onclick="document.getElementById('openPoliceMapsBtn').click()" style="margin-top: 15px; max-width: 200px; margin-left: auto; margin-right: auto;">
+                      <i class="fas fa-map"></i> Search on Maps
+                    </button>
+                  </div>
+                `;
+                policeStationsList.style.display = 'block';
               });
           },
           function(error) {
             policeLoading.style.display = 'none';
-            policeError.style.display = 'block';
+            policeStationsList.innerHTML = `
+              <div class="police-empty-state">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>Location access denied</p>
+                <p style="font-size: 14px; margin-top: 5px;">Please enable GPS to find nearby stations</p>
+              </div>
+            `;
+            policeStationsList.style.display = 'block';
             showToast({ 
               title: 'Location Error', 
               message: 'Unable to get your location. Please enable GPS.', 
@@ -1901,7 +2017,13 @@
         );
       } else {
         policeLoading.style.display = 'none';
-        policeError.style.display = 'block';
+        policeStationsList.innerHTML = `
+          <div class="police-empty-state">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Geolocation not supported</p>
+          </div>
+        `;
+        policeStationsList.style.display = 'block';
         showToast({ 
           title: 'Not Supported', 
           message: 'Geolocation is not supported by your browser.', 
@@ -1930,32 +2052,46 @@
     function displayPoliceStations(stations) {
       let stationsHtml = '';
       
-      stations.forEach(station => {
+      stations.forEach((station, index) => {
         const distanceKm = station.distance.toFixed(2);
         const mapsLink = `https://www.google.com/maps/dir/?api=1&destination=${station.lat},${station.lon}`;
-        const phoneCall = station.phone !== 'Phone not available' ? `tel:${station.phone.replace(/\D/g,'')}` : '#';
+        
+        // Add medal emoji for closest station
+        const medal = index === 0 ? ' 🥇' : index === 1 ? ' 🥈' : index === 2 ? ' 🥉' : '';
         
         stationsHtml += `
           <div class="police-station-card">
-            <div class="police-station-name">${station.name}</div>
-            <div class="police-station-distance"><i class="fas fa-location-dot"></i> ${distanceKm} km away</div>
-            <div class="police-station-address"><i class="fas fa-map-pin"></i> ${station.address}</div>
+            <div class="police-station-name">${station.name}${medal}</div>
+            <div class="police-station-distance">
+              <i class="fas fa-location-dot"></i> ${distanceKm} km away
+              ${index === 0 ? '<span style="color: #f59e0b; margin-left: 5px;">(Closest)</span>' : ''}
+            </div>
+            <div class="police-station-address">
+              <i class="fas fa-map-pin"></i> ${station.address}
+            </div>
             <div class="police-station-actions">
               <button class="police-action-btn directions" onclick="window.open('${mapsLink}', '_blank')">
-                <i class="fas fa-directions"></i> Directions
+                <i class="fas fa-directions"></i> Navigate
               </button>
-              ${station.phone !== 'Phone not available' ? 
-                `<button class="police-action-btn call" onclick="window.location.href='${phoneCall}'">
+              ${station.phone ? 
+                `<button class="police-action-btn call" onclick="window.location.href='tel:${station.phone}'">
                   <i class="fas fa-phone"></i> Call
                 </button>` : 
-                `<button class="police-action-btn call" style="background: #6b7280;" disabled>
-                  <i class="fas fa-phone"></i> No Phone
+                `<button class="police-action-btn call" style="background: #6b7280;" disabled title="No phone number available">
+                  <i class="fas fa-phone-alt"></i> No Phone
                 </button>`
               }
             </div>
           </div>
         `;
       });
+      
+      // Add helpful note
+      stationsHtml += `
+        <div style="text-align: center; margin-top: 15px; font-size: 12px; color: #6b7280;">
+          <i class="fas fa-info-circle"></i> Data from OpenStreetMap
+        </div>
+      `;
       
       policeStationsList.innerHTML = stationsHtml;
       policeLoading.style.display = 'none';
