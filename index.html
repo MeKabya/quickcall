@@ -765,9 +765,9 @@ Verify location and respond without delay.`;
               mapFrame.src = mapEmbed;
               mapSection.style.display = "block";
               
-           setTimeout(() => {
-              shareLocation(); // Call your advanced message function
-                             }, 500);
+          setTimeout(() => {
+  shareLocation(); // Call your advanced message function
+}, 500);
             },
             function(error) {
               alert("Please allow location access to share your location.");
