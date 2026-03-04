@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    /* ----- reset & base (exactly demo style) ----- */
+    /* ----- reset & base ----- */
     * {
       margin: 0;
       padding: 0;
@@ -21,7 +21,7 @@
     body {
       background: #f5f7fb;
       min-height: 100vh;
-      transition: background 0.3s ease, color 0.2s;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       padding: 24px 16px;
       color: #1e293b;
       display: flex;
@@ -45,7 +45,12 @@
       .container { margin: 0 auto; }
     }
 
-    /* ----- top header (exactly demo style) ----- */
+    /* Smooth animations for all elements */
+    .section, .service-card, .sos-button, .theme-btn, .credit-btn, .contact-item, button {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ----- top header ----- */
     .top-header {
       display: flex;
       flex-direction: column;
@@ -53,6 +58,7 @@
       justify-content: center;
       margin-bottom: 32px;
       position: relative;
+      animation: slideDown 0.6s ease-out;
     }
 
     .theme-toggle {
@@ -74,27 +80,23 @@
       align-items: center;
       gap: 12px;
       box-shadow: 0 6px 14px rgba(0,0,0,0.02);
-      transition: all 0.2s ease;
       letter-spacing: 0.3px;
+      transform: scale(1);
     }
 
     .night-mode .theme-btn {
-      background: #2b3a52;
-      border-color: #40536e;
-      color: #eef2f6;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+      background: #263952 !important;
+      border-color: #4b6fa0 !important;
+      color: white !important;
     }
 
-    .theme-btn i {
-      font-size: 20px;
-      color: #f59e0b;
-    }
-    .night-mode .theme-btn i { color: #f59e0b; }
     .theme-btn:hover {
       border-color: #9aaec9;
-      transform: scale(1.02);
+      transform: scale(1.02) translateY(-2px);
       background: #fafdff;
+      box-shadow: 0 12px 24px -8px rgba(0,60,130,0.15);
     }
+
     .night-mode .theme-btn:hover { background: #324762; }
 
     .logo-area {
@@ -103,6 +105,7 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
+      animation: fadeIn 0.8s ease-out;
     }
 
     .logo-area h1 {
@@ -122,27 +125,60 @@
       -webkit-text-fill-color: transparent;
     }
 
-    .logo-sub {
-      font-size: 15px;
-      font-weight: 600;
-      color: #dc2626 !important; /* Always red */
-      letter-spacing: 0.3px;
+    .beta-badge {
+      font-size: 14px; 
+      color: red; 
+      margin-top: 3px;
     }
 
-    /* ----- section cards with thin light blue border ----- */
+    /* ----- section cards ----- */
     .section {
       background: #ffffff;
       border-radius: 28px;
       box-shadow: 0 8px 26px rgba(0,0,0,0.02), 0 4px 8px rgba(0,20,40,0.02);
-      transition: all 0.25s ease;
-      border: 1px solid #bfdbfe; /* light blue */
+      border: 1px solid #bfdbfe;
       padding: 28px 24px;
       margin: 28px 0;
+      animation: fadeInUp 0.5s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .section:nth-child(1) { animation-delay: 0.1s; }
+    .section:nth-child(2) { animation-delay: 0.2s; }
+    .section:nth-child(3) { animation-delay: 0.3s; }
+    .section:nth-child(4) { animation-delay: 0.4s; }
+    .section:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .night-mode .section {
       background: #202d40;
-      border-color: #3b5688; /* darker blue for night */
+      border-color: #3b5688;
       box-shadow: 0 10px 28px rgba(0,0,0,0.4);
     }
 
@@ -164,28 +200,58 @@
       color: #b91c1c;
     }
 
-    /* Emergency services grid - now 1 column */
+    /* SOS Button - No glow effect */
+    .sos-button {
+      background: #ff1a1a;
+      border: none;
+      border-radius: 60px;
+      padding: 16px 32px;
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      width: auto;
+      min-width: 200px;
+      margin: 20px auto;
+      display: block;
+      border: 2px solid #ffb3b3;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sos-button:hover {
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    /* Emergency services grid */
     .service-grid {
       display: grid;
-      grid-template-columns: 1fr; /* single column */
-      gap: 18px;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 15px;
     }
 
     .service-card {
       background: transparent;
-      border: 2px solid #bfdbfe; /* light blue border */
+      border: 2px solid #bfdbfe;
       border-radius: 28px;
-      padding: 20px 16px;
+      padding: 18px 12px;
       cursor: pointer;
-      text-align: left;
+      text-align: center;
       font-weight: 700;
-      font-size: 20px;
+      font-size: 18px;
       color: #1e293b;
-      transition: 0.2s ease;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 10px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 20px 30px -10px rgba(0,60,130,0.2);
+      border-color: #9ac8ff;
     }
 
     .night-mode .service-card {
@@ -193,53 +259,182 @@
       color: white !important;
     }
 
-    /* Emergency services icon as a dot */
     .service-card i {
-      font-size: 28px;
-      width: 48px;
-      height: 48px;
+      font-size: 32px;
+      width: 60px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
       background: rgba(0,0,0,0.03);
-    }
-    
-    .service-card .fa-triangle-exclamation { 
-      color: #dc2626; 
-      background: rgba(220,38,38,0.1);
-    }
-    .service-card .fa-location-dot { 
-      color: #0ea5e9;
-      background: rgba(14,165,233,0.1);
-    }
-    .service-card .fa-whatsapp { 
-      color: #16a34a;
-      background: rgba(22,163,74,0.1);
-    }
-    .service-card .fa-phone { 
-      color: #8b5cf6;
-      background: rgba(139,92,246,0.1);
+      transition: all 0.3s ease;
     }
 
-    .service-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 28px -10px rgba(0,60,130,0.15);
-      border-color: #9ac8ff;
+    .service-card:hover i {
+      transform: scale(1.1) rotate(5deg);
     }
-    .night-mode .service-card:hover {
-      box-shadow: 0 14px 28px -8px #070f1a;
-      border-color: #6d8fc7;
+
+    .service-card .fa-triangle-exclamation { color: #dc2626; background: rgba(220,38,38,0.1); }
+    .service-card .fa-location-dot { color: #0ea5e9; background: rgba(14,165,233,0.1); }
+    .service-card .fa-whatsapp { color: #16a34a; background: rgba(22,163,74,0.1); }
+    .service-card .fa-phone { color: #8b5cf6; background: rgba(139,92,246,0.1); }
+    .service-card .fa-users { color: #f59e0b; background: rgba(245,158,11,0.1); }
+    .service-card .fa-video { color: #ec4899; background: rgba(236,72,153,0.1); }
+    .service-card .fa-bell { color: #ef4444; background: rgba(239,68,68,0.1); }
+    .service-card .fa-map-marked-alt { color: #10b981; background: rgba(16,185,129,0.1); }
+
+    /* Contacts Section */
+    .contacts-section {
+      margin: 20px 0;
+      width: 100%;
+    }
+
+    .contact-input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      width: 100%;
+      flex-wrap: nowrap;
+    }
+
+    .contact-input-group input {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 14px 18px;
+      border: 2px solid #bfdbfe;
+      border-radius: 40px;
+      font-size: 16px;
+      background: white;
+      transition: all 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .contact-input-group input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+      transform: translateY(-2px);
+    }
+
+    .night-mode .contact-input-group input {
+      background: #2b3a52;
+      border-color: #4b6fa0;
+      color: white;
+    }
+
+    .add-contact-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 40px;
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .add-contact-btn:hover {
+      background: #1d4ed8;
+      transform: rotate(90deg) scale(1.1);
+    }
+
+    .contacts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 5px;
+      width: 100%;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(191, 219, 254, 0.2);
+      padding: 12px 18px;
+      border-radius: 40px;
+      border: 1px solid #bfdbfe;
+      animation: slideIn 0.3s ease-out;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .contact-item .contact-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      overflow: hidden;
+    }
+
+    .contact-item .contact-info span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .night-mode .contact-item {
+      background: rgba(75, 111, 160, 0.2);
+    }
+
+    .contact-info i {
+      color: #2563eb;
+      flex-shrink: 0;
+    }
+
+    .delete-contact {
+      color: #dc2626;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+
+    .delete-contact:hover {
+      transform: scale(1.2) rotate(5deg);
+      color: #ef4444;
     }
 
     /* map section */
     #mapSection.section { display: none; }
+    
     iframe {
       width: 100%;
       height: 260px;
       border-radius: 24px;
       border: 1px solid #bfdbfe;
+      transition: all 0.3s ease;
     }
+
+    iframe:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
     .night-mode iframe { border-color: #3b5688; }
 
     .map-buttons {
@@ -256,14 +451,155 @@
       font-size: 16px;
       cursor: pointer;
       color: white;
-      transition: 0.2s;
-      font-family: 'Baloo Da 2', cursive;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    .map-buttons button:hover {
+      transform: translateY(-4px) scale(1.02);
+      filter: brightness(1.1);
+      box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+    }
+
     .open-btn { background: #2563eb; }
     .nav-btn { background: #16a34a; }
-    .open-btn:hover, .nav-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
-    /* credit button - icon colors gray day / white night */
+    /* Siren Control */
+    .siren-control {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .siren-btn {
+      flex: 1;
+      padding: 16px;
+      border: none;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .siren-btn:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+    }
+
+    .siren-on {
+      background: #dc2626;
+      color: white;
+    }
+
+    .siren-off {
+      background: #6b7280;
+      color: white;
+    }
+
+    /* ========== TOAST NOTIFICATION SYSTEM ========== */
+    .advanced-toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.1);
+      z-index: 10000;
+      max-width: 340px;
+      width: calc(100% - 48px);
+      transform: translateX(420px);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1px solid #bfdbfe;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .advanced-toast.show {
+      transform: translateX(0);
+    }
+
+    .toast-content {
+      display: flex;
+      padding: 18px 20px;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .toast-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .toast-text {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toast-message {
+      font-size: 15px;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .toast-progress {
+      height: 4px;
+      background: #e2e8f0;
+      width: 100%;
+    }
+
+    .toast-progress-bar {
+      height: 100%;
+      width: 100%;
+      transform-origin: left;
+    }
+
+    /* manual close (X) */
+    .toast-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      cursor: pointer;
+      font-size: 18px;
+      color: #94a3b8;
+      transition: color 0.2s;
+      z-index: 1;
+    }
+    .toast-close:hover { color: #1e293b; }
+
+    /* night mode toast */
+    .night-mode .advanced-toast {
+      background: #202d40;
+      border-color: #4b6fa0;
+    }
+    .night-mode .toast-title { color: #f1f5f9; }
+    .night-mode .toast-message { color: #cbd5e1; }
+    .night-mode .toast-progress { background: #334155; }
+
+    /* icon variants */
+    .toast-icon.attention { background: rgba(220, 38, 38, 0.15); color: #dc2626; }
+    .toast-icon.success { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+    .toast-icon.warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+
+    /* credit button */
     .credit-wrapper {
       display: flex;
       justify-content: center;
@@ -282,18 +618,19 @@
       align-items: center;
       gap: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-      transition: 0.2s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    .credit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+      border-color: #9aaec9;
+    }
+
     .night-mode .credit-btn {
       background: #263952;
       border-color: #4b6fa0;
       color: #e3ecf7;
-    }
-    .credit-btn i { 
-      color: #6b7280; /* gray in day */
-    }
-    .night-mode .credit-btn i { 
-      color: #ffffff; /* white in night */
     }
     
     .credit-popup {
@@ -303,75 +640,63 @@
       margin-top: 16px;
       border: 1px solid #bfdbfe;
       display: none;
-      animation: fadePop 0.2s ease;
+      animation: fadePop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .night-mode .credit-popup {
-      background: #1e2c41;
-      border-color: #4b6fa0;
+
+    .credit-popup.show {
+      display: block;
     }
-    .credit-popup.show { display: block; }
-    .credit-popup ul {
-      list-style: none;
-    }
-    .credit-popup li {
-      margin: 12px 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 17px;
-    }
-    .credit-popup li i { 
-      color: #6b7280; /* gray day */
-      width: 24px; 
-    }
-    .night-mode .credit-popup li i { 
-      color: #ffffff; /* white night */
-    }
-    .credit-popup a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .night-mode .credit-popup a { color: #7aa6ff; }
 
     @keyframes fadePop {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
-    /* QR footer */
+    .night-mode .credit-popup {
+      background: #263952;
+      border-color: #4b6fa0;
+      color: white;
+    }
+
+    /* footer */
     .page-footer {
       text-align: center;
-      padding: 32px 0 16px;
-      margin-top: 30px;
+      padding: 20px 0 10px;
+      margin-top: 20px;
       border-top: 1px solid #bfdbfe;
       color: #627a98;
       width: 100%;
       flex-shrink: 0;
     }
-    .night-mode .page-footer {
-      border-color: #3b5688;
-      color: #8aa2c0;
-    }
+
     .qr-code {
       display: flex;
       justify-content: center;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
+
     .qr-code img {
-      width: 110px;
+      width: 100px;
       height: auto;
       border-radius: 28px;
       border: 2px solid #bfdbfe;
-      padding: 8px;
+      padding: 6px;
       background: white;
-    }
-    .night-mode .qr-code img {
-      border-color: #4b6fa0;
-      background: #1e2f45;
+      transition: all 0.3s ease;
     }
 
-    /* Xiaomi fake call screen - buttons at bottom */
+    .qr-code img:hover {
+      transform: scale(1.05) rotate(2deg);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    /* FAKE CALL SCREEN - exact original with green battery */
     .fake-call-screen {
       position: fixed;
       top: 0;
@@ -382,106 +707,108 @@
       color: white;
       display: none;
       flex-direction: column;
-      justify-content: space-between; /* This puts buttons at bottom */
+      justify-content: space-between;
       padding: 15px 20px 40px;
       z-index: 9999;
       font-family: sans-serif;
+      animation: fadeIn 0.3s ease-out;
     }
 
-    .status-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-    }
-    .status-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .battery {
-      width: 22px;
-      height: 10px;
-      border: 1.5px solid white;
-      border-radius: 2px;
-      position: relative;
-    }
-    .battery::after {
-      content: '';
-      position: absolute;
-      right: -4px;
-      top: 2px;
-      width: 3px;
-      height: 6px;
-      background: white;
-      border-radius: 1px;
-    }
-    .battery-level {
-      width: 69%;
-      height: 100%;
-      background: #4ade80;
-    }
-    .battery-text {
-      font-size: 11px;
-      margin-left: 2px;
-    }
     .caller-top {
       text-align: center;
       margin-top: 20px;
+      animation: scaleIn 0.5s ease-out;
     }
+
     .caller-top img {
       width: 138px;
       height: 138px;
       border-radius: 50%;
       object-fit: cover;
       margin-bottom: 4px;
+      animation: pulse 2s infinite;
     }
-    .caller-top h2 {
-      font-size: 43px;
-      font-weight: 2000;
-      margin-bottom: 3px;
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
-    .caller-top p {
-      font-size: 22px;
-      opacity: 0.7;
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      font-size: 14px;
+    }
+
+    .status-right {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .battery {
+      width: 22px;
+      height: 12px;
+      border: 1px solid white;
+      border-radius: 2px;
+      position: relative;
+      margin: 0 4px;
+    }
+    .battery-level {
+      height: 8px;
+      width: 70%;
+      background: #22c55e;
+      position: absolute;
+      top: 1px;
+      left: 2px;
+    }
+    .battery-text {
+      font-size: 14px;
+    }
+
     .call-actions {
       display: flex;
       justify-content: space-around;
-      margin-bottom: 20px; /* Space from bottom */
+      margin-bottom: 30px;
     }
     .call-btn {
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 28px;
       cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
-    .accept {
-      background: #22c55e;
-      animation: pulseGreen 1.6s infinite;
+    .call-btn:hover {
+      transform: scale(1.1);
     }
-    .decline {
-      background: #ef4444;
-      animation: pulseRed 1.6s infinite;
-    }
-    @keyframes pulseGreen {
-      0%{box-shadow:0 0 0 0 rgba(34,197,94,0.7);}
-      70%{box-shadow:0 0 0 25px rgba(34,197,94,0);}
-      100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}
-    }
-    @keyframes pulseRed {
-      0%{box-shadow:0 0 0 0 rgba(239,68,68,0.7);}
-      70%{box-shadow:0 0 0 25px rgba(239,68,68,0);}
-      100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}
+    .call-btn:active {
+      transform: scale(0.9);
+      opacity: 0.8;
     }
 
-    .service-card {
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
+    .decline {
+      background: #dc2626;
+    }
+    .accept {
+      background: #16a34a;
     }
 
     .hidden { display: none; }
@@ -489,11 +816,12 @@
 </head>
 <body>
 <div class="container">
-  <!-- header with always red subtitle -->
+  <!-- header -->
   <div class="top-header">
     <div class="logo-area">
       <h1>QUICK CALL</h1>
-            <div class="beta-badge" style="font-size: 14px; color: red; margin-top: 3px;">Under Maintenance</div>    
+      <div class="beta-badge">Under Maintenance</div>    
+    </div>
     <div class="theme-toggle">
       <button class="theme-btn" id="themeBtn">
         <i class="fas fa-sun"></i> <span>DAY / NIGHT</span> <i class="fas fa-moon"></i>
@@ -501,9 +829,26 @@
     </div>
   </div>
 
-  <!-- main section with 4 cards (single column, dot icons) -->
+  <!-- SOS PANIC BUTTON -->
+  <button class="sos-button" id="sosPanicBtn">
+    SOS
+  </button>
+
+  <!-- Contacts Management Section -->
+  <div class="section">
+    <h2><i class="fas fa-address-book"></i> Emergency Contacts</h2>
+    <div class="contacts-section">
+      <div class="contact-input-group">
+        <input type="text" id="contactName" placeholder="Contact Name">
+        <input type="tel" id="contactNumber" placeholder="Phone Number">
+        <button class="add-contact-btn" id="addContact"><i class="fas fa-plus"></i></button>
+      </div>
+      <div class="contacts-list" id="contactsList"></div>
+    </div>
+  </div>
+
+  <!-- main section with cards -->
   <div class="section" id="mainSection">
-<h2><i class="fa fa-exclamation-circle" style="color: #0066ff;"></i> Emergency Services</h2>
     <div class="service-grid">
       <div class="service-card" id="cardEmergency">
         <i class="fas fa-triangle-exclamation"></i>
@@ -511,20 +856,45 @@
       </div>
       <div class="service-card" id="cardLocation">
         <i class="fas fa-location-dot"></i>
-        Your Location
+        Current Location
       </div>
       <div class="service-card" id="cardWhatsapp">
         <i class="fab fa-whatsapp"></i>
-        Share Your Location
+        Share Location
       </div>
       <div class="service-card" id="cardFake">
         <i class="fas fa-phone"></i>
         Fake Call
       </div>
+      <div class="service-card" id="cardSiren">
+        <i class="fas fa-bell"></i>
+        Siren Alarm
+      </div>
+      <div class="service-card" id="cardFollow">
+        <i class="fas fa-map-marked-alt"></i>
+        Follow Me
+      </div>
+      <div class="service-card" id="cardRecord">
+        <i class="fas fa-video"></i>
+        Record Video
+      </div>
+      <div class="service-card" id="cardContacts">
+        <i class="fas fa-users"></i>
+        My Contacts
+      </div>
     </div>
   </div>
 
-  <!-- map section (hidden initially) -->
+  <!-- Siren Control Section -->
+  <div class="section" id="sirenSection" style="display: none;">
+    <h2><i class="fas fa-bell"></i> Siren Alarm</h2>
+    <div class="siren-control">
+      <button class="siren-btn siren-on" id="sirenOn"><i class="fas fa-volume-up"></i> START</button>
+      <button class="siren-btn siren-off" id="sirenOff"><i class="fas fa-volume-mute"></i> STOP</button>
+    </div>
+  </div>
+
+  <!-- map section -->
   <div class="section" id="mapSection">
     <h2><i class="fas fa-map-pin"></i> Live Location</h2>
     <iframe id="mapFrame" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
@@ -534,16 +904,15 @@
     </div>
   </div>
 
-  <!-- credit button + popup (gray/white icons) -->
+  <!-- credit button + popup -->
   <div class="credit-wrapper">
     <button class="credit-btn" id="creditToggle"><i class="fas fa-info-circle"></i>CREDIT</button>
   </div>
   <div class="credit-popup" id="creditPopup">
-    <ul>
+    <ul style="list-style: none;">
       <li><i class="fas fa-user-circle"></i> Creator Name : Kabya Saha</li>
       <li><i class="fas fa-robot"></i> AI Assistance : ChatGPT · DeepSeek</li>
       <li><i class="fas fa-globe"></i> Web Hosting : InfinityFree</li>
-      <li><i class="fas fa-external-link-alt"></i> Other Website : <a href="https://mekabya.github.io/quickdial" target="_blank">Quick Dial</a> </li>
       <li><i class="fas fa-calendar-alt"></i> Date Created : 03/03/2026</li>
     </ul>
   </div>
@@ -557,7 +926,24 @@
   </footer>
 </div>
 
-<!-- Xiaomi Fake Call Screen - buttons at bottom -->
+<!-- TOAST NOTIFICATION -->
+<div class="advanced-toast" id="advancedToast">
+  <div class="toast-close" id="toastClose"><i class="fas fa-times"></i></div>
+  <div class="toast-content">
+    <div class="toast-icon" id="toastIcon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <div class="toast-text">
+      <div class="toast-title" id="toastTitle">Attention</div>
+      <div class="toast-message" id="toastMessage">message</div>
+    </div>
+  </div>
+  <div class="toast-progress">
+    <div class="toast-progress-bar" id="toastProgress"></div>
+  </div>
+</div>
+
+<!-- FAKE CALL SCREEN - exact original -->
 <div class="fake-call-screen" id="fakeCallScreen">
   <div class="status-bar">
     <div class="status-left"></div>
@@ -587,9 +973,9 @@
 
 <script>
   (function() {
-    // ----- THEME TOGGLE -----
+    // ========== THEME TOGGLE ==========
     const themeBtn = document.getElementById('themeBtn');
-    function toggleTheme() {
+    themeBtn.addEventListener('click', function() {
       document.body.classList.toggle('night-mode');
       const iconSun = document.querySelector('#themeBtn i:first-child');
       const iconMoon = document.querySelector('#themeBtn i:last-child');
@@ -600,120 +986,355 @@
         iconSun.style.color = '#f59e0b';
         iconMoon.style.color = '#5f7d9c';
       }
-    }
-    themeBtn.addEventListener('click', toggleTheme);
+    });
 
-    // ----- STATE -----
+    // ========== TOAST SYSTEM ==========
+    const toast = document.getElementById('advancedToast');
+    const toastIconDiv = document.getElementById('toastIcon');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMessage = document.getElementById('toastMessage');
+    const toastProgress = document.getElementById('toastProgress');
+    const toastClose = document.getElementById('toastClose');
+    let hideTimeout;
+
+    function showToast({ title = 'Attention', message = '', iconType = 'attention', duration = 6000 }) {
+      // Clear existing timeout
+      if (hideTimeout) clearTimeout(hideTimeout);
+      
+      // Set icon
+      toastIconDiv.className = 'toast-icon';
+      toastProgress.className = 'toast-progress-bar';
+      
+      if (iconType === 'attention') {
+        toastIconDiv.classList.add('attention');
+        toastIconDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+        toastProgress.style.background = 'linear-gradient(90deg, #dc2626, #ef4444)';
+      } else if (iconType === 'success') {
+        toastIconDiv.classList.add('success');
+        toastIconDiv.innerHTML = '<i class="fas fa-check-circle"></i>';
+        toastProgress.style.background = 'linear-gradient(90deg, #22c55e, #4ade80)';
+      } else if (iconType === 'warning') {
+        toastIconDiv.classList.add('warning');
+        toastIconDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+        toastProgress.style.background = 'linear-gradient(90deg, #f59e0b, #f97316)';
+      }
+
+      toastTitle.innerText = title;
+      toastMessage.innerText = message;
+
+      // Reset progress animation
+      toastProgress.style.animation = 'none';
+      toastProgress.offsetHeight;
+      toastProgress.style.animation = `progressShrink ${duration/1000}s linear forwards`;
+
+      toast.classList.add('show');
+
+      // Auto hide after duration
+      hideTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, duration);
+    }
+
+    // Manual close
+    toastClose.addEventListener('click', function() {
+      toast.classList.remove('show');
+      if (hideTimeout) clearTimeout(hideTimeout);
+    });
+
+    // ========== STATE ==========
     let currentLat = null, currentLon = null;
+    let emergencyContacts = JSON.parse(localStorage.getItem('emergencyContacts')) || [];
+    let sirenAudio = null;
+    let sirenInterval = null;
+    let fakeCallInterval = null;
+    let currentRingtone = null;
+    
     const mapSection = document.getElementById('mapSection');
     const mapFrame = document.getElementById('mapFrame');
-    const openMaps = document.getElementById('openMapsBtn');
-    const navigateBtn = document.getElementById('navigateBtn');
-
-    // ringtone
+    const sirenSection = document.getElementById('sirenSection');
     const ringtoneURL = "https://files.catbox.moe/tx8v8n.mp3";
-    let currentRingtone = null;
-    let fakeCallInterval = null;
 
-    // ----- helper functions -----
-    function quickCall(number) {
-      window.location.href = "tel:" + number;
+    // ========== CONTACTS MANAGEMENT ==========
+    function saveContacts() {
+      localStorage.setItem('emergencyContacts', JSON.stringify(emergencyContacts));
+      displayContacts();
     }
 
-    function getLocation() {
+    function displayContacts() {
+      const contactsList = document.getElementById('contactsList');
+      if (emergencyContacts.length === 0) {
+        contactsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No contacts added yet</div>';
+        return;
+      }
+      contactsList.innerHTML = emergencyContacts.map((contact, index) => `
+        <div class="contact-item">
+          <div class="contact-info">
+            <i class="fas fa-user-circle"></i>
+            <span>${contact.name}: ${contact.number}</span>
+          </div>
+          <i class="fas fa-trash-alt delete-contact" onclick="deleteContact(${index})"></i>
+        </div>
+      `).join('');
+    }
+
+    window.deleteContact = function(index) {
+      emergencyContacts.splice(index, 1);
+      saveContacts();
+      showToast({ 
+        title: 'Contact Removed', 
+        message: 'Emergency contact deleted successfully.', 
+        iconType: 'attention',
+        duration: 3000 
+      });
+    };
+
+    document.getElementById('addContact').addEventListener('click', function() {
+      const name = document.getElementById('contactName').value.trim();
+      const number = document.getElementById('contactNumber').value.trim();
+      
+      if (name && number) {
+        emergencyContacts.push({ name, number });
+        saveContacts();
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactNumber').value = '';
+        showToast({ 
+          title: 'Contact Added', 
+          message: 'Emergency contact saved successfully.', 
+          iconType: 'success',
+          duration: 3000 
+        });
+      } else {
+        showToast({ 
+          title: 'Invalid Input', 
+          message: 'Please fill both name and number.', 
+          iconType: 'attention',
+          duration: 3000 
+        });
+      }
+    });
+
+    // ========== LOCATION FUNCTIONS ==========
+    function getLocation(callback) {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           function(pos) {
             currentLat = pos.coords.latitude;
             currentLon = pos.coords.longitude;
-            
             let mapEmbed = "https://www.google.com/maps?q=" + currentLat + "," + currentLon + "&output=embed&z=17";
             mapFrame.src = mapEmbed;
             mapSection.style.display = "block";
             mapSection.scrollIntoView({ behavior: "smooth" });
+            showToast({ 
+              title: 'Location Found', 
+              message: 'Your current location is displayed on map.', 
+              iconType: 'success',
+              duration: 3000 
+            });
+            if (callback) callback(true);
           },
           function(error) {
-            let errorMessage = "Location access denied or unavailable.";
-            switch(error.code) {
-              case error.PERMISSION_DENIED:
-                errorMessage = "Please allow location access to use this feature.";
-                break;
-              case error.POSITION_UNAVAILABLE:
-                errorMessage = "Location information is unavailable.";
-                break;
-              case error.TIMEOUT:
-                errorMessage = "Location request timed out.";
-                break;
-            }
-            alert(errorMessage);
+            showToast({ 
+              title: 'Location Error', 
+              message: 'Unable to access your location.', 
+              iconType: 'attention',
+              duration: 3000 
+            });
+            if (callback) callback(false);
           }
         );
       } else {
-        alert("Geolocation is not supported by this browser.");
+        showToast({ 
+          title: 'Not Supported', 
+          message: 'Geolocation is not supported by your browser.', 
+          iconType: 'attention',
+          duration: 3000 
+        });
+        if (callback) callback(false);
       }
     }
 
-function shareLocation() {
-  if (currentLat && currentLon) {
-
-    const now = new Date();
-    const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    const dateString = now.toLocaleDateString();
-
-    // Round coordinates for readability
-    const lat = currentLat.toFixed(4);
-    const lon = currentLon.toFixed(4);
-
-    // Proper Google Maps link (small preview in WhatsApp)
-    const trackingLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
-
-    let msg = 
-`⛔ I need your help immediately.
-
-• Status      : Possible danger
-• GPS         : Active
-• Location    : ${trackingLink} 
-• Time        : ${timeString}
-• Date        : ${dateString} 
-
-This alert was automatically generated.`;
-
-    window.open("https://wa.me/?text=" + encodeURIComponent(msg));
-
-  } else {
-    alert("Please get your location first.");
-  }
-}
-
-    function openInMaps() {
-      if (currentLat && currentLon) {
-        window.open("https://www.google.com/maps?q=" + currentLat + "," + currentLon);
+    // ========== SOS FUNCTION ==========
+    function triggerSOS() {
+      if (emergencyContacts.length === 0) {
+        showToast({ 
+          title: 'No Contacts', 
+          message: 'Please add emergency contacts first.', 
+          iconType: 'attention',
+          duration: 6000 
+        });
+        return;
+      }
+      
+      showToast({ 
+        title: 'SOS Activated', 
+        message: 'Sending emergency messages to all contacts.', 
+        iconType: 'attention',
+        duration: 6000 
+      });
+      
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(pos) {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            const locationLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+            const timeString = new Date().toLocaleTimeString();
+            
+            emergencyContacts.forEach(contact => {
+              let msg = `⛔ EMERGENCY SOS ALERT from Quick Call!\n\n• Status: DANGER - Need immediate help!\n• Recipient: ${contact.name}\n• Time: ${timeString}\n• Live Location: ${locationLink}\n\nPlease track me and call for help!`;
+              window.open(`https://wa.me/${contact.number.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+            });
+          },
+          function() {
+            emergencyContacts.forEach(contact => {
+              let msg = `⛔ EMERGENCY SOS ALERT from Quick Call!\n\n• Status: DANGER - Need immediate help!\n• Recipient: ${contact.name}\n• Time: ${new Date().toLocaleTimeString()}\n\nPlease contact me immediately!`;
+              window.open(`https://wa.me/${contact.number.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+            });
+          }
+        );
       } else {
-        alert("No location available yet");
+        emergencyContacts.forEach(contact => {
+          let msg = `⛔ EMERGENCY SOS ALERT from Quick Call!`;
+          window.open(`https://wa.me/${contact.number.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+        });
       }
     }
 
-    function navigateNow() {
-      if (currentLat && currentLon) {
-        window.open("https://www.google.com/maps/dir/?api=1&destination=" + currentLat + "," + currentLon);
+    // ========== SIREN FUNCTIONS ==========
+    function startSiren() {
+      showToast({ 
+        title: 'Siren Activated', 
+        message: 'Shaking phone will automatically activate the siren feature.', 
+        iconType: 'attention',
+        duration: 6000 
+      });
+      
+      if (!sirenAudio) {
+        try {
+          const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+          
+          oscillator.type = 'sawtooth';
+          oscillator.frequency.value = 800;
+          gainNode.gain.value = 0.3;
+          
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+          oscillator.start();
+          
+          let frequency = 400;
+          sirenInterval = setInterval(() => {
+            frequency = frequency === 400 ? 800 : 400;
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+          }, 300);
+          
+          sirenAudio = { oscillator, gainNode, context: audioContext };
+          
+          sirenSection.style.display = 'block';
+          sirenSection.scrollIntoView({ behavior: "smooth" });
+        } catch(e) {
+          showToast({ 
+            title: 'Siren Error!', 
+            message: 'Could not start siren.', 
+            iconType: 'attention',
+            duration: 3000 
+          });
+        }
       } else {
-        alert("No location available yet");
+        sirenSection.style.display = 'block';
+        sirenSection.scrollIntoView({ behavior: "smooth" });
       }
     }
 
-    openMaps.addEventListener('click', openInMaps);
-    navigateBtn.addEventListener('click', navigateNow);
+    function stopSiren() {
+      if (sirenAudio) {
+        try {
+          sirenAudio.oscillator.stop();
+          sirenAudio.oscillator.disconnect();
+        } catch(e) {}
+        sirenAudio = null;
+      }
+      if (sirenInterval) {
+        clearInterval(sirenInterval);
+        sirenInterval = null;
+      }
+      sirenSection.style.display = 'none';
+    }
 
-    // ----- fake call logic -----
+    // ========== SHAKE DETECTION ==========
+    if (window.DeviceMotionEvent) {
+      let lastShakeTime = 0;
+      window.addEventListener('devicemotion', function(event) {
+        const acceleration = event.accelerationIncludingGravity;
+        if (!acceleration) return;
+        
+        const magnitude = Math.sqrt(
+          acceleration.x * acceleration.x + 
+          acceleration.y * acceleration.y + 
+          acceleration.z * acceleration.z
+        );
+        
+        if (magnitude > 22) {
+          const now = Date.now();
+          if (now - lastShakeTime > 2000) {
+            lastShakeTime = now;
+            startSiren();
+          }
+        }
+      });
+    }
+
+    // ========== OTHER FUNCTIONS ==========
+    function quickCall(number) {
+      window.location.href = "tel:" + number;
+    }
+
+    function shareLocation() {
+      showToast({ 
+        title: 'Sharing Location', 
+        message: 'Preparing to share your location via WhatsApp.', 
+        iconType: 'attention',
+        duration: 6000 
+      });
+      
+      if (currentLat && currentLon) {
+        const lat = currentLat.toFixed(4);
+        const lon = currentLon.toFixed(4);
+        const trackingLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+        let msg = `⛔ I need your help immediately.\n\n• Status: Possible danger\n• Location: ${trackingLink}\n• Time: ${new Date().toLocaleTimeString()}`;
+        window.open("https://wa.me/?text=" + encodeURIComponent(msg), '_blank');
+      } else {
+        getLocation(function(success) {
+          if (success && currentLat && currentLon) {
+            const lat = currentLat.toFixed(4);
+            const lon = currentLon.toFixed(4);
+            const trackingLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+            let msg = `⛔ I need your help immediately.\n\n• Status: Possible danger\n• Location: ${trackingLink}\n• Time: ${new Date().toLocaleTimeString()}`;
+            window.open("https://wa.me/?text=" + encodeURIComponent(msg), '_blank');
+          }
+        });
+      }
+    }
+
+    // ========== FAKE CALL FUNCTIONS ==========
     function updateTime() {
       let now = new Date();
       let hours = now.getHours().toString().padStart(2, '0');
       let minutes = now.getMinutes().toString().padStart(2, '0');
       document.getElementById("statusTime").innerText = hours + ":" + minutes;
     }
-
-    function fakeCall() {
+      
+       function fakeCall() {
+      showToast({ 
+        title: 'Fake Call Activated.', 
+        message: 'Incoming call from Maa.', 
+        iconType: 'attention',
+        duration: 6000 
+      });
+      
       document.getElementById("fakeCallScreen").style.display = "flex";
+            
       const ringtone = new Audio(ringtoneURL);
       ringtone.loop = true;
       ringtone.play().catch(e => console.log("autoplay prevented"));
@@ -735,66 +1356,116 @@ This alert was automatically generated.`;
       fakeCallInterval = null;
     };
 
-    // ----- attach events to cards -----
-    document.getElementById('cardEmergency').addEventListener('click', function(e) {
-      e.stopPropagation();
-      quickCall('999');
-    });
-    
-    document.getElementById('cardLocation').addEventListener('click', function(e) {
-      e.stopPropagation();
-      getLocation();
-    });
-    
-    document.getElementById('cardWhatsapp').addEventListener('click', function(e) {
-      e.stopPropagation();
-      if (!currentLat || !currentLon) {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            function(pos) {
-              currentLat = pos.coords.latitude;
-              currentLon = pos.coords.longitude;
-              
-              let mapEmbed = "https://www.google.com/maps?q=" + currentLat + "," + currentLon + "&output=embed&z=17";
-              mapFrame.src = mapEmbed;
-              mapSection.style.display = "block";
-              
-          setTimeout(() => {
-  shareLocation(); // Call your advanced message function
-}, 500);
-            },
-            function(error) {
-              alert("Please allow location access to share your location.");
-            }
-          );
-        } else {
-          alert("Geolocation not supported");
-        }
+    // ========== EVENT LISTENERS ==========
+    document.getElementById('sosPanicBtn').addEventListener('click', triggerSOS);
+
+    document.getElementById('cardEmergency').addEventListener('click', function() {
+      showToast({ 
+        title: 'Emergency Call', 
+        message: 'Calling emergency services.', 
+        iconType: 'attention',
+        duration: 6000 
+      });
+      if (emergencyContacts.length > 0) {
+        quickCall(emergencyContacts[0].number);
       } else {
-        shareLocation();
+        quickCall('999');
       }
     });
-    
-    document.getElementById('cardFake').addEventListener('click', function(e) {
-      e.stopPropagation();
-      fakeCall();
+
+    document.getElementById('cardLocation').addEventListener('click', getLocation);
+
+    document.getElementById('cardWhatsapp').addEventListener('click', shareLocation);
+
+    document.getElementById('cardFake').addEventListener('click', fakeCall);
+
+    document.getElementById('cardSiren').addEventListener('click', startSiren);
+
+    document.getElementById('cardFollow').addEventListener('click', function() {
+      showToast({ 
+        title: 'Feature Unavailable!', 
+        message: 'Follow Me will be added in the next update.', 
+        iconType: 'warning',
+        duration: 6000 
+      });
     });
 
-    // credit popup toggle
+    document.getElementById('cardRecord').addEventListener('click', function() {
+      showToast({ 
+        title: 'Feature Unavailable!', 
+        message: 'Video recording will be added in the next update.', 
+        iconType: 'warning',
+        duration: 6000 
+      });
+    });
+
+    document.getElementById('cardContacts').addEventListener('click', function() {
+      showToast({ 
+        title: 'My Contacts', 
+        message: `${emergencyContacts.length} emergency contacts saved.`, 
+        iconType: 'success',
+        duration: 6000 
+      });
+      document.querySelector('.contacts-section').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('sirenOn').addEventListener('click', startSiren);
+    document.getElementById('sirenOff').addEventListener('click', stopSiren);
+
+    document.getElementById('openMapsBtn').addEventListener('click', function() {
+      if (currentLat && currentLon) {
+        window.open("https://www.google.com/maps?q=" + currentLat + "," + currentLon);
+      } else {
+        getLocation();
+      }
+    });
+
+    document.getElementById('navigateBtn').addEventListener('click', function() {
+      if (currentLat && currentLon) {
+        window.open("https://www.google.com/maps/dir/?api=1&destination=" + currentLat + "," + currentLon);
+      } else {
+        getLocation();
+      }
+    });
+
+    // Credit popup
     const creditBtn = document.getElementById('creditToggle');
     const creditPopup = document.getElementById('creditPopup');
-    creditBtn.addEventListener('click', function() {
+    
+    creditBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
       creditPopup.classList.toggle('show');
     });
+    
+    document.addEventListener('click', function(e) {
+      if (!creditBtn.contains(e.target) && !creditPopup.contains(e.target)) {
+        creditPopup.classList.remove('show');
+      }
+    });
 
-    // close fake call with escape
+    // Close fake call with escape
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && document.getElementById('fakeCallScreen').style.display === 'flex') {
         closeFakeCall();
       }
     });
 
+    // Initialize
     mapSection.style.display = 'none';
+    displayContacts();
+
+    // Welcome toast
+    window.addEventListener('load', function() {
+      if (emergencyContacts.length > 0) {
+        showToast({ 
+          title: 'Welcome Back!', 
+          message: `${emergencyContacts.length} emergency contact(s) loaded`, 
+          iconType: 'success',
+          duration: 3000 
+        });
+      }
+    });
+
   })();
 </script>
 </body>
