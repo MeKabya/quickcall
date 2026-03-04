@@ -657,35 +657,29 @@ function shareLocation() {
   if (currentLat && currentLon) {
 
     const now = new Date();
-    const timeString = now.toLocaleTimeString();
+    const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     const dateString = now.toLocaleDateString();
 
-    let trackingLink = "https://www.google.com/maps/search/?api=1&query=" + currentLat + "," + currentLon;
+    // Round coordinates for readability
+    const lat = currentLat.toFixed(4);
+    const lon = currentLon.toFixed(4);
 
-    let msg =
-`EMERGENCY DISTRESS ALERT
-────────────────────────────
+    // Proper Google Maps link (small preview in WhatsApp)
+    const trackingLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
 
-├─ Status          : Possible danger situation
-├─ GPS Tracking    : Active
-├─ Map Link        :
-│  ${trackingLink}
+    let msg = 
+`⛔ I need your help immediately.
 
-├─ Coordinates
-│  ├─ Latitude     : ${currentLat}
-│  └─ Longitude    : ${currentLon}
+• Status      : Possible danger
+• GPS         : Active
+• Location    : ${trackingLink} 
+• Time        : ${timeString}
+• Date        : ${dateString} ${timeString}
 
-├─ GPS Accuracy    : ± ${Math.round(currentAccuracy)} meters
-├─ Date            : ${dateString}
-├─ Time            : ${timeString}
-
-└─ Action Required :
-   Call emergency services (999) immediately.
-
-This alert was generated automatically from the device GPS system.
-Verify location and respond without delay.`;
+This alert was automatically generated.`;
 
     window.open("https://wa.me/?text=" + encodeURIComponent(msg));
+
   } else {
     alert("Please get your location first.");
   }
