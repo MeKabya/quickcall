@@ -1208,8 +1208,8 @@
       
       showToast({ 
         title: 'SOS Activated', 
-        message: `Opening WhatsApp for ${emergencyContacts.length} contact(s).`, 
-        iconType: 'attention',
+        message: `Opening WhatsApp.`, 
+        iconType: 'success',
         duration: 5000 
       });
       
@@ -1240,7 +1240,7 @@
         setTimeout(() => {
           showToast({ 
             title: 'WhatsApp App', 
-            message: 'If WhatsApp did not open, tap again or install WhatsApp.', 
+            message: 'If WhatsApp did not open then tap again or install WhatsApp.', 
             iconType: 'warning',
             duration: 4000 
           });
