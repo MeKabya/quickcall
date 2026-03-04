@@ -2055,10 +2055,7 @@
       stations.forEach((station, index) => {
         const distanceKm = station.distance.toFixed(2);
         const mapsLink = `https://www.google.com/maps/dir/?api=1&destination=${station.lat},${station.lon}`;
-        
-        // Add medal emoji for closest station
-        const medal = index === 0 ? ' 🥇' : index === 1 ? ' 🥈' : index === 2 ? ' 🥉' : '';
-        
+              
         stationsHtml += `
           <div class="police-station-card">
             <div class="police-station-name">${station.name}${medal}</div>
