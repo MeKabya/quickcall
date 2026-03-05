@@ -1,2523 +1,977 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Quick Call</title>
-  <!-- pink icon for tab -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ec4899'%3E%3Cpath d='M20 10.999h2C22 5.869 18.127 2 12.99 2v2C17.052 4 20 6.943 20 10.999z'/%3E%3Cpath d='M13 8c2.103 0 3 .897 3 3h2c0-3.225-1.775-5-5-5v2z'/%3E%3Cpath d='M16.422 13.443c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45l-2.12 2.12c-2.244-.783-3.814-2.354-4.596-4.58l2.12-2.12c.586-.586.586-1.536 0-2.122L6.3 4.221c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45L2.5 5.865c-.657.657-.92 1.564-.756 2.421.55 2.826 2.28 5.647 4.696 8.064 2.416 2.416 5.238 4.146 8.064 4.696.857.164 1.764-.099 2.421-.756l1.644-1.644c.293-.293.45-.684.45-1.083 0-.392-.157-.783-.45-1.076l-3.069-3.069z' fill='%23ec4899'/%3E%3C/svg%3E" type="image/svg+xml">
-  <!-- Baloo Da 2 + Font Awesome -->
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    /* ----- reset & base ----- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Baloo Da 2', cursive;
-    }
-
-    body {
-      background: #f5f7fb;
-      min-height: 100vh;
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      padding: 24px 16px;
-      color: #1e293b;
-      display: flex;
-      flex-direction: column;
-    }
-
-    body.night-mode {
-      background: #1a2538;
-      color: #e9edf2;
-    }
-
-    .container {
-      max-width: 480px;
-      margin: 0 auto;
-      width: 100%;
-      flex: 1 0 auto;
-    }
-
-    @media (min-width: 640px) {
-      body { display: flex; align-items: center; }
-      .container { margin: 0 auto; }
-    }
-
-    /* Smooth animations for all elements */
-    .section, .service-card, .sos-button, .theme-btn, .credit-btn, .contact-item, button {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* ----- top header ----- */
-    .top-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 32px;
-      position: relative;
-      animation: slideDown 0.6s ease-out;
-    }
-
-    .theme-toggle {
-      margin-top: 16px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .theme-btn {
-      background: white;
-      border: 1px solid #dce5f0;
-      border-radius: 60px;
-      padding: 12px 32px;
-      font-size: 18px;
-      font-weight: 600;
-      color: #334155;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.02);
-      letter-spacing: 0.3px;
-      transform: scale(1);
-    }
-
-    .night-mode .theme-btn {
-      background: #263952 !important;
-      border-color: #4b6fa0 !important;
-      color: white !important;
-    }
-
-    .theme-btn:hover {
-      border-color: #9aaec9;
-      transform: scale(1.02) translateY(-2px);
-      background: #fafdff;
-      box-shadow: 0 12px 24px -8px rgba(0,60,130,0.15);
-    }
-
-    .night-mode .theme-btn:hover { background: #324762; }
-
-    .logo-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      animation: fadeIn 0.8s ease-out;
-    }
-
-    .logo-area h1 {
-      font-size: 48px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      background: linear-gradient(145deg, #1e293b, #2c3e50);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.1;
-    }
-
-    .night-mode .logo-area h1 {
-      background: linear-gradient(145deg, #f0f4fa, #cbd5e1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .beta-badge {
-      font-size: 14px;
-      color: #ef4444;
-      margin-top: 3px;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 0.7; }
-      50% { opacity: 1; text-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
-      100% { opacity: 0.7; }
-    }
-
-    /* ----- section cards ----- */
-    .section {
-      background: #ffffff;
-      border-radius: 28px;
-      box-shadow: 0 8px 26px rgba(0,0,0,0.02), 0 4px 8px rgba(0,20,40,0.02);
-      border: 1px solid #bfdbfe;
-      padding: 28px 24px;
-      margin: 28px 0;
-      animation: fadeInUp 0.5s ease-out;
-      animation-fill-mode: both;
-      position: relative;
-    }
-
-    .section:nth-child(1) { animation-delay: 0.1s; }
-    .section:nth-child(2) { animation-delay: 0.2s; }
-    .section:nth-child(3) { animation-delay: 0.3s; }
-    .section:nth-child(4) { animation-delay: 0.4s; }
-    .section:nth-child(5) { animation-delay: 0.5s; }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .night-mode .section {
-      background: #202d40;
-      border-color: #3b5688;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.4);
-    }
-
-    .section h2 {
-      margin-bottom: 24px;
-      font-size: 26px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #1e293b;
-    }
-
-    .night-mode .section h2 {
-      color: #edf2f9;
-    }
-
-    .section h2 i {
-      color: #b91c1c;
-    }
-
-    /* Close button for sections */
-    .section-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(220, 38, 38, 0.1);
-      color: #dc2626;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(220, 38, 38, 0.2);
-      z-index: 10;
-    }
-
-    .section-close:hover {
-      background: #dc2626;
-      color: white;
-      transform: rotate(90deg);
-    }
-
-    .night-mode .section-close {
-      background: rgba(220, 38, 38, 0.2);
-      color: #ffb3b3;
-    }
-
-    .night-mode .section-close:hover {
-      background: #dc2626;
-      color: white;
-    }
-   
-    /* --- SOS BUTTON --- */
-    .sos-button {
-      background: rgba(220, 38, 38, 0.2);
-      border: 2px solid rgba(220, 38, 38, 0.7);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      border-radius: 60px;
-      padding: 12px 28px;                         
-      font-size: 24px;                             
-      font-weight: 700;
-      color: #b91c1c;
-      cursor: pointer;
-      width: auto;
-      min-width: 160px;
-      margin: 20px auto;
-      display: block;
-      box-shadow: 0 6px 18px rgba(220,38,38,0.25);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      letter-spacing: 1px;
-    }
-
-    .sos-button:hover {
-      transform: translateY(-3px) scale(1.02);
-      background: rgba(220, 38, 38, 0.3);
-      border-color: #dc2626;
-      box-shadow: 0 12px 28px rgba(220,38,38,0.35);
-    }
-
-    .night-mode .sos-button {
-      background: rgba(220, 38, 38, 0.3);
-      border-color: rgba(255, 100, 100, 0.8);
-      color: #ffb3b3;
-    }
-
-    /* Emergency services grid */
-    .service-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-top: 15px;
-    }
-
-    .service-card {
-      background: transparent;
-      border: 2px solid #bfdbfe;
-      border-radius: 28px;
-      padding: 18px 12px;
-      cursor: pointer;
-      text-align: center;
-      font-weight: 700;
-      font-size: 18px;
-      color: #1e293b;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .service-card:hover {
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 20px 30px -10px rgba(0,60,130,0.2);
-      border-color: #9ac8ff;
-    }
-
-    .night-mode .service-card {
-      border-color: #4b6fa0;
-      color: white !important;
-    }
-
-    .service-card i {
-      font-size: 32px;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.03);
-      transition: all 0.3s ease;
-    }
-
-    .service-card:hover i {
-      transform: scale(1.1) rotate(5deg);
-    }
-
-    .service-card .fa-triangle-exclamation { color: #dc2626; background: rgba(220,38,38,0.1); }
-    .service-card .fa-location-dot { color: #0ea5e9; background: rgba(14,165,233,0.1); }
-    .service-card .fa-whatsapp { color: #16a34a; background: rgba(22,163,74,0.1); }
-    .service-card .fa-phone { color: #8b5cf6; background: rgba(139,92,246,0.1); }
-    .service-card .fa-users { color: #f59e0b; background: rgba(245,158,11,0.1); }
-    .service-card .fa-shield-alt { color: #2563eb; background: rgba(37,99,235,0.1); }
-    .service-card .fa-bell { color: #ef4444; background: rgba(239,68,68,0.1); }
-    .service-card .fa-id-card { color: #8b5cf6; background: rgba(139,92,246,0.1); }
-
-    /* Contacts Section */
-    .contacts-section {
-      margin: 20px 0;
-      width: 100%;
-    }
-
-    .contact-input-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-      width: 100%;
-      flex-wrap: nowrap;
-    }
-
-    .contact-input-group input {
-      flex: 1 1 0;
-      min-width: 0;
-      padding: 14px 18px;
-      border: 2px solid #bfdbfe;
-      border-radius: 40px;
-      font-size: 16px;
-      background: white;
-      transition: all 0.3s ease;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .contact-input-group input:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-      transform: translateY(-2px);
-    }
-
-    .night-mode .contact-input-group input {
-      background: #2b3a52;
-      border-color: #4b6fa0;
-      color: white;
-    }
-
-    .add-contact-btn {
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 40px;
-      width: 50px;
-      height: 50px;
-      min-width: 50px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .add-contact-btn:hover {
-      background: #1d4ed8;
-      transform: rotate(90deg) scale(1.1);
-    }
-
-    .contacts-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 200px;
-      overflow-y: auto;
-      padding: 5px;
-      width: 100%;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(191, 219, 254, 0.2);
-      padding: 12px 18px;
-      border-radius: 40px;
-      border: 1px solid #bfdbfe;
-      animation: slideIn 0.3s ease-out;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .contact-item .contact-info {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 600;
-      overflow: hidden;
-    }
-
-    .contact-item .contact-info span {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    .night-mode .contact-item {
-      background: rgba(75, 111, 160, 0.2);
-      color: #e9edf2;
-    }
-
-    .contact-info i {
-      color: #2563eb;
-      flex-shrink: 0;
-    }
-
-    .night-mode .contact-info i {
-      color: #60a5fa;
-    }
-
-    .delete-contact {
-      color: #dc2626;
-      cursor: pointer;
-      font-size: 18px;
-      transition: all 0.3s ease;
-      flex-shrink: 0;
-      margin-left: 10px;
-    }
-
-    .delete-contact:hover {
-      transform: scale(1.2) rotate(5deg);
-      color: #ef4444;
-    }
-
-    .night-mode .delete-contact {
-      color: #f87171;
-    }
-
-    /* ===== POLICE STATION SECTION ===== */
-    #policeSection.section { display: none; }
-    
-    .police-loading {
-      text-align: center;
-      padding: 30px;
-    }
-    
-    .police-loading i {
-      font-size: 40px;
-      color: #2563eb;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .police-station-card {
-      background: rgba(37, 99, 235, 0.05);
-      border: 1px solid #bfdbfe;
-      border-radius: 20px;
-      padding: 15px;
-      margin-bottom: 15px;
-      transition: all 0.3s ease;
-    }
-    
-    .police-station-card:hover {
-      transform: translateX(5px);
-      background: rgba(37, 99, 235, 0.1);
-    }
-    
-    .night-mode .police-station-card {
-      background: rgba(59, 130, 246, 0.15);
-      border-color: #4b6fa0;
-    }
-    
-    .police-station-name {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #2563eb;
-    }
-    
-    .night-mode .police-station-name {
-      color: #93c5fd;
-    }
-    
-    .police-station-distance {
-      font-size: 14px;
-      color: #6b7280;
-      margin-bottom: 8px;
-    }
-    
-    .night-mode .police-station-distance {
-      color: #cbd5e1;
-    }
-    
-    .police-station-address {
-      font-size: 14px;
-      color: #4b5563;
-      margin-bottom: 12px;
-    }
-    
-    .night-mode .police-station-address {
-      color: #e2e8f0;
-    }
-    
-    .police-station-actions {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .police-action-btn {
-      flex: 1;
-      padding: 8px;
-      border: none;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .police-action-btn.directions {
-      background: #16a34a;
-      color: white;
-    }
-    
-    .police-action-btn.call {
-      background: #2563eb;
-      color: white;
-    }
-    
-    .police-action-btn:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.1);
-    }
-
-    .night-mode .police-action-btn.call {
-      background: #3b82f6;
-    }
-
-    /* Empty state for police */
-    .police-empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      background: rgba(0,0,0,0.02);
-      border-radius: 24px;
-      margin: 20px 0;
-    }
-    
-    .police-empty-state i {
-      font-size: 60px;
-      color: #94a3b8;
-      margin-bottom: 15px;
-      opacity: 0.5;
-    }
-    
-    .police-empty-state p {
-      font-size: 18px;
-      color: #64748b;
-      font-weight: 500;
-    }
-    
-    .night-mode .police-empty-state {
-      background: rgba(255,255,255,0.03);
-    }
-    
-    .night-mode .police-empty-state i,
-    .night-mode .police-empty-state p {
-      color: #cbd5e1;
-    }
-
-    /* ===== YOUR INFO SECTION ===== */
-    #infoSection.section { display: none; }
-    
-    .info-form {
-      margin-top: 20px;
-    }
-    
-    .info-field {
-      margin-bottom: 15px;
-    }
-    
-    .info-field label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 5px;
-      color: #4b5563;
-    }
-    
-    .night-mode .info-field label {
-      color: #cbd5e1;
-    }
-    
-    .info-field input {
-      width: 100%;
-      padding: 12px 16px;
-      border: 2px solid #bfdbfe;
-      border-radius: 20px;
-      font-size: 16px;
-      background: white;
-    }
-    
-    .night-mode .info-field input {
-      background: #2b3a52;
-      border-color: #4b6fa0;
-      color: white;
-    }
-    
-    .save-info-btn {
-      background: #8b5cf6;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      transition: all 0.3s ease;
-      margin-top: 10px;
-    }
-    
-    .save-info-btn:hover {
-      background: #7c3aed;
-      transform: translateY(-2px);
-    }
-    
-    .info-display-card {
-      background: rgba(139, 92, 246, 0.1);
-      border: 2px solid #8b5cf6;
-      border-radius: 28px;
-      padding: 25px;
-      margin-top: 20px;
-      animation: slideUpFade 0.4s ease-out;
-    }
-    
-    .info-display-item {
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 1px dashed #8b5cf6;
-    }
-    
-    .info-display-label {
-      font-size: 14px;
-      color: #6b7280;
-      margin-bottom: 5px;
-    }
-    
-    .night-mode .info-display-label {
-      color: #a0b3cc;
-    }
-    
-    .info-display-value {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1e293b;
-    }
-    
-    .night-mode .info-display-value {
-      color: #f1f5f9;
-    }
-    
-    .info-timer {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 14px;
-      color: #8b5cf6;
-    }
-
-    /* ===== PROFESSIONAL REDESIGNED SAVED CONTACTS BOX ===== */
-    .saved-contacts-card {
-      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-      border-radius: 32px;
-      box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(37, 99, 235, 0.1) inset;
-      padding: 0;
-      margin: 24px 0 16px;
-      animation: slideUpFade 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
-      display: none;
-      overflow: hidden;
-      border: 1px solid rgba(37, 99, 235, 0.2);
-    }
-    
-    .saved-contacts-card.show {
-      display: block;
-    }
-    
-    .night-mode .saved-contacts-card {
-      background: linear-gradient(135deg, #263952 0%, #1e2f44 100%);
-      border-color: #4b6fa0;
-      box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.5);
-    }
-    
-    .card-header {
-      background: linear-gradient(90deg, #2563eb, #1d4ed8);
-      padding: 18px 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .night-mode .card-header {
-      background: linear-gradient(90deg, #1e3a8a, #1e2f44);
-    }
-    
-    .card-header i {
-      font-size: 28px;
-      color: white;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-    }
-    
-    .card-header h3 {
-      font-size: 24px;
-      font-weight: 700;
-      color: white;
-      letter-spacing: 0.3px;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-      flex: 1;
-    }
-    
-    .header-badge {
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(4px);
-      padding: 6px 14px;
-      border-radius: 40px;
-      font-size: 14px;
-      font-weight: 600;
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-    
-    .card-body {
-      padding: 20px 24px;
-    }
-    
-    .contacts-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-height: 260px;
-      overflow-y: auto;
-      padding-right: 6px;
-    }
-    
-    .contacts-grid::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    .contacts-grid::-webkit-scrollbar-track {
-      background: #e2e8f0;
-      border-radius: 10px;
-    }
-    
-    .contacts-grid::-webkit-scrollbar-thumb {
-      background: #94a3b8;
-      border-radius: 10px;
-    }
-    
-    .night-mode .contacts-grid::-webkit-scrollbar-track {
-      background: #334155;
-    }
-    
-    .night-mode .contacts-grid::-webkit-scrollbar-thumb {
-      background: #5f7d9c;
-    }
-    
-    .contact-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 16px;
-      background: rgba(37, 99, 235, 0.04);
-      border-radius: 20px;
-      border: 1px solid rgba(37, 99, 235, 0.1);
-      transition: all 0.2s ease;
-    }
-    
-    .contact-row:hover {
-      background: rgba(37, 99, 235, 0.08);
-      transform: translateX(4px);
-      border-color: rgba(37, 99, 235, 0.3);
-    }
-    
-    .night-mode .contact-row {
-      background: rgba(75, 111, 160, 0.15);
-      border-color: #4b6fa0;
-    }
-    
-    .night-mode .contact-row:hover {
-      background: rgba(75, 111, 160, 0.25);
-    }
-    
-    .contact-avatar {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 20px;
-      font-weight: 700;
-      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
-      flex-shrink: 0;
-    }
-    
-    .night-mode .contact-avatar {
-      background: linear-gradient(135deg, #3b5688, #2a3f60);
-    }
-    
-    .contact-details {
-      flex: 1;
-    }
-    
-    .contact-name {
-      font-size: 18px;
-      font-weight: 700;
-      color: #1e293b;
-      line-height: 1.3;
-    }
-    
-    .night-mode .contact-name {
-      color: #f1f5f9;
-    }
-    
-    .contact-number {
-      font-size: 15px;
-      color: #4b5563;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    
-    .night-mode .contact-number {
-      color: #a0b3cc;
-    }
-    
-    .contact-number i {
-      font-size: 12px;
-      color: #2563eb;
-    }
-    
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      background: rgba(0,0,0,0.02);
-      border-radius: 24px;
-    }
-    
-    .empty-state i {
-      font-size: 48px;
-      color: #94a3b8;
-      margin-bottom: 12px;
-      opacity: 0.5;
-    }
-    
-    .empty-state p {
-      font-size: 18px;
-      color: #64748b;
-      font-weight: 500;
-    }
-    
-    .night-mode .empty-state {
-      background: rgba(255,255,255,0.03);
-    }
-    
-    .night-mode .empty-state i,
-    .night-mode .empty-state p {
-      color: #cbd5e1;
-    }
-    
-    .card-footer {
-      background: rgba(0,0,0,0.02);
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid #e2e8f0;
-      font-size: 14px;
-      color: #64748b;
-    }
-    
-    .night-mode .card-footer {
-      background: rgba(0,0,0,0.2);
-      border-top-color: #4b6fa0;
-      color: #a0b3cc;
-    }
-    
-    .footer-timer {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .footer-timer i {
-      color: #2563eb;
-    }
-    
-    .timer-bar {
-      width: 60px;
-      height: 6px;
-      background: #e2e8f0;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    
-    .timer-fill {
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg, #2563eb, #1d4ed8);
-      animation: shrinkWidth 8s linear forwards;
-    }
-    
-    @keyframes slideUpFade {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes shrinkWidth {
-      from { width: 100%; }
-      to { width: 0%; }
-    }
-
-    /* map section */
-    #mapSection.section { display: none; }
-    
-    iframe {
-      width: 100%;
-      height: 260px;
-      border-radius: 24px;
-      border: 1px solid #bfdbfe;
-      transition: all 0.3s ease;
-    }
-
-    iframe:hover {
-      transform: scale(1.02);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-    }
-
-    .night-mode iframe { border-color: #3b5688; }
-
-    .map-buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    .map-buttons button {
-      flex: 1;
-      padding: 14px 10px;
-      border: none;
-      border-radius: 40px;
-      font-weight: 700;
-      font-size: 16px;
-      cursor: pointer;
-      color: white;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .map-buttons button:hover {
-      transform: translateY(-4px) scale(1.02);
-      filter: brightness(1.1);
-      box-shadow: 0 15px 25px rgba(0,0,0,0.2);
-    }
-
-    .open-btn { background: #2563eb; }
-    .nav-btn { background: #16a34a; }
-
-    /* Siren Control */
-    .siren-control {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin: 20px 0;
-    }
-
-    .siren-btn {
-      flex: 1;
-      padding: 16px;
-      border: none;
-      border-radius: 40px;
-      font-weight: 700;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .siren-btn:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 15px 25px rgba(0,0,0,0.2);
-    }
-
-    .siren-on {
-      background: #dc2626;
-      color: white;
-    }
-
-    .siren-off {
-      background: #6b7280;
-      color: white;
-    }
-
-    /* ========== TOAST NOTIFICATION SYSTEM ========== */
-    .advanced-toast {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      background: white;
-      border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.1);
-      z-index: 10000;
-      max-width: 340px;
-      width: calc(100% - 48px);
-      transform: translateX(420px);
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      border: 1px solid #bfdbfe;
-      overflow: hidden;
-      backdrop-filter: blur(10px);
-    }
-
-    .advanced-toast.show {
-      transform: translateX(0);
-    }
-
-    .toast-content {
-      display: flex;
-      padding: 18px 20px;
-      gap: 16px;
-      align-items: flex-start;
-    }
-
-    .toast-icon {
-      flex-shrink: 0;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
-
-    .toast-text {
-      flex: 1;
-    }
-
-    .toast-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .toast-message {
-      font-size: 15px;
-      line-height: 1.4;
-      font-weight: 500;
-    }
-
-    .toast-progress {
-      height: 4px;
-      background: #e2e8f0;
-      width: 100%;
-    }
-
-    .toast-progress-bar {
-      height: 100%;
-      width: 100%;
-      transform-origin: left;
-    }
-
-    /* manual close (X) */
-    .toast-close {
-      position: absolute;
-      top: 12px;
-      right: 14px;
-      cursor: pointer;
-      font-size: 18px;
-      color: #94a3b8;
-      transition: color 0.2s;
-      z-index: 1;
-    }
-    .toast-close:hover { color: #1e293b; }
-
-    /* night mode toast */
-    .night-mode .advanced-toast {
-      background: #202d40;
-      border-color: #4b6fa0;
-    }
-    .night-mode .toast-title { color: #f1f5f9; }
-    .night-mode .toast-message { color: #cbd5e1; }
-    .night-mode .toast-progress { background: #334155; }
-
-    /* icon variants */
-    .toast-icon.attention { background: rgba(220, 38, 38, 0.15); color: #dc2626; }
-    .toast-icon.success { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
-    .toast-icon.warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-
-    /* credit button */
-    .credit-wrapper {
-      display: flex;
-      justify-content: center;
-      margin: 10px 0 20px;
-    }
-    .credit-btn {
-      background: white;
-      border: 1px solid #bfdbfe;
-      border-radius: 60px;
-      padding: 10px 28px;
-      font-size: 16px;
-      font-weight: 600;
-      color: #2d3c5e;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .credit-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 25px rgba(0,0,0,0.1);
-      border-color: #9aaec9;
-    }
-
-    .night-mode .credit-btn {
-      background: #263952;
-      border-color: #4b6fa0;
-      color: #e3ecf7;
-    }
-    
-    .credit-popup {
-      background: white;
-      border-radius: 24px;
-      padding: 22px;
-      margin-top: 16px;
-      border: 1px solid #bfdbfe;
-      display: none;
-      animation: fadePop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .credit-popup.show {
-      display: block;
-    }
-
-    @keyframes fadePop {
-      from {
-        opacity: 0;
-        transform: translateY(-10px) scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .night-mode .credit-popup {
-      background: #263952;
-      border-color: #4b6fa0;
-      color: white;
-    }
-
-    /* footer */
-    .page-footer {
-      text-align: center;
-      padding: 20px 0 10px;
-      margin-top: 20px;
-      border-top: 1px solid #bfdbfe;
-      color: #627a98;
-      width: 100%;
-      flex-shrink: 0;
-    }
-
-    .qr-code {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-
-    .qr-code img {
-      width: 100px;
-      height: auto;
-      border-radius: 28px;
-      border: 2px solid #bfdbfe;
-      padding: 6px;
-      background: white;
-      transition: all 0.3s ease;
-    }
-
-    .qr-code img:hover {
-      transform: scale(1.05) rotate(2deg);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-    }
-
-     /* ========== FAKE CALL SCREEN ========== */
-    .fake-call-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #0c0c0e;
-      display: none;
-      flex-direction: column;
-      z-index: 9999;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
-      color: white;
-      animation: fadeIn 0.25s ease-out;
-    }
-
-    .call-status-bar {
-      display: flex;
-      justify-content: space-between;
-      padding: 14px 24px 8px;
-      font-size: 16px;
-      font-weight: 600;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: transparent;
-      letter-spacing: 0.2px;
-    }
-    .status-left {
-      font-weight: 600;
-    }
-    .status-right {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .battery-symbol {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .battery-body {
-      width: 24px;
-      height: 12px;
-      border: 1.5px solid white;
-      border-radius: 3px;
-      position: relative;
-    }
-    .battery-fill {
-      height: 8px;
-      width: 70%;
-      background: #22c55e;
-      margin: 1px;
-      border-radius: 1px;
-    }
-    .battery-body::after {
-      content: '';
-      position: absolute;
-      right: -4px;
-      top: 2px;
-      width: 2px;
-      height: 5px;
-      background: white;
-      border-radius: 1px;
-    }
-
-    .caller-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 0 20px;
-      margin-top: 15vh; 
-    }
-    .caller-photo {
-      width: 130px;
-      height: 130px;
-      border-radius: 65px;
-      object-fit: cover;
-      margin-bottom: 22px;
-      border: 3px solid rgba(255,255,255,0.25);
-      box-shadow: 0 20px 35px rgba(0,0,0,0.5);
-    }
-    .caller-name {
-      font-size: 42px;
-      font-weight: 350;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
-    }
-    .caller-sub {
-      font-size: 18px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-weight: 300;
-      opacity: 0.7;
-      margin-bottom: 60px;       
-    }
-    .call-actions-row {
-      display: flex;
-      gap: 70px;
-      align-items: center;
-      justify-content: center;
-      margin-top: auto;
-      margin-bottom: 60px;
-    }
-    .call-btn-real {
-      width: 80px;
-      height: 80px;
-      border-radius: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 34px;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.3);
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.2);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.6);
-    }
-    .call-btn-real.decline {
-      background: #ff3b30;
-      transform: rotate(135deg);
-    }
-    .call-btn-real.decline i {
-      transform: rotate(45deg);
-    }
-    .call-btn-real.accept {
-      background: #30b158;
-    }
-    .call-btn-real:hover {
-      transform: scale(1.12);
-      filter: brightness(1.2);
-    }
-    .call-btn-real:active {
-      transform: scale(0.92);
-    }
-
-    .call-footer-text {
-      font-size: 16px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-weight: 300;
-      opacity: 0.6;
-      text-align: center;
-      padding-bottom: 30px;
-    }
-
-    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>QuickCall — Emergency Safety</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23ff3c3c'/%3E%3Cpath d='M16.422 13.443c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45l-2.12 2.12c-2.244-.783-3.814-2.354-4.596-4.58l2.12-2.12c.586-.586.586-1.536 0-2.122L6.3 4.221c-.293-.293-.684-.45-1.076-.45-.397 0-.788.157-1.083.45L2.5 5.865c-.657.657-.92 1.564-.756 2.421.55 2.826 2.28 5.647 4.696 8.064 2.416 2.416 5.238 4.146 8.064 4.696.857.164 1.764-.099 2.421-.756l1.644-1.644c.293-.293.45-.684.45-1.083 0-.392-.157-.783-.45-1.076l-3.069-3.069z' fill='white'/%3E%3C/svg%3E" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ===== DARK MODE (default) ===== */
+:root {
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --surface2: #18181f;
+  --surface3: #1f1f28;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --red: #ff3c3c;
+  --red-dim: rgba(255,60,60,0.15);
+  --red-glow: rgba(255,60,60,0.35);
+  --blue: #4f8ef7;
+  --blue-dim: rgba(79,142,247,0.12);
+  --green: #22d47a;
+  --green-dim: rgba(34,212,122,0.12);
+  --amber: #f5a623;
+  --amber-dim: rgba(245,166,35,0.12);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.12);
+  /* DARK: bright white text | logo+call = red | SOS = bright blue */
+  --text: #ffffff;
+  --text2: #9090b0;
+  --text3: #4a4a60;
+  --logo-accent: #ff3c3c;
+  --call-color: #ff3c3c;
+  --call-dim: rgba(255,60,60,0.15);
+  --sos-bg: linear-gradient(145deg, #1a6fff, #0040cc);
+  --sos-border: rgba(100,170,255,0.5);
+  --sos-glow: rgba(26,111,255,0.6);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --radius: 20px;
+  --radius-lg: 28px;
+  --radius-sm: 12px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== LIGHT MODE ===== */
+body.light-mode {
+  --bg: #f0f2f8;
+  --surface: #ffffff;
+  --surface2: #f5f7ff;
+  --surface3: #eceef8;
+  --border: rgba(0,0,0,0.07);
+  --border2: rgba(0,0,0,0.12);
+  --red-dim: rgba(255,60,60,0.1);
+  --blue-dim: rgba(79,142,247,0.1);
+  --green-dim: rgba(34,212,122,0.1);
+  --amber-dim: rgba(245,166,35,0.1);
+  --purple-dim: rgba(167,139,250,0.1);
+  /* LIGHT: black text | logo+call = blue | SOS = red */
+  --text: #0d0d1a;
+  --text2: #555570;
+  --text3: #aaaacc;
+  --logo-accent: #1a6fff;
+  --call-color: #1a6fff;
+  --call-dim: rgba(26,111,255,0.12);
+  --sos-bg: linear-gradient(145deg, #ff4444, #cc0000);
+  --sos-border: rgba(255,100,100,0.4);
+  --sos-glow: rgba(255,60,60,0.5);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  transition: background 0.4s ease, color 0.4s ease;
+  overflow-x: hidden;
+}
+
+/* noise texture */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:0.4;
+}
+
+/* ambient glow */
+.ambient {
+  position:fixed; top:-20vh; left:50%; transform:translateX(-50%);
+  width:80vw; height:50vh;
+  background:radial-gradient(ellipse at center,rgba(255,60,60,0.08) 0%,transparent 70%);
+  pointer-events:none; z-index:0; transition:opacity 0.5s ease;
+}
+body.light-mode .ambient { opacity:0.4; }
+
+.container {
+  max-width:500px; margin:0 auto;
+  padding:0 16px calc(env(safe-area-inset-bottom,0px) + 40px);
+  position:relative; z-index:1;
+}
+
+/* ── HEADER ── */
+.header { padding:52px 0 28px; }
+.header-inner { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; }
+.logo { display:flex; align-items:center; gap:12px; }
+
+/* Logo icon — color = --logo-accent */
+.logo-icon {
+  width:44px; height:44px;
+  background:var(--logo-accent);
+  border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; color:white;
+  box-shadow:0 0 20px rgba(0,0,0,0.2);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+  animation:pulse-icon 3s ease-in-out infinite;
+}
+body:not(.light-mode) .logo-icon { box-shadow:0 0 24px rgba(255,60,60,0.4); }
+body.light-mode      .logo-icon { box-shadow:0 0 24px rgba(26,111,255,0.4); }
+@keyframes pulse-icon { 0%,100%{filter:brightness(1);}50%{filter:brightness(1.18);} }
+
+.logo-text { font-family:var(--font-display); font-weight:800; font-size:22px; letter-spacing:-0.5px; color:var(--text); }
+/* "Call" colored by --logo-accent */
+.logo-text span { color:var(--logo-accent); transition:color 0.4s ease; }
+
+.header-controls { display:flex; align-items:center; gap:10px; }
+.theme-btn {
+  width:44px; height:44px; min-width:44px; min-height:44px;
+  border-radius:12px;
+  background:var(--surface2); border:1px solid var(--border);
+  color:var(--text2); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px; transition:all var(--transition);
+}
+.theme-btn:hover { border-color:var(--border2); color:var(--text); transform:scale(1.05); }
+
+/* status bar */
+.status-bar {
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  padding:8px 16px;
+  background:var(--green-dim); border:1px solid rgba(34,212,122,0.2);
+  border-radius:100px; font-size:13px; font-weight:500; color:var(--green);
+  width:fit-content; margin:0 auto;
+}
+.status-dot { width:7px; height:7px; background:var(--green); border-radius:50%; animation:blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1;}50%{opacity:0.3;} }
+
+/* ── SOS BUTTON ── */
+.sos-wrapper { padding:28px 0 20px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+.sos-ring { position:relative; display:flex; align-items:center; justify-content:center; }
+.sos-ring::before,.sos-ring::after {
+  content:''; position:absolute; border-radius:50%;
+  animation:expand-ring 3s ease-out infinite;
+}
+/* ring color mirrors SOS theme */
+body:not(.light-mode) .sos-ring::before,
+body:not(.light-mode) .sos-ring::after { border:1px solid rgba(26,111,255,0.35); }
+body.light-mode .sos-ring::before,
+body.light-mode .sos-ring::after       { border:1px solid rgba(255,60,60,0.3); }
+.sos-ring::before { width:130px; height:130px; animation-delay:0s; }
+.sos-ring::after  { width:160px; height:160px; animation-delay:0.5s; }
+@keyframes expand-ring { 0%{transform:scale(0.85);opacity:0.8;}100%{transform:scale(1.2);opacity:0;} }
+
+.sos-btn {
+  width:100px; height:100px; border-radius:50%;
+  background:var(--sos-bg); border:3px solid var(--sos-border);
+  color:#ffffff;
+  font-family:var(--font-display); font-weight:800; font-size:22px; letter-spacing:3px;
+  cursor:pointer;
+  box-shadow:0 0 40px var(--sos-glow), 0 15px 35px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+  transition:all 0.2s ease; position:relative; z-index:2;
+  -webkit-user-select:none; user-select:none;
+}
+.sos-btn:hover  { transform:scale(1.05); filter:brightness(1.1); }
+.sos-btn:active { transform:scale(0.97); }
+.sos-hint { font-size:12px; color:var(--text3); text-align:center; letter-spacing:0.5px; text-transform:uppercase; font-weight:500; }
+
+/* ── SECTION CARD ── */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); margin-bottom:12px; overflow:hidden; transition:all var(--transition); }
+.card-header { padding:20px 22px 18px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; min-height:64px; }
+.card-header-left { display:flex; align-items:center; gap:12px; }
+.card-icon { width:38px; height:38px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.card-title { font-family:var(--font-display); font-size:15px; font-weight:700; letter-spacing:0.3px; color:var(--text); }
+.card-subtitle { font-size:12px; color:var(--text2); margin-top:1px; }
+.card-chevron { color:var(--text3); font-size:13px; transition:transform 0.3s ease; }
+.card.open .card-chevron { transform:rotate(180deg); }
+.card-body { padding:0 22px 20px; display:none; }
+.card.open .card-body { display:block; }
+
+/* contacts input */
+.contacts-input-row { display:flex; gap:8px; margin-bottom:12px; }
+.contacts-input-row input {
+  flex:1; padding:13px 16px;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--text);
+  font-family:var(--font-body); font-size:16px; /* prevents iOS auto-zoom */
+  outline:none; transition:border-color var(--transition); min-width:0;
+}
+.contacts-input-row input:focus { border-color:var(--blue); background:var(--surface3); }
+.contacts-input-row input::placeholder { color:var(--text3); }
+.add-btn {
+  width:46px; height:46px; border-radius:var(--radius-sm);
+  background:var(--blue); border:none; color:white; font-size:18px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:all var(--transition);
+}
+.add-btn:hover { background:#3a7af0; transform:scale(1.05); }
+.contacts-list { display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto; }
+.contacts-list::-webkit-scrollbar { width:4px; }
+.contacts-list::-webkit-scrollbar-track { background:transparent; }
+.contacts-list::-webkit-scrollbar-thumb { background:var(--border2); border-radius:10px; }
+.contact-row { display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-sm); animation:slideIn 0.3s ease; }
+@keyframes slideIn { from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);} }
+.contact-avatar { width:36px; height:36px; border-radius:50%; background:var(--blue-dim); border:1px solid rgba(79,142,247,0.25); color:var(--blue); display:flex; align-items:center; justify-content:center; font-weight:700; font-family:var(--font-display); font-size:14px; flex-shrink:0; }
+.contact-info { flex:1; min-width:0; }
+.contact-name { font-size:14px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.contact-num  { font-size:12px; color:var(--text2); margin-top:1px; }
+.delete-btn { width:34px; height:34px; border-radius:8px; background:transparent; border:1px solid var(--border); color:var(--text3); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; transition:all var(--transition); }
+.delete-btn:hover { background:var(--red-dim); border-color:rgba(255,60,60,0.3); color:var(--red); }
+.empty-state { text-align:center; padding:28px 20px; color:var(--text3); }
+.empty-state i { font-size:28px; margin-bottom:8px; display:block; }
+.empty-state p { font-size:13px; }
+
+/* ── ACTIONS GRID ── */
+.actions-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 0 4px; }
+.action-tile {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--radius); padding:20px 14px;
+  cursor:pointer; text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  transition:all 0.2s ease; position:relative; overflow:hidden;
+  min-height:90px; -webkit-user-select:none; user-select:none;
+}
+.action-tile::before { content:''; position:absolute; inset:0; border-radius:var(--radius); opacity:0; transition:opacity 0.2s ease; }
+.action-tile:hover::before { opacity:1; }
+.action-tile:hover  { transform:translateY(-3px); }
+.action-tile:active { transform:scale(0.96) translateY(0); }
+.tile-icon { width:52px; height:52px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:22px; transition:transform 0.2s ease; }
+.action-tile:hover .tile-icon { transform:scale(1.1); }
+.tile-label { font-family:var(--font-display); font-weight:700; font-size:13px; color:var(--text); letter-spacing:0.3px; }
+.tile-desc  { font-size:11px; color:var(--text2); margin-top:1px; }
+
+/* Urgent Call tile — theme-aware */
+.tile-call .tile-icon { background:var(--call-dim); color:var(--call-color); transition:background 0.4s,color 0.4s; }
+body:not(.light-mode) .tile-call:hover { border-color:rgba(255,60,60,0.25); }
+body.light-mode       .tile-call:hover { border-color:rgba(26,111,255,0.25); }
+.tile-call::before { background:linear-gradient(135deg,rgba(100,100,255,0.05),transparent); }
+body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,111,255,0.05),transparent); }
+
+.tile-red .tile-icon    { background:var(--red-dim);    color:var(--red); }
+.tile-red:hover         { border-color:rgba(255,60,60,0.25); }
+.tile-red::before       { background:linear-gradient(135deg,rgba(255,60,60,0.05),transparent); }
+.tile-blue .tile-icon   { background:var(--blue-dim);   color:var(--blue); }
+.tile-blue:hover        { border-color:rgba(79,142,247,0.25); }
+.tile-blue::before      { background:linear-gradient(135deg,rgba(79,142,247,0.05),transparent); }
+.tile-green .tile-icon  { background:var(--green-dim);  color:var(--green); }
+.tile-green:hover       { border-color:rgba(34,212,122,0.25); }
+.tile-green::before     { background:linear-gradient(135deg,rgba(34,212,122,0.05),transparent); }
+.tile-amber .tile-icon  { background:var(--amber-dim);  color:var(--amber); }
+.tile-amber:hover       { border-color:rgba(245,166,35,0.25); }
+.tile-amber::before     { background:linear-gradient(135deg,rgba(245,166,35,0.05),transparent); }
+.tile-purple .tile-icon { background:var(--purple-dim); color:var(--purple); }
+.tile-purple:hover      { border-color:rgba(167,139,250,0.25); }
+.tile-purple::before    { background:linear-gradient(135deg,rgba(167,139,250,0.05),transparent); }
+
+/* ── PANELS ── */
+.section-panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); margin-bottom:12px; overflow:hidden; display:none; animation:fadeUp 0.35s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);} }
+.section-panel.visible { display:block; }
+.panel-header { padding:18px 22px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); min-height:60px; }
+.panel-title { font-family:var(--font-display); font-weight:700; font-size:16px; color:var(--text); display:flex; align-items:center; gap:10px; }
+/* generic icon in title — grey */
+.panel-title i { color:var(--text2); font-size:14px; }
+/* RED PIN override */
+.panel-title .red-pin { color:#ff3c3c !important; font-size:16px; }
+.close-panel-btn { width:36px; height:36px; border-radius:8px; background:var(--surface2); border:1px solid var(--border); color:var(--text2); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px; transition:all var(--transition); }
+.close-panel-btn:hover { background:var(--red-dim); border-color:rgba(255,60,60,0.3); color:var(--red); transform:rotate(90deg); }
+.panel-body { padding:20px 22px; }
+
+/* map */
+.map-frame { width:100%; height:220px; border-radius:var(--radius); border:1px solid var(--border); margin-bottom:14px; display:block; }
+.btn-row { display:flex; gap:10px; }
+.btn { flex:1; padding:14px 10px; border:none; border-radius:var(--radius-sm); font-family:var(--font-display); font-weight:700; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s ease; min-height:50px; }
+.btn:hover  { transform:translateY(-2px); filter:brightness(1.1); }
+.btn:active { transform:scale(0.97); }
+.btn-blue    { background:var(--blue);    color:white; }
+.btn-green   { background:var(--green);   color:#0a1a0f; }
+.btn-red     { background:var(--red);     color:white; }
+.btn-surface { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+
+/* police stations */
+.station-card { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:10px; transition:all 0.2s ease; }
+.station-card:hover { border-color:rgba(79,142,247,0.3); transform:translateX(3px); }
+.station-header { display:flex; align-items:flex-start; gap:12px; margin-bottom:8px; }
+.station-num { width:28px; height:28px; background:var(--blue); color:white; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; font-family:var(--font-display); flex-shrink:0; }
+.station-name { font-weight:700; font-size:15px; color:var(--text); line-height:1.3; }
+.station-meta { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.station-dist { font-size:12px; color:var(--blue); font-weight:600; }
+/* red pin in station distance */
+.station-dist .red-pin { color:#ff3c3c; }
+.station-closest { font-size:11px; color:var(--amber); background:var(--amber-dim); padding:2px 8px; border-radius:100px; font-weight:600; }
+.station-address { font-size:13px; color:var(--text2); margin-bottom:12px; display:flex; align-items:flex-start; gap:6px; }
+.station-address .red-pin { margin-top:2px; font-size:11px; color:#ff3c3c; }
+.station-actions { display:flex; gap:8px; }
+.station-btn { flex:1; padding:11px; border:none; border-radius:10px; font-family:var(--font-display); font-weight:700; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all 0.2s ease; min-height:44px; }
+.station-btn:hover { transform:translateY(-2px); filter:brightness(1.1); }
+.station-btn.nav     { background:var(--green-dim); color:var(--green); border:1px solid rgba(34,212,122,0.25); }
+.station-btn.call    { background:var(--blue-dim);  color:var(--blue);  border:1px solid rgba(79,142,247,0.25); }
+.station-btn.no-call { background:var(--surface3);  color:var(--text3); border:1px solid var(--border); cursor:default; }
+.station-btn.no-call:hover { transform:none; filter:none; }
+
+.loading-state { text-align:center; padding:36px 20px; }
+.loading-state .spinner { width:40px; height:40px; border:3px solid var(--border2); border-top-color:var(--blue); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px; }
+@keyframes spin { to{transform:rotate(360deg);} }
+.loading-state p { font-size:14px; color:var(--text2); }
+
+/* info */
+.info-field { margin-bottom:14px; }
+.info-field label { display:block; font-size:12px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:7px; }
+.info-field input { width:100%; padding:13px 16px; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--text); font-family:var(--font-body); font-size:16px; outline:none; transition:border-color var(--transition); }
+.info-field input:focus { border-color:var(--purple); background:var(--surface3); }
+.info-field input::placeholder { color:var(--text3); }
+.info-display { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.info-item { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:14px; }
+.info-item:last-child { border-bottom:none; }
+.info-item-icon { width:36px; height:36px; background:var(--purple-dim); color:var(--purple); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+.info-item-label { font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:0.8px; font-weight:600; margin-bottom:2px; }
+.info-item-value { font-size:15px; font-weight:600; color:var(--text); }
+
+/* siren */
+.siren-controls { display:flex; gap:10px; }
+.siren-viz { display:flex; align-items:center; justify-content:center; gap:4px; height:48px; margin-bottom:16px; }
+.siren-bar { width:4px; background:var(--red); border-radius:100px; height:10px; opacity:0.3; transition:opacity 0.3s ease; }
+.siren-viz.active .siren-bar { opacity:1; animation:wave 0.6s ease-in-out infinite; }
+.siren-bar:nth-child(1){animation-delay:0s;}.siren-bar:nth-child(2){animation-delay:0.1s;}.siren-bar:nth-child(3){animation-delay:0.2s;}.siren-bar:nth-child(4){animation-delay:0.3s;}.siren-bar:nth-child(5){animation-delay:0.2s;}.siren-bar:nth-child(6){animation-delay:0.1s;}.siren-bar:nth-child(7){animation-delay:0s;}
+@keyframes wave { 0%,100%{height:10px;}50%{height:38px;} }
+
+/* contacts popup */
+.contacts-popup { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); margin-bottom:12px; overflow:hidden; display:none; animation:fadeUp 0.35s ease; }
+.contacts-popup.visible { display:block; }
+.popup-header { padding:16px 20px; background:linear-gradient(90deg,var(--blue),#3a7af0); display:flex; align-items:center; gap:12px; }
+.popup-header i { color:rgba(255,255,255,0.8); font-size:18px; }
+.popup-header h3 { font-family:var(--font-display); font-weight:700; font-size:16px; color:white; flex:1; }
+.popup-badge { background:rgba(255,255,255,0.2); color:white; font-size:12px; font-weight:700; padding:4px 10px; border-radius:100px; }
+.popup-body { padding:16px 20px; }
+.popup-contact-row { display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:8px; transition:all 0.2s ease; }
+.popup-contact-row:last-child { margin-bottom:0; }
+.popup-contact-row:hover { border-color:rgba(79,142,247,0.3); transform:translateX(3px); }
+.popup-avatar { width:40px; height:40px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-family:var(--font-display); font-size:16px; flex-shrink:0; }
+.popup-contact-name { font-weight:700; font-size:15px; color:var(--text); }
+.popup-contact-num { font-size:13px; color:var(--text2); display:flex; align-items:center; gap:5px; margin-top:1px; }
+.popup-contact-num i { font-size:10px; color:var(--text3); }
+.popup-footer { padding:12px 20px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; font-size:12px; color:var(--text3); }
+.popup-timer-bar { width:80px; height:3px; background:var(--border2); border-radius:10px; overflow:hidden; }
+.popup-timer-fill { height:100%; width:100%; background:var(--blue); animation:shrink 8s linear forwards; }
+@keyframes shrink { from{width:100%;}to{width:0%;} }
+
+/* toast */
+.toast {
+  position:fixed;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 24px);
+  left:50%; transform:translateX(-50%) translateY(80px);
+  background:var(--surface2); border:1px solid var(--border2);
+  border-radius:100px; padding:13px 22px;
+  display:flex; align-items:center; gap:10px;
+  font-size:14px; font-weight:500; color:var(--text);
+  z-index:10000;
+  transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s ease;
+  opacity:0; white-space:nowrap; max-width:calc(100vw - 32px);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  box-shadow:0 10px 40px rgba(0,0,0,0.4),0 0 0 1px var(--border2);
+}
+.toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+.toast-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.toast-dot.red   { background:var(--red); }
+.toast-dot.green { background:var(--green); }
+.toast-dot.blue  { background:var(--blue); }
+.toast-dot.amber { background:var(--amber); }
+
+/* fake call */
+.fake-call-screen { position:fixed; inset:0; background:#0a0a10; display:none; flex-direction:column; z-index:99999; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif; color:white; }
+.fake-call-screen.active { display:flex; }
+.fake-call-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 30%,rgba(79,142,247,0.15),transparent 60%); }
+.fake-status { display:flex; justify-content:space-between; align-items:center; padding:calc(env(safe-area-inset-top,16px) + 8px) 28px 0; font-size:16px; font-weight:600; position:relative; z-index:1; }
+.fake-status-right { display:flex; gap:8px; align-items:center; }
+.bat-body { width:22px; height:11px; border:1.5px solid white; border-radius:3px; position:relative; display:flex; align-items:center; padding:1.5px; }
+.bat-body::after { content:''; position:absolute; right:-4px; top:2px; width:2px; height:5px; background:white; border-radius:1px; }
+.bat-fill { background:#22c55e; flex:1; border-radius:1px; height:100%; }
+.fake-caller-area { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 30px; position:relative; z-index:1; margin-top:-40px; }
+/* ── replaced emoji with real image ── */
+.fake-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:20px; box-shadow:0 0 60px rgba(79,142,247,0.4); border:3px solid rgba(255,255,255,0.15); background:#1a2a3a; }
+.fake-name { font-size:38px; font-weight:300; letter-spacing:0.5px; margin-bottom:8px; }
+.fake-sub  { font-size:18px; opacity:0.6; font-weight:300; }
+.fake-actions { display:flex; justify-content:center; gap:80px; padding:0 30px calc(env(safe-area-inset-bottom,0px) + 60px); position:relative; z-index:1; }
+.fake-btn { width:78px; height:78px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; cursor:pointer; transition:all 0.2s ease; backdrop-filter:blur(10px); }
+.fake-btn:active { transform:scale(0.9); }
+.fake-decline { background:#ff3b30; box-shadow:0 10px 30px rgba(255,59,48,0.5); transform:rotate(135deg); }
+.fake-decline i { transform:rotate(-135deg); }
+.fake-accept  { background:#30b158; box-shadow:0 10px 30px rgba(48,177,88,0.5); }
+
+/* credit */
+.credit-section { margin-bottom:12px; }
+.credit-toggle { width:100%; padding:15px 20px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); color:var(--text2); font-family:var(--font-body); font-size:14px; font-weight:500; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:all var(--transition); min-height:50px; }
+.credit-toggle:hover { border-color:var(--border2); color:var(--text); }
+.credit-panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-top:8px; display:none; animation:fadeUp 0.3s ease; }
+.credit-panel.open { display:block; }
+.credit-row { display:flex; align-items:center; gap:14px; padding:10px 0; border-bottom:1px solid var(--border); }
+.credit-row:last-child { border-bottom:none; }
+.credit-row-icon { width:32px; height:32px; background:var(--surface2); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text2); font-size:14px; flex-shrink:0; }
+.credit-label { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:2px; font-weight:600; }
+.credit-value { font-size:14px; color:var(--text); font-weight:600; }
+
+/* footer */
+.footer { text-align:center; padding:24px 0 12px; border-top:1px solid var(--border); margin-top:12px; }
+.qr-wrap { display:inline-block; padding:10px; background:var(--surface); border:1px solid var(--border); border-radius:16px; margin-bottom:12px; }
+.qr-wrap img { width:80px; height:80px; border-radius:8px; display:block; }
+.footer-text { font-size:12px; color:var(--text3); }
+
+/* section label */
+.section-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text3); margin:20px 0 10px; padding:0 2px; }
+
+/* scrollbar */
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border2); border-radius:10px; }
+</style>
 </head>
 <body>
+
+<div class="ambient"></div>
+
 <div class="container">
-  <!-- header -->
-  <div class="top-header">
-    <div class="logo-area">
-      <h1>QUICK CALL</h1>
-      <div class="beta-badge">Clearing browser history will reset your information.</div>    
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon"><i class="fas fa-phone"></i></div>
+        <div class="logo-text">Quick<span>Call</span></div>
+      </div>
+      <div class="header-controls">
+        <button class="theme-btn" id="themeBtn" title="Toggle theme">
+          <i class="fas fa-sun" id="themeIcon"></i>
+        </button>
+      </div>
     </div>
-    <div class="theme-toggle">
-      <button class="theme-btn" id="themeBtn">
-        <i class="fas fa-sun"></i> <span>DAY / NIGHT</span> <i class="fas fa-moon"></i>
-      </button>
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      <span>Safety System Active</span>
     </div>
   </div>
 
-  <!-- Contacts Management Section -->
-  <div class="section" id="contactsSection">
-    <h2><i class="fas fa-address-book"></i> Emergency Contacts</h2>
-    <div class="contacts-section">
-      <div class="contact-input-group">
-        <input type="text" id="contactName" placeholder="Name:">
-        <input type="tel" id="contactNumber" placeholder="Phone No:">
-        <button class="add-contact-btn" id="addContact"><i class="fas fa-plus"></i></button>
+  <!-- SOS -->
+  <div class="sos-wrapper">
+    <div class="sos-ring">
+      <button class="sos-btn" id="sosPanicBtn">SOS</button>
+    </div>
+    <div class="sos-hint">Tap to send emergency alert · Shake to trigger siren</div>
+  </div>
+
+  <!-- EMERGENCY CONTACTS -->
+  <div class="section-label">Emergency Contacts</div>
+  <div class="card open" id="contactsCard">
+    <div class="card-header" id="contactsToggle">
+      <div class="card-header-left">
+        <div class="card-icon" style="background:var(--blue-dim);color:var(--blue)"><i class="fas fa-address-book"></i></div>
+        <div>
+          <div class="card-title">Contacts</div>
+          <div class="card-subtitle" id="contactsSubtitle">No contacts added</div>
+        </div>
+      </div>
+      <i class="fas fa-chevron-down card-chevron"></i>
+    </div>
+    <div class="card-body">
+      <div class="contacts-input-row">
+        <input type="text" id="contactName" placeholder="Name">
+        <input type="tel"  id="contactNumber" placeholder="Phone number">
+        <button class="add-btn" id="addContactBtn"><i class="fas fa-plus"></i></button>
       </div>
       <div class="contacts-list" id="contactsList"></div>
     </div>
   </div>
 
-  <!-- SOS PANIC BUTTON -->
-  <button class="sos-button" id="sosPanicBtn">
-    SOS
-  </button>
+  <!-- QUICK ACTIONS -->
+  <div class="section-label">Quick Actions</div>
+  <div class="actions-grid">
+    <div class="action-tile tile-call" id="tileCall">
+      <div class="tile-icon"><i class="fas fa-phone-volume"></i></div>
+      <div><div class="tile-label">Urgent Call</div><div class="tile-desc">Call 999</div></div>
+    </div>
+    <div class="action-tile tile-blue" id="tileLocation">
+      <div class="tile-icon"><i class="fas fa-location-dot"></i></div>
+      <div><div class="tile-label">Location</div><div class="tile-desc">Show on map</div></div>
+    </div>
+    <div class="action-tile tile-green" id="tileWhatsapp">
+      <div class="tile-icon"><i class="fab fa-whatsapp"></i></div>
+      <div><div class="tile-label">Alert</div><div class="tile-desc">Share via WA</div></div>
+    </div>
+    <div class="action-tile tile-amber" id="tileFake">
+      <div class="tile-icon"><i class="fas fa-phone"></i></div>
+      <div><div class="tile-label">Fake Call</div><div class="tile-desc">Escape tool</div></div>
+    </div>
+    <div class="action-tile tile-red" id="tileSiren">
+      <div class="tile-icon"><i class="fas fa-bell"></i></div>
+      <div><div class="tile-label">Siren</div><div class="tile-desc">Loud alarm</div></div>
+    </div>
+    <div class="action-tile tile-blue" id="tilePolice">
+      <div class="tile-icon"><i class="fas fa-shield-halved"></i></div>
+      <div><div class="tile-label">Police</div><div class="tile-desc">Nearest station</div></div>
+    </div>
+    <div class="action-tile tile-purple" id="tileInfo">
+      <div class="tile-icon"><i class="fas fa-id-card"></i></div>
+      <div><div class="tile-label">My Info</div><div class="tile-desc">Medical data</div></div>
+    </div>
+    <div class="action-tile tile-green" id="tileContacts">
+      <div class="tile-icon"><i class="fas fa-users"></i></div>
+      <div><div class="tile-label">My Contacts</div><div class="tile-desc">View saved</div></div>
+    </div>
+  </div>
 
-  <!-- main section with cards -->
-  <div class="section" id="mainSection">
-    <div class="service-grid">
-      <div class="service-card" id="cardEmergency">
-        <i class="fas fa-triangle-exclamation"></i>
-        Urgent Call
+  <!-- MAP PANEL — red pin icon -->
+  <div class="section-panel" id="mapPanel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <i class="fas fa-map-pin red-pin"></i> Current Location
       </div>
-      <div class="service-card" id="cardLocation">
-        <i class="fas fa-location-dot"></i>
-         Location
-      </div>
-      <div class="service-card" id="cardWhatsapp">
-        <i class="fab fa-whatsapp"></i>
-        Alert
-      </div>
-      <div class="service-card" id="cardFake">
-        <i class="fas fa-phone"></i>
-        Fake Call
-      </div>
-      <div class="service-card" id="cardSiren">
-        <i class="fas fa-bell"></i>
-        Siren Alarm
-      </div>
-      <!-- Police Station Feature -->
-      <div class="service-card" id="cardPolice">
-        <i class="fas fa-shield-alt"></i>
-        Police
-      </div>
-      <!-- Your Info Feature -->
-      <div class="service-card" id="cardInfo">
-        <i class="fas fa-id-card"></i>
-        Your Info
-      </div>
-      <div class="service-card" id="cardContacts">
-        <i class="fas fa-users"></i>
-        My Contacts
+      <button class="close-panel-btn" id="closeMapBtn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="panel-body">
+      <iframe id="mapFrame" class="map-frame" allowfullscreen="" loading="lazy"></iframe>
+      <div class="btn-row">
+        <button class="btn btn-blue"  id="openMapsBtn"><i class="fas fa-map"></i> Open Maps</button>
+        <button class="btn btn-green" id="navigateBtn"><i class="fas fa-route"></i> Navigate</button>
       </div>
     </div>
   </div>
 
-  <!-- Police Station Section with Close Button -->
-  <div class="section" id="policeSection">
-    <div class="section-close" id="closePoliceBtn">
-      <i class="fas fa-times"></i>
+  <!-- POLICE PANEL — red pin icon -->
+  <div class="section-panel" id="policePanel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <i class="fas fa-map-pin red-pin"></i> Nearest Police Stations
+      </div>
+      <button class="close-panel-btn" id="closePoliceBtn"><i class="fas fa-times"></i></button>
     </div>
-    <h2><i class="fas fa-map-pin" style="color: #2563eb;"></i> Nearest Stations</h2>
-    <div id="policeLoading" class="police-loading">
-      <i class="fas fa-circle-notch"></i>
-      <p style="margin-top: 15px;">Finding nearest stations.</p>
-    </div>
-    <div id="policeStationsList" style="display: none;"></div>
-    <div id="policeError" style="text-align: center; padding: 30px; color: #dc2626; display: none;">
-      <i class="fas fa-exclamation-triangle" style="font-size: 40px;"></i>
-      <p style="margin-top: 15px;">Could not find stations.</p>
-    </div>
-    <div class="map-buttons" style="margin-top: 20px;">
-      <button class="open-btn" id="refreshPoliceBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
-      <button class="nav-btn" id="openPoliceMapsBtn"><i class="fas fa-map"></i> Open Maps</button>
+    <div class="panel-body">
+      <div id="policeLoading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Locating nearby stations…</p>
+      </div>
+      <div id="policeList" style="display:none;"></div>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn btn-surface" id="refreshPoliceBtn"><i class="fas fa-rotate-right"></i> Refresh</button>
+        <button class="btn btn-blue"    id="openPoliceMapsBtn"><i class="fas fa-map"></i> Maps</button>
+      </div>
     </div>
   </div>
 
-  <!-- Your Info Section -->
-  <div class="section" id="infoSection">
-    <h2><i class="fas fa-id-card"></i> Your Information</h2>
-    <div id="infoForm" class="info-form">
-      <div class="info-field">
-        <label>Full Name:</label>
-        <input type="text" id="infoName" placeholder="Enter your full name">
-      </div>
-      <div class="info-field">
-        <label>Home Address:</label>
-        <input type="text" id="infoAddress" placeholder="Enter your home address">
-      </div>
-      <div class="info-field">
-        <label>Blood Group:</label>
-        <input type="text" id="infoBlood" placeholder="e.g., O+">
-      </div>
-      <div class="info-field">
-        <label>Emergency Contact:</label>
-        <input type="tel" id="infoEmergency" placeholder="Phone number">
-      </div>
-      <button class="save-info-btn" id="saveInfoBtn"><i class="fas fa-save"></i> Save Information</button>
+  <!-- SIREN PANEL -->
+  <div class="section-panel" id="sirenPanel">
+    <div class="panel-header">
+      <div class="panel-title"><i class="fas fa-bell"></i> Siren Alarm</div>
+      <button class="close-panel-btn" id="closeSirenBtn"><i class="fas fa-times"></i></button>
     </div>
-    <div id="infoDisplay" style="display: none;"></div>
+    <div class="panel-body">
+      <div class="siren-viz" id="sirenViz">
+        <div class="siren-bar"></div><div class="siren-bar"></div><div class="siren-bar"></div>
+        <div class="siren-bar"></div><div class="siren-bar"></div><div class="siren-bar"></div>
+        <div class="siren-bar"></div>
+      </div>
+      <div class="siren-controls">
+        <button class="btn btn-red"     id="sirenOnBtn"><i class="fas fa-volume-up"></i> Start Siren</button>
+        <button class="btn btn-surface" id="sirenOffBtn"><i class="fas fa-volume-mute"></i> Stop</button>
+      </div>
+    </div>
   </div>
 
-  <!-- PROFESSIONALLY REDESIGNED SAVED CONTACTS CARD -->
-  <div class="saved-contacts-card" id="savedContactsCard">
-    <div class="card-header">
+  <!-- INFO PANEL -->
+  <div class="section-panel" id="infoPanel">
+    <div class="panel-header">
+      <div class="panel-title"><i class="fas fa-id-card"></i> Your Information</div>
+      <button class="close-panel-btn" id="closeInfoBtn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="panel-body">
+      <div id="infoFormContainer">
+        <div class="info-field">
+          <label>Full Name</label>
+          <input type="text" id="infoName"      placeholder="Enter your full name"   autocomplete="name">
+        </div>
+        <div class="info-field">
+          <label>Home Address</label>
+          <input type="text" id="infoAddress"   placeholder="Enter your home address" autocomplete="street-address">
+        </div>
+        <div class="info-field">
+          <label>Blood Group</label>
+          <input type="text" id="infoBlood"     placeholder="e.g. O+">
+        </div>
+        <div class="info-field">
+          <label>Emergency Contact</label>
+          <input type="tel"  id="infoEmergency" placeholder="Phone number"            autocomplete="tel">
+        </div>
+        <div class="btn-row" style="margin-top:4px;">
+          <button class="btn btn-surface" id="closeInfoFormBtn"><i class="fas fa-times"></i> Cancel</button>
+          <button class="btn btn-blue"    id="saveInfoBtn"><i class="fas fa-save"></i> Save Info</button>
+        </div>
+      </div>
+      <div id="infoDisplayContainer" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- MY CONTACTS POPUP -->
+  <div class="contacts-popup" id="contactsPopup">
+    <div class="popup-header">
       <i class="fas fa-address-card"></i>
       <h3>Saved Contacts</h3>
-      <span class="header-badge" id="contactCountBadge">0</span>
+      <span class="popup-badge" id="popupBadge">0</span>
     </div>
-    <div class="card-body">
-      <div class="contacts-grid" id="savedContactsGrid">
-        <!-- Contacts will be populated dynamically -->
+    <div class="popup-body" id="popupBody"></div>
+    <div class="popup-footer">
+      <span><i class="fas fa-clock"></i> Closes in 8s</span>
+      <div class="popup-timer-bar"><div class="popup-timer-fill" id="popupTimer"></div></div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section-label">About</div>
+  <div class="credit-section">
+    <button class="credit-toggle" id="creditToggle">
+      <i class="fas fa-info-circle"></i> Credits &amp; Version
+      <i class="fas fa-chevron-down" id="creditChevron" style="margin-left:auto;transition:transform 0.3s;"></i>
+    </button>
+    <div class="credit-panel" id="creditPanel">
+      <div class="credit-row">
+        <div class="credit-row-icon"><i class="fas fa-user"></i></div>
+        <div><div class="credit-label">Developer</div><div class="credit-value">Kabya Saha</div></div>
+      </div>
+      <div class="credit-row">
+        <div class="credit-row-icon"><i class="fas fa-microchip"></i></div>
+        <div><div class="credit-label">AI Engine</div><div class="credit-value">ChatGPT · DeepSeek · Claude</div></div>
+      </div>
+      <div class="credit-row">
+        <div class="credit-row-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <div><div class="credit-label">Hosted on</div><div class="credit-value">InfinityFree</div></div>
+      </div>
+      <div class="credit-row">
+        <div class="credit-row-icon"><i class="fas fa-code-branch"></i></div>
+        <div><div class="credit-label">Version</div><div class="credit-value">3.0.0</div></div>
+      </div>
+      <div class="credit-row">
+        <div class="credit-row-icon"><i class="fas fa-calendar"></i></div>
+        <div><div class="credit-label">Updated</div><div class="credit-value">05 March 2026</div></div>
       </div>
     </div>
-    <div class="card-footer">
-      <div class="footer-timer">
-        <i class="fas fa-clock"></i>
-        <span>Auto-closing in 8s</span>
-      </div>
-      <div class="timer-bar">
-        <div class="timer-fill"></div>
-      </div>
-    </div>
   </div>
 
-  <!-- Siren Control Section -->
-  <div class="section" id="sirenSection" style="display: none;">
-    <h2><i class="fas fa-bell"></i> Siren Alarm</h2>
-    <div class="siren-control">
-      <button class="siren-btn siren-on" id="sirenOn"><i class="fas fa-volume-up"></i> START</button>
-      <button class="siren-btn siren-off" id="sirenOff"><i class="fas fa-volume-mute"></i> STOP</button>
-    </div>
-  </div>
-
-  <!-- map section -->
-  <div class="section" id="mapSection">
-    <h2><i class="fas fa-map-pin"></i> Current Location</h2>
-    <iframe id="mapFrame" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-    <div class="map-buttons">
-      <button class="open-btn" id="openMapsBtn"><i class="fas fa-map"></i> Open Maps</button>
-      <button class="nav-btn" id="navigateBtn"><i class="fas fa-route"></i> Navigate</button>
-    </div>
-  </div>
-
-  <!-- credit button + popup -->
- <div class="credit-wrapper">
-    <button class="credit-btn" id="creditToggle"><i class="fas fa-info-circle"></i> CREDIT</button>
-  </div>
-  <div class="credit-popup" id="creditPopup">
-    <ul style="list-style: none; padding: 0; margin: 0;">
-      <li style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;"><i class="fas fa-user-circle" style="width: 20px; text-align: center;"></i> <span style="flex: 1;">Developer : Kabya Saha</span></li>
-      <li style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;"><i class="fas fa-microchip" style="width: 20px; text-align: center;"></i> <span style="flex: 1;">AI Engine : ChatGPT · DeepSeek</span></li>
-      <li style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;"><i class="fas fa-cloud-upload-alt" style="width: 20px; text-align: center;"></i> <span style="flex: 1;">Hosted on : InfinityFree</span></li>
-      <li style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;"><i class="fas fa-code-branch" style="width: 20px; text-align: center;"></i> <span style="flex: 1;">Version : 2.1.0</span></li>
-      <li style="display: flex; align-items: center; gap: 12px;"><i class="fas fa-calendar-alt" style="width: 20px; text-align: center;"></i> <span style="flex: 1;">Release Date : 03/03/2026</span></li>
-    </ul>
-  </div>
-
-  <!-- footer with qr code -->
-  <footer class="page-footer">
-    <div class="qr-code">
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="qr-wrap">
       <img src="https://images4.imagebam.com/54/e7/73/ME1B1XIM_o.jpg" alt="QR Code">
     </div>
-    <p>© 2026 All Rights Reserved.</p>
+    <div class="footer-text">© 2026 QuickCall · All Rights Reserved</div>
   </footer>
+
+</div><!-- /container -->
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-dot" id="toastDot"></div>
+  <span id="toastMsg"></span>
 </div>
 
-<!-- TOAST NOTIFICATION -->
-<div class="advanced-toast" id="advancedToast">
-  <div class="toast-close" id="toastClose"><i class="fas fa-times"></i></div>
-  <div class="toast-content">
-    <div class="toast-icon" id="toastIcon">
-      <i class="fas fa-exclamation-triangle"></i>
-    </div>
-    <div class="toast-text">
-      <div class="toast-title" id="toastTitle">Attention</div>
-      <div class="toast-message" id="toastMessage">message</div>
-    </div>
-  </div>
-  <div class="toast-progress">
-    <div class="toast-progress-bar" id="toastProgress"></div>
-  </div>
-</div>
-
-<!-- FAKE CALL SCREEN -->
+<!-- FAKE CALL — real image -->
 <div class="fake-call-screen" id="fakeCallScreen">
-  <div class="call-status-bar">
-    <div class="status-left" id="callStatusTime">9:41</div>
-    <div class="status-right">
+  <div class="fake-call-bg"></div>
+  <div class="fake-status">
+    <span id="fakeTime">9:41</span>
+    <div class="fake-status-right">
       <i class="fas fa-signal"></i>
       <i class="fas fa-wifi"></i>
-      <div class="battery-symbol">
-        <div class="battery-body"><div class="battery-fill"></div></div>
-      </div>
+      <div class="bat-body"><div class="bat-fill"></div></div>
     </div>
   </div>
-  <div class="caller-container">
-    <img src="https://cdn-icons-png.freepik.com/256/3177/3177440.png" alt="Maa" class="caller-photo">
-    <div class="caller-name">Maa</div>
-    <div class="caller-sub">Incoming call</div>
-    <div class="call-actions-row">
-      <div class="call-btn-real decline" onclick="closeFakeCall()"><i class="fas fa-phone-slash"></i></div>
-      <div class="call-btn-real accept" onclick="closeFakeCall()"><i class="fas fa-phone"></i></div>
-    </div>
-    <div class="call-footer-text">Slide to answer</div>
+  <div class="fake-caller-area">
+    <img src="https://cdn-icons-png.freepik.com/256/3177/3177440.png" alt="Maa" class="fake-photo">
+    <div class="fake-name">Maa</div>
+    <div class="fake-sub">Incoming call…</div>
+  </div>
+  <div class="fake-actions">
+    <div class="fake-btn fake-decline" onclick="closeFakeCall()"><i class="fas fa-phone-slash"></i></div>
+    <div class="fake-btn fake-accept"  onclick="closeFakeCall()"><i class="fas fa-phone"></i></div>
   </div>
 </div>
 
 <script>
-  (function() {
-    // ========== THEME TOGGLE ==========
-    const themeBtn = document.getElementById('themeBtn');
-    themeBtn.addEventListener('click', function() {
-      document.body.classList.toggle('night-mode');
-      const iconSun = document.querySelector('#themeBtn i:first-child');
-      const iconMoon = document.querySelector('#themeBtn i:last-child');
-      if (document.body.classList.contains('night-mode')) {
-        iconSun.style.color = '#f1c40f';
-        iconMoon.style.color = '#b0c4de';
-      } else {
-        iconSun.style.color = '#f59e0b';
-        iconMoon.style.color = '#5f7d9c';
-      }
+(function() {
+  let contacts           = JSON.parse(localStorage.getItem('qc_contacts') || '[]');
+  let userInfo           = JSON.parse(localStorage.getItem('qc_info')     || 'null');
+  let lat = null, lon = null;
+  let sirenActive        = false;
+  let audioCtx = null, sirenOsc = null, sirenInterval = null;
+  let fakeCallTimer = null, contactsPopupTimeout = null, infoAutoClose = null, toastTimer = null;
+
+  // ── THEME ──
+  const themeBtn  = document.getElementById('themeBtn');
+  const themeIcon = document.getElementById('themeIcon');
+  let isLight = localStorage.getItem('qc_theme') === 'light';
+  function applyTheme() {
+    document.body.classList.toggle('light-mode', isLight);
+    themeIcon.className = isLight ? 'fas fa-moon' : 'fas fa-sun';
+    localStorage.setItem('qc_theme', isLight ? 'light' : 'dark');
+  }
+  applyTheme();
+  themeBtn.addEventListener('click', () => { isLight = !isLight; applyTheme(); });
+
+  // ── TOAST ──
+  function toast(msg, type = 'green') {
+    const el = document.getElementById('toast');
+    document.getElementById('toastDot').className = 'toast-dot ' + type;
+    document.getElementById('toastMsg').textContent = msg;
+    el.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+  }
+
+  // ── CONTACTS ──
+  function saveContacts() { localStorage.setItem('qc_contacts', JSON.stringify(contacts)); renderContacts(); updateSubtitle(); }
+  function renderContacts() {
+    const list = document.getElementById('contactsList');
+    if (!contacts.length) { list.innerHTML = '<div class="empty-state"><i class="fas fa-address-book"></i><p>No contacts yet — add one above</p></div>'; return; }
+    list.innerHTML = contacts.map((c,i) => `
+      <div class="contact-row">
+        <div class="contact-avatar">${c.name.charAt(0).toUpperCase()}</div>
+        <div class="contact-info"><div class="contact-name">${c.name}</div><div class="contact-num">${c.number}</div></div>
+        <button class="delete-btn" onclick="deleteContact(${i})"><i class="fas fa-trash"></i></button>
+      </div>`).join('');
+  }
+  window.deleteContact = function(i) { contacts.splice(i,1); saveContacts(); toast('Contact removed','red'); };
+  function updateSubtitle() {
+    document.getElementById('contactsSubtitle').textContent = contacts.length === 0 ? 'No contacts added' : contacts.length + ' contact' + (contacts.length > 1 ? 's' : '') + ' saved';
+    document.getElementById('popupBadge').textContent = contacts.length;
+  }
+  document.getElementById('addContactBtn').addEventListener('click', () => {
+    const name = document.getElementById('contactName').value.trim();
+    const number = document.getElementById('contactNumber').value.trim();
+    if (!name || !number) { toast('Fill in both fields','amber'); return; }
+    contacts.push({name,number}); saveContacts();
+    document.getElementById('contactName').value = ''; document.getElementById('contactNumber').value = '';
+    toast('Contact saved ✓','green');
+  });
+  document.getElementById('contactsToggle').addEventListener('click', () => document.getElementById('contactsCard').classList.toggle('open'));
+
+  // ── SOS ──
+  document.getElementById('sosPanicBtn').addEventListener('click', triggerSOS);
+  function triggerSOS() {
+    if (!contacts.length) { toast('Add emergency contacts first','red'); return; }
+    const send = link => contacts.forEach(c => {
+      let msg = `⛔ EMERGENCY SOS from QuickCall!\n\nStatus: DANGER — Immediate help needed!\nRecipient: ${c.name}\nTime: ${new Date().toLocaleTimeString()}`;
+      if (link) msg += `\nLocation: ${link}`;
+      msg += `\n\nPlease call for help immediately!`;
+      window.location.href = `sms:${c.number}?body=${encodeURIComponent(msg)}`;
     });
+    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(p => send(`https://www.google.com/maps/search/?api=1&query=${p.coords.latitude},${p.coords.longitude}`), () => send(null));
+    else send(null);
+  }
 
-    // ========== TOAST SYSTEM ==========
-    const toast = document.getElementById('advancedToast');
-    const toastIconDiv = document.getElementById('toastIcon');
-    const toastTitle = document.getElementById('toastTitle');
-    const toastMessage = document.getElementById('toastMessage');
-    const toastProgress = document.getElementById('toastProgress');
-    const toastClose = document.getElementById('toastClose');
-    let hideTimeout;
+  // ── LOCATION ──
+  function getLocation(cb) {
+    if (!navigator.geolocation) { toast('Geolocation not supported','red'); cb&&cb(false); return; }
+    navigator.geolocation.getCurrentPosition(pos => {
+      lat = pos.coords.latitude; lon = pos.coords.longitude;
+      document.getElementById('mapFrame').src = `https://www.google.com/maps?q=${lat},${lon}&output=embed&z=17`;
+      showPanel('mapPanel'); toast('Location loaded ✓','green'); cb&&cb(true);
+    }, () => { toast('Location access denied','red'); cb&&cb(false); });
+  }
+  document.getElementById('tileLocation').addEventListener('click', () => getLocation());
+  document.getElementById('openMapsBtn').addEventListener('click',  () => lat ? window.open(`https://www.google.com/maps?q=${lat},${lon}`) : getLocation());
+  document.getElementById('navigateBtn').addEventListener('click',  () => lat ? window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`) : getLocation());
+  document.getElementById('closeMapBtn').addEventListener('click',  () => hidePanel('mapPanel'));
 
-    function showToast({ title = 'Attention', message = '', iconType = 'attention', duration = 6000 }) {
-      if (hideTimeout) clearTimeout(hideTimeout);
-      
-      toastIconDiv.className = 'toast-icon';
-      toastProgress.className = 'toast-progress-bar';
-      
-      if (iconType === 'attention') {
-        toastIconDiv.classList.add('attention');
-        toastIconDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-        toastProgress.style.background = 'linear-gradient(90deg, #dc2626, #ef4444)';
-      } else if (iconType === 'success') {
-        toastIconDiv.classList.add('success');
-        toastIconDiv.innerHTML = '<i class="fas fa-check-circle"></i>';
-        toastProgress.style.background = 'linear-gradient(90deg, #22c55e, #4ade80)';
-      } else if (iconType === 'warning') {
-        toastIconDiv.classList.add('warning');
-        toastIconDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-        toastProgress.style.background = 'linear-gradient(90deg, #f59e0b, #f97316)';
-      }
+  // ── WHATSAPP ALERT ──
+  document.getElementById('tileWhatsapp').addEventListener('click', shareLocation);
+  function shareLocation() {
+    const send = link => { let msg = `⛔ I need your help!\n\nStatus: Possible danger\nTime: ${new Date().toLocaleTimeString()}`; if (link) msg += `\nLocation: ${link}`; window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank'); };
+    if (lat && lon) send(`https://www.google.com/maps/search/?api=1&query=${lat.toFixed(4)},${lon.toFixed(4)}`);
+    else getLocation(ok => { if (ok && lat) send(`https://www.google.com/maps/search/?api=1&query=${lat.toFixed(4)},${lon.toFixed(4)}`); });
+  }
 
-      toastTitle.innerText = title;
-      toastMessage.innerText = message;
+  // ── FAKE CALL ──
+  document.getElementById('tileFake').addEventListener('click', startFakeCall);
+  function startFakeCall() {
+    document.getElementById('fakeCallScreen').classList.add('active');
+    updateFakeTime(); fakeCallTimer = setInterval(updateFakeTime, 1000);
+    try { const a = new Audio('https://files.catbox.moe/tx8v8n.mp3'); a.loop=true; a.play().catch(()=>{}); window._fakeRing=a; } catch(e){}
+  }
+  function updateFakeTime() {
+    const d=new Date(); let h=d.getHours(),m=d.getMinutes().toString().padStart(2,'0'); const ap=h>=12?'PM':'AM'; h=h%12||12;
+    document.getElementById('fakeTime').textContent=`${h}:${m} ${ap}`;
+  }
+  window.closeFakeCall = function() {
+    document.getElementById('fakeCallScreen').classList.remove('active');
+    clearInterval(fakeCallTimer);
+    if (window._fakeRing) { window._fakeRing.pause(); window._fakeRing=null; }
+  };
+  document.addEventListener('keydown', e => { if (e.key==='Escape') closeFakeCall(); });
 
-      toastProgress.style.animation = 'none';
-      toastProgress.offsetHeight;
-      toastProgress.style.animation = `progressShrink ${duration/1000}s linear forwards`;
-
-      toast.classList.add('show');
-
-      hideTimeout = setTimeout(() => {
-        toast.classList.remove('show');
-      }, duration);
-    }
-
-    toastClose.addEventListener('click', function() {
-      toast.classList.remove('show');
-      if (hideTimeout) clearTimeout(hideTimeout);
+  // ── SIREN ──
+  document.getElementById('tileSiren').addEventListener('click',   () => { showPanel('sirenPanel'); startSiren(); });
+  document.getElementById('sirenOnBtn').addEventListener('click',  startSiren);
+  document.getElementById('sirenOffBtn').addEventListener('click', stopSiren);
+  document.getElementById('closeSirenBtn').addEventListener('click', () => { stopSiren(); hidePanel('sirenPanel'); });
+  function startSiren() {
+    if (sirenActive) return; sirenActive=true;
+    document.getElementById('sirenViz').classList.add('active');
+    try {
+      audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+      audioCtx.resume().then(() => {
+        sirenOsc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+        sirenOsc.type='sawtooth'; sirenOsc.frequency.value=600; gain.gain.value=0.6;
+        sirenOsc.connect(gain); gain.connect(audioCtx.destination); sirenOsc.start();
+        let f=400; sirenInterval=setInterval(()=>{ f=f===400?800:400; sirenOsc.frequency.setValueAtTime(f,audioCtx.currentTime); },350);
+      });
+    } catch(e) {}
+    toast('Siren activated','red'); showPanel('sirenPanel');
+  }
+  function stopSiren() {
+    if (!sirenActive) return; sirenActive=false;
+    document.getElementById('sirenViz').classList.remove('active');
+    try { sirenOsc&&sirenOsc.stop(); } catch(e) {}
+    sirenOsc=null; clearInterval(sirenInterval); sirenInterval=null;
+    toast('Siren stopped','blue');
+  }
+  let lastShake=0;
+  if (window.DeviceMotionEvent) {
+    window.addEventListener('devicemotion', e => {
+      const a=e.accelerationIncludingGravity; if(!a)return;
+      const m=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z);
+      if (m>22&&Date.now()-lastShake>2000) { lastShake=Date.now(); startSiren(); }
     });
+  }
 
-    // ========== STATE ==========
-    let currentLat = null, currentLon = null;
-    let emergencyContacts = JSON.parse(localStorage.getItem('emergencyContacts')) || [];
-    let userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
-    let sirenAudio = null;
-    let sirenInterval = null;
-    let fakeCallInterval = null;
-    let currentRingtone = null;
-    let contactsCardTimeout = null;
-    let infoCardTimeout = null;
-    let audioContext = null;
-    
-    const mapSection = document.getElementById('mapSection');
-    const mapFrame = document.getElementById('mapFrame');
-    const sirenSection = document.getElementById('sirenSection');
-    const ringtoneURL = "https://files.catbox.moe/tx8v8n.mp3";
-    const savedContactsCard = document.getElementById('savedContactsCard');
-    const savedContactsGrid = document.getElementById('savedContactsGrid');
-    const contactCountBadge = document.getElementById('contactCountBadge');
-    
-    // New sections
-    const policeSection = document.getElementById('policeSection');
-    const policeLoading = document.getElementById('policeLoading');
-    const policeStationsList = document.getElementById('policeStationsList');
-    const policeError = document.getElementById('policeError');
-    const infoSection = document.getElementById('infoSection');
-    const infoForm = document.getElementById('infoForm');
-    const infoDisplay = document.getElementById('infoDisplay');
-    const closePoliceBtn = document.getElementById('closePoliceBtn');
+  // ── POLICE ──
+  document.getElementById('tilePolice').addEventListener('click',       findPolice);
+  document.getElementById('refreshPoliceBtn').addEventListener('click', findPolice);
+  document.getElementById('closePoliceBtn').addEventListener('click',   () => hidePanel('policePanel'));
+  document.getElementById('openPoliceMapsBtn').addEventListener('click', () => {
+    if (lat) window.open(`https://www.google.com/maps/search/police+station/@${lat},${lon},14z`,'_blank');
+    else getLocation(() => { if (lat) window.open(`https://www.google.com/maps/search/police+station/@${lat},${lon},14z`,'_blank'); });
+  });
+  function findPolice() {
+    showPanel('policePanel');
+    document.getElementById('policeLoading').style.display='block';
+    document.getElementById('policeList').style.display='none';
+    toast('Locating nearby stations…','blue');
+    if (!navigator.geolocation) { toast('Geolocation not supported','red'); return; }
+    navigator.geolocation.getCurrentPosition(pos => {
+      lat=pos.coords.latitude; lon=pos.coords.longitude;
+      fetch(`https://overpass-api.de/api/interpreter?data=[out:json];(node[amenity=police](around:5000,${lat},${lon});way[amenity=police](around:5000,${lat},${lon}););out center;`)
+        .then(r=>r.json()).then(data => {
+          const stations = data.elements.filter(e=>e.tags&&e.tags.name).map(s=>{
+            const sLat=s.lat||(s.center&&s.center.lat), sLon=s.lon||(s.center&&s.center.lon);
+            if(!sLat||!sLon) return null;
+            const dist=calcDist(lat,lon,sLat,sLon); const t=s.tags;
+            let addr='Address unavailable';
+            if(t['addr:full']) addr=t['addr:full'];
+            else if(t['addr:street']) addr=[t['addr:housenumber'],t['addr:street'],t['addr:city']].filter(Boolean).join(', ');
+            let phone=null;
+            for(const f of['phone','contact:phone','tel']){ if(t[f]){const p=t[f].replace(/[^\d+]/g,'');if(p.length>=8){phone=p;break;}} }
+            return {name:t.name,sLat,sLon,dist,phone,addr};
+          }).filter(Boolean).sort((a,b)=>a.dist-b.dist).slice(0,5);
 
-    // Close police section
-    closePoliceBtn.addEventListener('click', function() {
-      policeSection.style.display = 'none';
-    });
-
-    // ========== CONTACTS MANAGEMENT ==========
-    function saveContacts() {
-      localStorage.setItem('emergencyContacts', JSON.stringify(emergencyContacts));
-      displayContacts();
-      updateContactCountBadge();
-    }
-
-    function displayContacts() {
-      const contactsList = document.getElementById('contactsList');
-      if (emergencyContacts.length === 0) {
-        contactsList.innerHTML = '<div class="empty-state"><i class="fas fa-address-book"></i><p>No contacts added yet</p></div>';
-        return;
-      }
-      contactsList.innerHTML = emergencyContacts.map((contact, index) => `
-        <div class="contact-item">
-          <div class="contact-info">
-            <i class="fas fa-user-circle"></i>
-            <span>${contact.name}: ${contact.number}</span>
-          </div>
-          <i class="fas fa-trash-alt delete-contact" onclick="deleteContact(${index})"></i>
-        </div>
-      `).join('');
-    }
-
-    window.deleteContact = function(index) {
-      emergencyContacts.splice(index, 1);
-      saveContacts();
-      showToast({ 
-        title: 'Contact Removed', 
-        message: 'Emergency contact deleted successfully.', 
-        iconType: 'attention',
-        duration: 3000 
-      });
-    };
-
-    document.getElementById('addContact').addEventListener('click', function() {
-      const name = document.getElementById('contactName').value.trim();
-      const number = document.getElementById('contactNumber').value.trim();
-      
-      if (name && number) {
-        emergencyContacts.push({ name, number });
-        saveContacts();
-        document.getElementById('contactName').value = '';
-        document.getElementById('contactNumber').value = '';
-        showToast({ 
-          title: 'Contact Added', 
-          message: 'Emergency contact saved successfully.', 
-          iconType: 'success',
-          duration: 3000 
-        });
-      } else {
-        showToast({ 
-          title: 'Invalid Input', 
-          message: 'Please fill both fields.', 
-          iconType: 'attention',
-          duration: 3000 
-        });
-      }
-    });
-
-    // Update contact count badge
-    function updateContactCountBadge() {
-      contactCountBadge.textContent = emergencyContacts.length;
-    }
-
-    // ========== YOUR INFO FUNCTIONS ==========
-    function loadUserInfo() {
-      if (userInfo) {
-        document.getElementById('infoName').value = userInfo.name || '';
-        document.getElementById('infoAddress').value = userInfo.address || '';
-        document.getElementById('infoBlood').value = userInfo.blood || '';
-        document.getElementById('infoEmergency').value = userInfo.emergency || '';
-      }
-    }
-
-    function saveUserInfo() {
-      const name = document.getElementById('infoName').value.trim();
-      const address = document.getElementById('infoAddress').value.trim();
-      const blood = document.getElementById('infoBlood').value.trim();
-      const emergency = document.getElementById('infoEmergency').value.trim();
-      
-      if (!name || !address || !blood || !emergency) {
-        showToast({ 
-          title: 'Incomplete Info', 
-          message: 'Please fill all fields.', 
-          iconType: 'attention',
-          duration: 3000 
-        });
-        return;
-      }
-      
-      userInfo = { name, address, blood, emergency };
-      localStorage.setItem('userInfo', JSON.stringify(userInfo));
-      
-      showToast({ 
-        title: 'Info Saved', 
-        message: 'Your information has been saved.', 
-        iconType: 'success',
-        duration: 3000 
-      });
-      
-      // Hide the form
-      infoSection.style.display = 'none';
-    }
-
-    function displayUserInfo() {
-      if (!userInfo) {
-        // Show form to enter info
-        infoSection.style.display = 'block';
-        infoForm.style.display = 'block';
-        infoDisplay.style.display = 'none';
-        infoSection.scrollIntoView({ behavior: 'smooth' });
-        return;
-      }
-      
-      // Show info display card
-      infoSection.style.display = 'block';
-      infoForm.style.display = 'none';
-      
-      infoDisplay.innerHTML = `
-        <div class="info-display-card">
-          <div class="info-display-item">
-            <div class="info-display-label">Full Name:</div>
-            <div class="info-display-value">${userInfo.name}</div>
-          </div>
-          <div class="info-display-item">
-            <div class="info-display-label">Home Address:</div>
-            <div class="info-display-value">${userInfo.address}</div>
-          </div>
-          <div class="info-display-item">
-            <div class="info-display-label">Blood Group:</div>
-            <div class="info-display-value">${userInfo.blood}</div>
-          </div>
-          <div class="info-display-item">
-            <div class="info-display-label">Emergency Contact:</div>
-            <div class="info-display-value">${userInfo.emergency}</div>
-          </div>
-          <div class="info-timer">
-            <i class="fas fa-clock"></i> Auto-closing in 7 seconds
-          </div>
-        </div>
-      `;
-      infoDisplay.style.display = 'block';
-      
-      infoSection.scrollIntoView({ behavior: 'smooth' });
-      
-      // Auto close after 7 seconds
-      if (infoCardTimeout) clearTimeout(infoCardTimeout);
-      infoCardTimeout = setTimeout(() => {
-        infoSection.style.display = 'none';
-        infoCardTimeout = null;
-      }, 7000);
-    }
-
-    document.getElementById('saveInfoBtn').addEventListener('click', saveUserInfo);
-
-    // ========== POLICE STATION FUNCTIONS ==========
-    function findNearestPoliceStations() {
-      policeSection.style.display = 'block';
-      policeLoading.style.display = 'block';
-      policeStationsList.style.display = 'none';
-      policeError.style.display = 'none';
-      
-      policeSection.scrollIntoView({ behavior: 'smooth' });
-      
-      showToast({ 
-        title: 'Finding Stations', 
-        message: 'Searching for nearest stations...', 
-        iconType: 'success',
-        duration: 3000 
-      });
-      
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          function(position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            currentLat = lat;
-            currentLon = lon;
-            
-            // Use OpenStreetMap Overpass API to find police stations
-            const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json];(node[amenity=police](around:5000,${lat},${lon});way[amenity=police](around:5000,${lat},${lon}););out center;`;
-            
-            fetch(overpassUrl)
-              .then(response => response.json())
-              .then(data => {
-                const stations = data.elements.filter(el => el.tags && el.tags.name);
-                
-                if (stations.length === 0) {
-                  policeLoading.style.display = 'none';
-                  policeStationsList.innerHTML = `
-                    <div class="police-empty-state">
-                      <i class="fas fa-map-marked-alt"></i>
-                      <p>No stations found nearby</p>
-                      <button class="police-action-btn directions" onclick="document.getElementById('openPoliceMapsBtn').click()" style="margin-top: 15px; max-width: 200px; margin-left: auto; margin-right: auto;">
-                        <i class="fas fa-map"></i> 
-                      </button>
-                    </div>
-                  `;
-                  policeStationsList.style.display = 'block';
-                  return;
-                }
-                
-                // Process stations with better data extraction
-                const stationsWithDistance = stations.map(station => {
-                  const stationLat = station.lat || (station.center && station.center.lat);
-                  const stationLon = station.lon || (station.center && station.center.lon);
-                  
-                  if (!stationLat || !stationLon) return null;
-                  
-                  const distance = calculateDistance(lat, lon, stationLat, stationLon);
-                  
-                  // Enhanced address extraction
-                  let address = 'Address not available';
-                  if (station.tags['addr:full']) address = station.tags['addr:full'];
-                  else if (station.tags.address) address = station.tags.address;
-                  else {
-                    const parts = [];
-                    if (station.tags['addr:street']) {
-                      if (station.tags['addr:housenumber']) parts.push(station.tags['addr:housenumber']);
-                      parts.push(station.tags['addr:street']);
-                      if (station.tags['addr:city']) parts.push(station.tags['addr:city']);
-                      if (parts.length > 0) address = parts.join(', ');
-                    }
-                  }
-                  
-                  // Enhanced phone extraction
-                  let phone = null;
-                  const phoneFields = ['phone', 'contact:phone', 'tel', 'contact:mobile', 'emergency:phone'];
-                  for (const field of phoneFields) {
-                    if (station.tags[field]) {
-                      const cleaned = station.tags[field].replace(/[^\d+]/g, '');
-                      if (cleaned.length >= 8) {
-                        phone = cleaned;
-                        break;
-                      }
-                    }
-                  }
-                  
-                  return {
-                    name: station.tags.name || 'Police Station',
-                    lat: stationLat,
-                    lon: stationLon,
-                    distance: distance,
-                    phone: phone,
-                    address: address
-                  };
-                }).filter(s => s !== null);
-                
-                // Sort by distance
-                stationsWithDistance.sort((a, b) => a.distance - b.distance);
-                
-                // Display top 5 stations with enhanced UI
-                displayPoliceStations(stationsWithDistance.slice(0, 5));
-              })
-              .catch(error => {
-                console.error('Error:', error);
-                policeLoading.style.display = 'none';
-                policeStationsList.innerHTML = `
-                  <div class="police-empty-state">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p>Unable to fetch stations</p>
-                    <button class="police-action-btn directions" onclick="document.getElementById('openPoliceMapsBtn').click()" style="margin-top: 15px; max-width: 200px; margin-left: auto; margin-right: auto;">
-                      <i class="fas fa-map"></i> Search on Maps
-                    </button>
-                  </div>
-                `;
-                policeStationsList.style.display = 'block';
-              });
-          },
-          function(error) {
-            policeLoading.style.display = 'none';
-            policeStationsList.innerHTML = `
-              <div class="police-empty-state">
-                <i class="fas fa-map-marker-alt"></i>
-                <p>Location access denied</p>
-                <p style="font-size: 14px; margin-top: 5px;">Please enable GPS to find nearby stations</p>
-              </div>
-            `;
-            policeStationsList.style.display = 'block';
-            showToast({ 
-              title: 'Location Error', 
-              message: 'Unable to get your location.', 
-              iconType: 'attention',
-              duration: 5000 
-            });
-          }
-        );
-      } else {
-        policeLoading.style.display = 'none';
-        policeStationsList.innerHTML = `
-          <div class="police-empty-state">
-            <i class="fas fa-exclamation-circle"></i>
-            <p>Geolocation not supported</p>
-          </div>
-        `;
-        policeStationsList.style.display = 'block';
-        showToast({ 
-          title: 'Not Supported', 
-          message: 'Geolocation is not supported by your browser.', 
-          iconType: 'attention',
-          duration: 5000 
-        });
-      }
-    }
-
-    function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371;
-      const dLat = deg2rad(lat2 - lat1);
-      const dLon = deg2rad(lon2 - lon1);
-      const a = 
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-        Math.sin(dLon/2) * Math.sin(dLon/2); 
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-      return R * c;
-    }
-
-    function deg2rad(deg) {
-      return deg * (Math.PI/180);
-    }
-
-    function displayPoliceStations(stations) {
-      let stationsHtml = '';
-      
-      stations.forEach((station, index) => {
-        const distanceKm = station.distance.toFixed(2);
-        const mapsLink = `https://www.google.com/maps/dir/?api=1&destination=${station.lat},${station.lon}`;
-        
-        // Add medal emoji for closest station
-        const medal = index === 0 ? ' 🥇' : index === 1 ? ' 🥈' : index === 2 ? ' 🥉' : '';
-        
-        stationsHtml += `
-          <div class="police-station-card">
-            <div class="police-station-name">${station.name}${medal}</div>
-            <div class="police-station-distance">
-              <i class="fas fa-location-dot"></i> ${distanceKm} km away
-              ${index === 0 ? '<span style="color: #f59e0b; margin-left: 5px;">(Closest)</span>' : ''}
-            </div>
-            <div class="police-station-address">
-              <i class="fas fa-map-pin"></i> ${station.address}
-            </div>
-            <div class="police-station-actions">
-              <button class="police-action-btn directions" onclick="window.open('${mapsLink}', '_blank')">
-                <i class="fas fa-directions"></i> Navigate
-              </button>
-              ${station.phone ? 
-                `<button class="police-action-btn call" onclick="window.location.href='tel:${station.phone}'">
-                  <i class="fas fa-phone"></i> Call
-                </button>` : 
-                `<button class="police-action-btn call" style="background: #6b7280;" disabled title="No phone number available">
-                  <i class="fas fa-phone-alt"></i> No Phone
-                </button>`
-              }
-            </div>
-          </div>
-        `;
-      });
-      
-      // Add helpful note
-      stationsHtml += `
-        <div style="text-align: center; margin-top: 15px; font-size: 12px; color: #6b7280;">
-          <i class="fas fa-info-circle"></i> Data from OpenStreetMap
-        </div>
-      `;
-      
-      policeStationsList.innerHTML = stationsHtml;
-      policeLoading.style.display = 'none';
-      policeStationsList.style.display = 'block';
-    }
-
-    // ========== LOCATION FUNCTIONS ==========
-    function getLocation(callback) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          function(pos) {
-            currentLat = pos.coords.latitude;
-            currentLon = pos.coords.longitude;
-            let mapEmbed = "https://www.google.com/maps?q=" + currentLat + "," + currentLon + "&output=embed&z=17";
-            mapFrame.src = mapEmbed;
-            mapSection.style.display = "block";
-            mapSection.scrollIntoView({ behavior: "smooth" });
-            showToast({ 
-              title: 'Location Found', 
-              message: 'Your current location is displayed on map.', 
-              iconType: 'success',
-              duration: 3000 
-            });
-            if (callback) callback(true);
-          },
-          function(error) {
-            showToast({ 
-              title: 'Location Error', 
-              message: 'Unable to access your location.', 
-              iconType: 'attention',
-              duration: 3000 
-            });
-            if (callback) callback(false);
-          }
-        );
-      } else {
-        showToast({ 
-          title: 'Not Supported', 
-          message: 'Geolocation is not supported by your browser.', 
-          iconType: 'attention',
-          duration: 3000 
-        });
-        if (callback) callback(false);
-      }
-    }
-
-    // ========== SOS FUNCTION ==========
-    function triggerSOS() {
-      if (emergencyContacts.length === 0) {
-        showToast({ 
-          title: 'No Contacts', 
-          message: 'Please add emergency contacts first.', 
-          iconType: 'attention',
-          duration: 6000 
-        });
-        return;
-      }
-      
-      showToast({ 
-        title: 'SOS Activated', 
-        message: `Opening WhatsApp for ${emergencyContacts.length} contact(s).`, 
-        iconType: 'attention',
-        duration: 5000 
-      });
-      
-      const formatNumberForWhatsApp = (raw) => {
-        let cleaned = raw.replace(/[\s\-\(\)]/g, '');
-        if (/^01\d{9}$/.test(cleaned)) {
-          return '+88' + cleaned;
-        }
-        if (cleaned.startsWith('+')) return cleaned;
-        return cleaned;
-      };
-
-      const openWhatsApp = (number, message) => {
-        const fullNumber = formatNumberForWhatsApp(number);
-        const intentUrl = `whatsapp://send?phone=${encodeURIComponent(fullNumber)}&text=${encodeURIComponent(message)}`;
-        window.location.href = intentUrl;
-        
-        setTimeout(() => {
-          showToast({ 
-            title: 'WhatsApp App', 
-            message: 'If WhatsApp did not open then tap again or install WhatsApp.', 
-            iconType: 'warning',
-            duration: 4000 
-          });
-        }, 500);
-      };
-
-      const sendToAllContacts = (locationLink) => {
-        emergencyContacts.forEach(contact => {
-          let msg = `⛔ EMERGENCY SOS ALERT from Quick Call!\n\n• Status: DANGER - Need immediate help!\n• Recipient: ${contact.name}\n• Time: ${new Date().toLocaleTimeString()}`;
-          if (locationLink) msg += `\n• Live Location: ${locationLink}`;
-          if (userInfo) {
-            msg += `\n\n• My Info: ${userInfo.name}, Blood: ${userInfo.blood}`;
-          }
-          msg += `\n\nPlease track me and call for help!`;
-          openWhatsApp(contact.number, msg);
-        });
-      };
-
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          function(pos) {
-            const lat = pos.coords.latitude;
-            const lon = pos.coords.longitude;
-            const locationLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
-            sendToAllContacts(locationLink);
-          },
-          function() {
-            sendToAllContacts(null);
-          }
-        );
-      } else {
-        sendToAllContacts(null);
-      }
-    }
-
-    // ========== SIREN FUNCTIONS ==========
-    function startSiren() {
-      showToast({ 
-        title: 'Siren Activated', 
-        message: 'Shaking phone will automatically activate the siren feature.', 
-        iconType: 'success',
-        duration: 6000 
-      });
-      
-      if (sirenAudio) {
-        sirenSection.style.display = 'block';
-        sirenSection.scrollIntoView({ behavior: "smooth" });
-        return;
-      }
-      
-      try {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        
-        oscillator.type = 'sawtooth';
-        oscillator.frequency.value = 800;
-        gainNode.gain.value = 0.3;
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        
-        if (audioContext.state === 'suspended') {
-          audioContext.resume().then(() => {
-            oscillator.start();
-            
-            let frequency = 400;
-            sirenInterval = setInterval(() => {
-              frequency = frequency === 400 ? 800 : 400;
-              oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-            }, 300);
-            
-            sirenAudio = { oscillator, gainNode, context: audioContext };
-            
-            sirenSection.style.display = 'block';
-            sirenSection.scrollIntoView({ behavior: "smooth" });
-          }).catch(e => {
-            showToast({ 
-              title: 'Siren Error!', 
-              message: 'Could not start siren.', 
-              iconType: 'attention',
-              duration: 3000 
-            });
-          });
-        } else {
-          oscillator.start();
-          
-          let frequency = 400;
-          sirenInterval = setInterval(() => {
-            frequency = frequency === 400 ? 800 : 400;
-            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-          }, 300);
-          
-          sirenAudio = { oscillator, gainNode, context: audioContext };
-          
-          sirenSection.style.display = 'block';
-          sirenSection.scrollIntoView({ behavior: "smooth" });
-        }
-      } catch(e) {
-        showToast({ 
-          title: 'Siren Error!', 
-          message: 'Could not start siren.', 
-          iconType: 'attention',
-          duration: 3000 
-        });
-      }
-    }
-
-    function stopSiren() {
-      if (sirenAudio) {
-        try {
-          sirenAudio.oscillator.stop();
-          sirenAudio.oscillator.disconnect();
-        } catch(e) {}
-        sirenAudio = null;
-      }
-      if (sirenInterval) {
-        clearInterval(sirenInterval);
-        sirenInterval = null;
-      }
-      sirenSection.style.display = 'none';
-    }
-
-    // ========== SHAKE DETECTION ==========
-    if (window.DeviceMotionEvent) {
-      let lastShakeTime = 0;
-      window.addEventListener('devicemotion', function(event) {
-        const acceleration = event.accelerationIncludingGravity;
-        if (!acceleration) return;
-        
-        const magnitude = Math.sqrt(
-          acceleration.x * acceleration.x + 
-          acceleration.y * acceleration.y + 
-          acceleration.z * acceleration.z
-        );
-        
-        if (magnitude > 22) {
-          const now = Date.now();
-          if (now - lastShakeTime > 2000) {
-            lastShakeTime = now;
-            startSiren();
-          }
-        }
-      });
-    }
-
-    // ========== OTHER FUNCTIONS ==========
-    function quickCall(number) {
-      window.location.href = "tel:" + number;
-    }
-
-    function shareLocation() {
-      showToast({ 
-        title: 'Sharing Location', 
-        message: 'Preparing to share your location via WhatsApp.', 
-        iconType: 'success',
-        duration: 6000 
-      });
-      
-      if (currentLat && currentLon) {
-        const lat = currentLat.toFixed(4);
-        const lon = currentLon.toFixed(4);
-        const trackingLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
-        let msg = `⛔ I need your help immediately.\n\n• Status: Possible danger\n• Location: ${trackingLink}\n• Time: ${new Date().toLocaleTimeString()}`;
-        window.open("https://wa.me/?text=" + encodeURIComponent(msg), '_blank');
-      } else {
-        getLocation(function(success) {
-          if (success && currentLat && currentLon) {
-            const lat = currentLat.toFixed(4);
-            const lon = currentLon.toFixed(4);
-            const trackingLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
-            let msg = `⛔ I need your help immediately.\n\n• Status: Possible danger\n• Location: ${trackingLink}\n• Time: ${new Date().toLocaleTimeString()}`;
-            window.open("https://wa.me/?text=" + encodeURIComponent(msg), '_blank');
-          }
-        });
-      }
-    }
-
-    // ========== FAKE CALL ==========
-    function updateCallStatusTime() {
-      const now = new Date();
-      let hours = now.getHours();
-      let minutes = now.getMinutes().toString().padStart(2,'0');
-      let ampm = hours >=12 ? 'PM' : 'AM';
-      hours = hours % 12 || 12;
-      document.getElementById('callStatusTime').innerText = `${hours}:${minutes} ${ampm}`;
-    }
-    
-    function fakeCall() {
-      document.getElementById('fakeCallScreen').style.display = 'flex';
-      updateCallStatusTime();
-      if (fakeCallInterval) clearInterval(fakeCallInterval);
-      fakeCallInterval = setInterval(updateCallStatusTime, 1000);
-      const ringtone = new Audio(ringtoneURL);
-      ringtone.loop = true;
-      ringtone.play().catch(e=>{});
-      window.currentRingtone = ringtone;
-    }
-    
-    window.closeFakeCall = function() {
-      document.getElementById('fakeCallScreen').style.display = 'none';
-      if (window.currentRingtone) { window.currentRingtone.pause(); window.currentRingtone = null; }
-      clearInterval(fakeCallInterval); fakeCallInterval = null;
-    };
-
-    // ========== SHOW SAVED CONTACTS CARD ==========
-    function showSavedContactsCard() {
-      if (contactsCardTimeout) {
-        clearTimeout(contactsCardTimeout);
-      }
-      
-      if (emergencyContacts.length === 0) {
-        savedContactsGrid.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-address-book"></i>
-            <p>No saved contacts yet</p>
-          </div>
-        `;
-      } else {
-        savedContactsGrid.innerHTML = emergencyContacts.map((contact, index) => {
-          const initial = contact.name.charAt(0).toUpperCase();
-          return `
-            <div class="contact-row">
-              <div class="contact-avatar">${initial}</div>
-              <div class="contact-details">
-                <div class="contact-name">${contact.name}</div>
-                <div class="contact-number">
-                  <i class="fas fa-phone-alt"></i>
-                  ${contact.number}
+          document.getElementById('policeLoading').style.display='none';
+          document.getElementById('policeList').innerHTML = stations.length===0
+            ? '<div class="empty-state"><i class="fas fa-map-marked-alt"></i><p>No stations found nearby</p></div>'
+            : stations.map((s,i)=>`
+              <div class="station-card">
+                <div class="station-header">
+                  <div class="station-num">${i+1}</div>
+                  <div class="station-name">${s.name}</div>
                 </div>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-      
-      updateContactCountBadge();
-      savedContactsCard.classList.add('show');
-      savedContactsCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      
-      contactsCardTimeout = setTimeout(() => {
-        savedContactsCard.classList.remove('show');
-        contactsCardTimeout = null;
-      }, 8000);
-    }
-
-    // ========== EVENT LISTENERS ==========
-    // URGENT CALL
-    document.getElementById('cardEmergency').addEventListener('click', function() {
-      quickCall('999');
-    });
-
-    document.getElementById('cardLocation').addEventListener('click', getLocation);
-    document.getElementById('cardWhatsapp').addEventListener('click', shareLocation);
-    document.getElementById('cardFake').addEventListener('click', fakeCall);
-    document.getElementById('cardSiren').addEventListener('click', startSiren);
-    
-    // Police Station
-    document.getElementById('cardPolice').addEventListener('click', findNearestPoliceStations);
-    
-    // Your Info
-    document.getElementById('cardInfo').addEventListener('click', displayUserInfo);
-
-    document.getElementById('cardContacts').addEventListener('click', showSavedContactsCard);
-    
-    document.getElementById('sirenOn').addEventListener('click', startSiren);
-    document.getElementById('sirenOff').addEventListener('click', stopSiren);
-
-    document.getElementById('openMapsBtn').addEventListener('click', function() {
-      if (currentLat && currentLon) {
-        window.open("https://www.google.com/maps?q=" + currentLat + "," + currentLon);
-      } else {
-        getLocation();
-      }
-    });
-
-    document.getElementById('navigateBtn').addEventListener('click', function() {
-      if (currentLat && currentLon) {
-        window.open("https://www.google.com/maps/dir/?api=1&destination=" + currentLat + "," + currentLon);
-      } else {
-        getLocation();
-      }
-    });
-    
-    // Police section buttons
-    document.getElementById('refreshPoliceBtn').addEventListener('click', findNearestPoliceStations);
-    document.getElementById('openPoliceMapsBtn').addEventListener('click', function() {
-      if (currentLat && currentLon) {
-        window.open(`https://www.google.com/maps/search/police+station/@${currentLat},${currentLon},14z`, '_blank');
-      } else {
-        getLocation(function() {
-          if (currentLat && currentLon) {
-            window.open(`https://www.google.com/maps/search/police+station/@${currentLat},${currentLon},14z`, '_blank');
-          }
+                <div class="station-meta">
+                  <span class="station-dist"><i class="fas fa-map-pin red-pin"></i> ${s.dist.toFixed(2)} km</span>
+                  ${i===0?'<span class="station-closest">Closest</span>':''}
+                </div>
+                <div class="station-address"><i class="fas fa-map-pin red-pin"></i><span>${s.addr}</span></div>
+                <div class="station-actions">
+                  <button class="station-btn nav" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${s.sLat},${s.sLon}','_blank')"><i class="fas fa-diamond-turn-right"></i> Navigate</button>
+                  ${s.phone
+                    ? `<button class="station-btn call" onclick="window.location.href='tel:${s.phone}'"><i class="fas fa-phone"></i> Call</button>`
+                    : `<button class="station-btn no-call" disabled><i class="fas fa-phone-slash"></i> No Phone</button>`}
+                </div>
+              </div>`).join('');
+          document.getElementById('policeList').style.display='block';
+        }).catch(()=>{
+          document.getElementById('policeLoading').style.display='none';
+          document.getElementById('policeList').innerHTML='<div class="empty-state"><i class="fas fa-triangle-exclamation"></i><p>Failed to fetch stations</p></div>';
+          document.getElementById('policeList').style.display='block';
         });
-      }
-    });
-    
-    // ========== SOS BUTTON EVENT LISTENER ==========
-    document.getElementById('sosPanicBtn').addEventListener('click', triggerSOS);
-    
-    // Credit popup
-    const creditBtn = document.getElementById('creditToggle');
-    const creditPopup = document.getElementById('creditPopup');
-    
-    creditBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      creditPopup.classList.toggle('show');
-    });
-    
-    document.addEventListener('click', function(e) {
-      if (!creditBtn.contains(e.target) && !creditPopup.contains(e.target)) {
-        creditPopup.classList.remove('show');
-      }
-    });
+    }, ()=>{ toast('Location access denied','red'); document.getElementById('policeLoading').style.display='none'; });
+  }
+  function calcDist(a,b,c,d){const R=6371,dL=deg2rad(c-a),dLo=deg2rad(d-b),x=Math.sin(dL/2)**2+Math.cos(deg2rad(a))*Math.cos(deg2rad(c))*Math.sin(dLo/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
+  function deg2rad(d){return d*Math.PI/180;}
 
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && document.getElementById('fakeCallScreen').style.display === 'flex') {
-        closeFakeCall();
-      }
-    });
+  // ── USER INFO ──
+  document.getElementById('tileInfo').addEventListener('click',         openInfoPanel);
+  document.getElementById('saveInfoBtn').addEventListener('click',      saveInfo);
+  document.getElementById('closeInfoBtn').addEventListener('click',     ()=>hidePanel('infoPanel'));
+  document.getElementById('closeInfoFormBtn').addEventListener('click', ()=>hidePanel('infoPanel'));
+  function openInfoPanel(){ showPanel('infoPanel'); userInfo ? showInfoDisplay() : showInfoForm(); }
+  function showInfoForm(){
+    document.getElementById('infoFormContainer').style.display='block';
+    document.getElementById('infoDisplayContainer').style.display='none';
+    if(userInfo){ document.getElementById('infoName').value=userInfo.name||''; document.getElementById('infoAddress').value=userInfo.address||''; document.getElementById('infoBlood').value=userInfo.blood||''; document.getElementById('infoEmergency').value=userInfo.emergency||''; }
+  }
+  function showInfoDisplay(){
+    document.getElementById('infoFormContainer').style.display='none';
+    const c=document.getElementById('infoDisplayContainer'); c.style.display='block';
+    c.innerHTML=`<div class="info-display">
+      <div class="info-item"><div class="info-item-icon"><i class="fas fa-user"></i></div><div><div class="info-item-label">Full Name</div><div class="info-item-value">${userInfo.name}</div></div></div>
+      <div class="info-item"><div class="info-item-icon"><i class="fas fa-home"></i></div><div><div class="info-item-label">Address</div><div class="info-item-value">${userInfo.address}</div></div></div>
+      <div class="info-item"><div class="info-item-icon"><i class="fas fa-tint"></i></div><div><div class="info-item-label">Blood Group</div><div class="info-item-value">${userInfo.blood}</div></div></div>
+      <div class="info-item"><div class="info-item-icon"><i class="fas fa-phone"></i></div><div><div class="info-item-label">Emergency Contact</div><div class="info-item-value">${userInfo.emergency}</div></div></div>
+    </div>
+    <div class="btn-row" style="margin-top:14px;">
+      <button class="btn btn-surface" onclick="window._editInfo()"><i class="fas fa-edit"></i> Edit</button>
+      <button class="btn btn-surface" onclick="hidePanel('infoPanel')"><i class="fas fa-times"></i> Close</button>
+    </div>`;
+    if(infoAutoClose) clearTimeout(infoAutoClose);
+    infoAutoClose=setTimeout(()=>hidePanel('infoPanel'),7000);
+  }
+  window._editInfo=showInfoForm;
+  function saveInfo(){
+    const n=document.getElementById('infoName').value.trim(), a=document.getElementById('infoAddress').value.trim(), b=document.getElementById('infoBlood').value.trim(), e=document.getElementById('infoEmergency').value.trim();
+    if(!n||!a||!b||!e){ toast('Please fill all fields','amber'); return; }
+    userInfo={name:n,address:a,blood:b,emergency:e}; localStorage.setItem('qc_info',JSON.stringify(userInfo));
+    toast('Information saved ✓','green'); showInfoDisplay();
+  }
 
-    // Initialize
-    mapSection.style.display = 'none';
-    policeSection.style.display = 'none';
-    infoSection.style.display = 'none';
-    displayContacts();
-    updateContactCountBadge();
-    loadUserInfo();
+  // ── MY CONTACTS POPUP ──
+  document.getElementById('tileContacts').addEventListener('click', showContactsPopup);
+  function showContactsPopup(){
+    if(contactsPopupTimeout) clearTimeout(contactsPopupTimeout);
+    const popup=document.getElementById('contactsPopup'); document.getElementById('popupBadge').textContent=contacts.length;
+    const body=document.getElementById('popupBody');
+    body.innerHTML = !contacts.length
+      ? '<div class="empty-state"><i class="fas fa-address-book"></i><p>No saved contacts yet</p></div>'
+      : contacts.map(c=>`<div class="popup-contact-row"><div class="popup-avatar">${c.name.charAt(0).toUpperCase()}</div><div><div class="popup-contact-name">${c.name}</div><div class="popup-contact-num"><i class="fas fa-phone"></i>${c.number}</div></div></div>`).join('');
+    const t=document.getElementById('popupTimer'); t.style.animation='none'; t.offsetHeight; t.style.animation='shrink 8s linear forwards';
+    popup.classList.add('visible'); popup.scrollIntoView({behavior:'smooth',block:'center'});
+    contactsPopupTimeout=setTimeout(()=>popup.classList.remove('visible'),8000);
+  }
 
-    window.addEventListener('load', function() {
-      if (emergencyContacts.length > 0) {
-        showToast({ 
-          title: 'Welcome Back!', 
-          message: 'Your safety companion is now active.', 
-          iconType: 'success',
-          duration: 3000 
-        });
-      }
-    });
+  // ── URGENT CALL ──
+  document.getElementById('tileCall').addEventListener('click', ()=>window.location.href='tel:999');
 
-  })();
+  // ── PANEL HELPERS ──
+  function showPanel(id){ document.getElementById(id).classList.add('visible'); setTimeout(()=>document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'}),50); }
+  window.hidePanel=function(id){ document.getElementById(id).classList.remove('visible'); };
+
+  // ── CREDIT ──
+  const creditToggle=document.getElementById('creditToggle'), creditPanel=document.getElementById('creditPanel'), creditChevron=document.getElementById('creditChevron');
+  creditToggle.addEventListener('click',()=>{ creditPanel.classList.toggle('open'); creditChevron.style.transform=creditPanel.classList.contains('open')?'rotate(180deg)':'rotate(0)'; });
+
+  // ── INIT ──
+  renderContacts(); updateSubtitle();
+  setTimeout(()=>toast(contacts.length>0?'Welcome back — stay safe 🛡':'Welcome! Add emergency contacts to get started','blue'),800);
+})();
 </script>
 </body>
 </html>
