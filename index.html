@@ -999,10 +999,10 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
     const c = document.getElementById('infoDisplayContainer'); c.style.display = 'block';
     c.innerHTML = `
       <div class="info-display">
-        <div class="info-item"><div class="info-item-icon"><i class="fas fa-user"></i></div><div><div class="info-item-label">Full Name</div><div class="info-item-value">${userInfo.name}</div></div></div>
-        <div class="info-item"><div class="info-item-icon"><i class="fas fa-home"></i></div><div><div class="info-item-label">Address</div><div class="info-item-value">${userInfo.address}</div></div></div>
-        <div class="info-item"><div class="info-item-icon"><i class="fas fa-tint"></i></div><div><div class="info-item-label">Blood Group</div><div class="info-item-value">${userInfo.blood}</div></div></div>
-        <div class="info-item"><div class="info-item-icon"><i class="fas fa-phone"></i></div><div><div class="info-item-label">Emergency Contact</div><div class="info-item-value">${userInfo.emergency}</div></div></div>
+        <div class="info-item"><div class="info-item-icon"><i class="fas fa-user"></i></div><div><div class="info-item-label">Full Name:</div><div class="info-item-value">${userInfo.name}</div></div></div>
+        <div class="info-item"><div class="info-item-icon"><i class="fas fa-home"></i></div><div><div class="info-item-label">Address:</div><div class="info-item-value">${userInfo.address}</div></div></div>
+        <div class="info-item"><div class="info-item-icon"><i class="fas fa-tint"></i></div><div><div class="info-item-label">Blood Group:</div><div class="info-item-value">${userInfo.blood}</div></div></div>
+        <div class="info-item"><div class="info-item-icon"><i class="fas fa-phone"></i></div><div><div class="info-item-label">Emergency Contact:</div><div class="info-item-value">${userInfo.emergency}</div></div></div>
       </div>
       <div class="btn-row" style="margin-top:14px;">
         <button class="btn btn-surface" onclick="window._editInfo()"><i class="fas fa-edit"></i> Edit</button>
@@ -1068,7 +1068,7 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
 
   // ── INIT — welcome back only ──
   renderContacts(); updateSubtitle();
-  setTimeout(() => toast('Welcome back!', 'blue'), 800);
+  setTimeout(() => toast('Welcome Back!', 'blue'), 800);
 })();
 </script>
 </body>
