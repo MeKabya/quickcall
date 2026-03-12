@@ -650,7 +650,7 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
   <div class="section-label">About</div>
   <div class="credit-section">
     <button class="credit-toggle" id="creditToggle">
-      <i class="fas fa-info-circle"></i> Credits &amp; Assistance
+      <i class="fas fa-info-circle"></i> Credits 
       <i class="fas fa-chevron-down" id="creditChevron" style="margin-left:auto;transition:transform 0.3s;"></i>
     </button>
     <div class="credit-panel" id="creditPanel">
@@ -664,7 +664,7 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
       </div>
       <div class="credit-row">
         <div class="credit-row-icon"><i class="fas fa-database"></i></div>
-        <div><div class="credit-label">Database</div><div class="credit-value">JSONBin.io (Cloud)</div></div>
+        <div><div class="credit-label">Database</div><div class="credit-value">JSONBin.io</div></div>
       </div>
       <div class="credit-row">
         <div class="credit-row-icon"><i class="fas fa-cloud-upload-alt"></i></div>
@@ -802,7 +802,7 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
         contacts = data.contacts || [];
         userInfo  = data.userInfo  || null;
         dbReady = true;
-        setDbStatus('connected', 'Cloud Synced');
+        setDbStatus('connected', 'ON');
         renderContacts(); updateSubtitle();
         if (userInfo) prefillInfoForm();
         return;
@@ -817,10 +817,10 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
       binId = newId;
       localStorage.setItem('qc_bin_id_' + deviceId, binId);
       dbReady = true;
-      setDbStatus('connected', 'Cloud Synced');
+      setDbStatus('connected', 'ON');
     } else {
       // Fallback to localStorage if JSONBin unavailable
-      setDbStatus('error', 'Local Only');
+      setDbStatus('error', 'OFF');
       const fallback = JSON.parse(localStorage.getItem('qc_fallback') || '{}');
       contacts = fallback.contacts || [];
       userInfo  = fallback.userInfo  || null;
@@ -834,10 +834,10 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
     const payload = { contacts, userInfo, deviceId, version: '4.0.0', lastSaved: new Date().toISOString() };
     // Always save to localStorage as instant fallback
     localStorage.setItem('qc_fallback', JSON.stringify(payload));
-    if (!binId) { setDbStatus('error', 'Local Only'); return; }
+    if (!binId) { setDbStatus('error', 'OFF'); return; }
     setDbStatus('syncing', 'Saving');
     const ok = await dbWrite(binId, payload);
-    setDbStatus(ok ? 'connected' : 'error', ok ? 'Cloud Synced' : 'Save Error');
+    setDbStatus(ok ? 'connected' : 'error', ok ? 'ON' : 'Save Error');
   }
 
   /* ══════════════════════════════════════════════
