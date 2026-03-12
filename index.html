@@ -650,7 +650,7 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
   <div class="section-label">About</div>
   <div class="credit-section">
     <button class="credit-toggle" id="creditToggle">
-      <i class="fas fa-info-circle"></i> Credits 
+      <i class="fas fa-info-circle"></i> Additional Information: 
       <i class="fas fa-chevron-down" id="creditChevron" style="margin-left:auto;transition:transform 0.3s;"></i>
     </button>
     <div class="credit-panel" id="creditPanel">
@@ -793,7 +793,7 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
 
   /* ── INIT DATABASE ── */
   async function initDB() {
-    setDbStatus('syncing', 'Connecting');
+    setDbStatus('...', '...');
     const payload = { contacts: [], userInfo: null, deviceId, version: '4.0.0' };
 
     if (binId) {
@@ -802,7 +802,7 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
         contacts = data.contacts || [];
         userInfo  = data.userInfo  || null;
         dbReady = true;
-        setDbStatus('connected', 'ON');
+        setDbStatus('...', 'ON');
         renderContacts(); updateSubtitle();
         if (userInfo) prefillInfoForm();
         return;
@@ -817,10 +817,10 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
       binId = newId;
       localStorage.setItem('qc_bin_id_' + deviceId, binId);
       dbReady = true;
-      setDbStatus('connected', 'ON');
+      setDbStatus('...', 'ON');
     } else {
       // Fallback to localStorage if JSONBin unavailable
-      setDbStatus('error', 'OFF');
+      setDbStatus('...', 'OFF');
       const fallback = JSON.parse(localStorage.getItem('qc_fallback') || '{}');
       contacts = fallback.contacts || [];
       userInfo  = fallback.userInfo  || null;
@@ -834,10 +834,10 @@ body.light-mode .tile-call::before { background:linear-gradient(135deg,rgba(26,1
     const payload = { contacts, userInfo, deviceId, version: '4.0.0', lastSaved: new Date().toISOString() };
     // Always save to localStorage as instant fallback
     localStorage.setItem('qc_fallback', JSON.stringify(payload));
-    if (!binId) { setDbStatus('error', 'OFF'); return; }
+    if (!binId) { setDbStatus('...', 'OFF'); return; }
     setDbStatus('syncing', 'Saving');
     const ok = await dbWrite(binId, payload);
-    setDbStatus(ok ? 'connected' : 'error', ok ? 'ON' : 'Save Error');
+    setDbStatus(ok ? '...' : '...', ok ? 'ON' : 'Save Error');
   }
 
   /* ══════════════════════════════════════════════
